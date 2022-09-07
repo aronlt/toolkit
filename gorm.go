@@ -24,9 +24,9 @@ func SelectAll[T any](data T, prefix ...string) string {
 					continue
 				}
 				if len(prefix) > 0 {
-					parts = append(parts, prefix[0]+"."+"`"+column+"`")
+					parts = append(parts, prefix[0]+"."+"`"+column+"` ")
 				} else {
-					parts = append(parts, "`"+column+"`")
+					parts = append(parts, "`"+column+"` ")
 				}
 			}
 		}
