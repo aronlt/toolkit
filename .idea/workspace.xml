@@ -5,12 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/concurrent/fan_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/concurrent/limit_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/list.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/map_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slice_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/gorm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/slice.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file:///usr/local/Cellar/go/1.18.1/libexec" />
   <component name="Git.Settings">
@@ -20,6 +36,9 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2EQQcIBjLLHRZp0HLAp1CmvZpJZ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -28,6 +47,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
@@ -37,7 +57,7 @@
     "last_opened_file_path": "/Users/bytedance"
   }
 }]]></component>
-  <component name="RunManager" selected="Go 测试.github.com/aronlt/toolkit 中的 TestSelectAllWithPrefix">
+  <component name="RunManager" selected="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$" />
@@ -57,18 +77,18 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/aronlt/toolkit 中的 TestSelectAll" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="fan_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit" />
+      <working_directory value="$PROJECT_DIR$/concurrent" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="toolkit" />
       <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/concurrent/fan_test.go" />
       <framework value="gotest" />
-      <pattern value="^\QTestSelectAll\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/aronlt/toolkit 中的 TestSelectAllWithPrefix" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="github.com/aronlt/toolkit 中的 TestSortedMap" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
@@ -76,13 +96,52 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSelectAllWithPrefix\E$" />
+      <pattern value="^\QTestSortedMap\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/aronlt/toolkit/concurrent 中的 TestFanOut" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/concurrent" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/concurrent" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestFanOut\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/aronlt/toolkit/concurrent 中的 TestLimit" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/concurrent" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/concurrent" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestLimit\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/concurrent" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/concurrent" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestLimitLoop\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestSelectAllWithPrefix" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestSelectAll" />
+        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop" />
+        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimit" />
+        <item itemvalue="Go 测试.fan_test.go" />
+        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestFanOut" />
+        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestSortedMap" />
       </list>
     </recent_temporary>
   </component>
