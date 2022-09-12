@@ -1,6 +1,10 @@
 package toolkit
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 type Blog struct {
 	ID      int    `gorm:"column:id;primary_key"`
@@ -13,16 +17,12 @@ func TestSelectAll(t *testing.T) {
 	b := Blog{}
 	sql := SelectAll(b)
 	expect := "`id`,`user`"
-	if sql != expect {
-		t.Errorf("SelectAll expected %s actual %s", expect, sql)
-	}
+	assert.Equal(t, sql, expect)
 }
 
 func TestSelectAllWithPrefix(t *testing.T) {
 	b := Blog{}
 	sql := SelectAll(b, "blog")
 	expect := "blog.`id`,blog.`user`"
-	if sql != expect {
-		t.Errorf("SelectAll expected %s actual %s", expect, sql)
-	}
+	assert.Equal(t, sql, expect)
 }
