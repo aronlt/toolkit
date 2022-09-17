@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/gorm_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/gorm_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aes_crypto_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ase_crypto.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hash.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/types/crypto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/io.go" beforeDir="false" afterPath="$PROJECT_DIR$/io.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +30,9 @@
   <component name="GOROOT" url="file:///usr/local/Cellar/go/1.18.1/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file:///usr/local/Cellar/go/1.18.1/libexec/src/sort/search.go" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -45,10 +56,11 @@
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/Users/bytedance"
+    "last_opened_file_path": "/Users/bytedance",
+    "two.files.diff.last.used.file": "/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go"
   }
 }]]></component>
-  <component name="RunManager" selected="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop">
+  <component name="RunManager" selected="Go 测试.aes_crypto_test.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$" />
@@ -68,6 +80,16 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <configuration name="aes_crypto_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="toolkit" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/aes_crypto_test.go" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <configuration name="fan_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$/concurrent" />
@@ -79,7 +101,7 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/aronlt/toolkit 中的 TestSortedMap" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="github.com/aronlt/toolkit 中的 TestEncrypt" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
@@ -87,19 +109,7 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSortedMap\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="github.com/aronlt/toolkit/concurrent 中的 TestFanOut" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/concurrent" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/concurrent" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestFanOut\E$" />
+      <pattern value="^\QTestEncrypt\E$" />
       <method v="2" />
     </configuration>
     <configuration name="github.com/aronlt/toolkit/concurrent 中的 TestLimit" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -128,11 +138,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 测试.aes_crypto_test.go" />
+        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestEncrypt" />
         <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop" />
         <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimit" />
         <item itemvalue="Go 测试.fan_test.go" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestFanOut" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestSortedMap" />
       </list>
     </recent_temporary>
   </component>

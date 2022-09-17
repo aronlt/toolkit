@@ -3,8 +3,6 @@ package toolkit
 import (
 	"bufio"
 	"bytes"
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
 	"io"
 	"os"
@@ -16,22 +14,6 @@ type LineHandler func(string) error
 
 var DefaultPermOpen = os.FileMode(0666)
 var LineBreak = []byte{'\n'}
-
-// Md5File 计算文件的MD5值
-//goland:noinspection ALL
-func Md5File(path string) (string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return "", errors.Wrap(err, "call Md5Fail fail, open filepath error")
-	}
-
-	defer file.Close()
-	hash := md5.New()
-	if _, err := io.Copy(hash, file); err != nil {
-		return "", errors.Wrap(err, "call Md5Fail fail, copy file content error")
-	}
-	return hex.EncodeToString(hash.Sum(nil)), nil
-}
 
 // ReadFile 读取文件的内容
 func ReadFile(path string) ([]byte, error) {
