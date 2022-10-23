@@ -6,6 +6,16 @@ import (
 	"github.com/aronlt/toolkit/types"
 )
 
+// SliceEqual 判断两个Slice是否完全一样
+func SliceEqual[T comparable](a []T, b []T) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	setA := SetOf(a...)
+	setB := SetOf(b...)
+	return len(setA.Difference(setB)) == 0 && len(setB.Difference(setA)) == 0
+}
+
 // ReverseSlice 转置切片
 func ReverseSlice[T any](data []T) {
 	for i, j := 0, len(data)-1; i < j; i, j = i+1, j-1 {

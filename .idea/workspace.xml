@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/aes_crypto_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ase_crypto.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hash.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/types/crypto.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/set.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/io.go" beforeDir="false" afterPath="$PROJECT_DIR$/io.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/slice.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,12 +21,9 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file:///usr/local/Cellar/go/1.18.1/libexec" />
+  <component name="GOROOT" url="file:///usr/local/opt/go/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file:///usr/local/Cellar/go/1.18.1/libexec/src/sort/search.go" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -52,15 +43,18 @@
     "DefaultGoTemplateProperty": "Go File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "/Users/bytedance",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/lintong/go/src/toolkit",
     "two.files.diff.last.used.file": "/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go"
   }
 }]]></component>
-  <component name="RunManager" selected="Go 测试.aes_crypto_test.go">
+  <component name="RunManager" selected="Go Test.aes_crypto_test.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$" />
@@ -136,15 +130,6 @@
       <pattern value="^\QTestLimitLoop\E$" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go 测试.aes_crypto_test.go" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit 中的 TestEncrypt" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimitLoop" />
-        <item itemvalue="Go 测试.github.com/aronlt/toolkit/concurrent 中的 TestLimit" />
-        <item itemvalue="Go 测试.fan_test.go" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
