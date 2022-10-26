@@ -11,9 +11,18 @@ func SliceEqual[T comparable](a []T, b []T) bool {
 	if len(a) != len(b) {
 		return false
 	}
-	setA := SetOf(a...)
-	setB := SetOf(b...)
-	return len(setA.Difference(setB)) == 0 && len(setB.Difference(setA)) == 0
+	if len(a) == 0 && len(b) != 0 {
+		return false
+	}
+	if len(b) == 0 && len(a) != 0 {
+		return false
+	}
+	if len(a) == 0 && len(b) == 0 {
+		return true
+	}
+	mapA := NewCounterMap(a)
+	mapB := NewCounterMap(b)
+	return mapA.Equal(mapB)
 }
 
 // ReverseSlice 转置切片

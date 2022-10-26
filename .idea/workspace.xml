@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/set.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/encoding.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/map_counter.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/map.go" beforeDir="false" afterPath="$PROJECT_DIR$/map_sorted.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/map_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/map_sorted_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/slice.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,22 +43,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/lintong/go/src/toolkit",
-    "two.files.diff.last.used.file": "/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lintong/go/src/toolkit&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Go Test.aes_crypto_test.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="toolkit" />
