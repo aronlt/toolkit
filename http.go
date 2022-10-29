@@ -5,9 +5,10 @@ import (
 	"net/http"
 )
 
-func InternalError[T any](c *gin.Context, code int, msg string, data ...T) {
-	ResponseFail(c, http.StatusInternalServerError, code, msg, data)
+func ResponseFailDefault[T any](c *gin.Context, msg string, data ...T) {
+	ResponseFail(c, http.StatusInternalServerError, http.StatusInternalServerError, msg, data)
 }
+
 func ResponseFail[T any](c *gin.Context, httpCode int, code int, msg string, data ...T) {
 	if len(data) > 0 {
 		c.JSON(httpCode, gin.H{
@@ -22,6 +23,10 @@ func ResponseFail[T any](c *gin.Context, httpCode int, code int, msg string, dat
 		})
 	}
 	return
+}
+
+func ResponseSuccessDefault[T any](c *gin.Context, data T) {
+	ResponseSuccess(c, 0, "success", data)
 }
 
 func ResponseSuccess[T any](c *gin.Context, code int, msg string, data T) {
