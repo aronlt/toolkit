@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func ResponseFailDefault[T any](c *gin.Context, msg string) {
+func ResponseFailDefault(c *gin.Context, msg string) {
 	ResponseFail(c, http.StatusInternalServerError, http.StatusInternalServerError, msg, "")
 }
 
