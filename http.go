@@ -5,23 +5,16 @@ import (
 	"net/http"
 )
 
-func ResponseFailDefault[T any](c *gin.Context, msg string, data ...T) {
-	ResponseFail(c, http.StatusInternalServerError, http.StatusInternalServerError, msg, data)
+func ResponseFailDefault[T any](c *gin.Context, msg string) {
+	ResponseFail(c, http.StatusInternalServerError, http.StatusInternalServerError, msg, "")
 }
 
-func ResponseFail[T any](c *gin.Context, httpCode int, code int, msg string, data ...T) {
-	if len(data) > 0 {
-		c.JSON(httpCode, gin.H{
-			"code": code,
-			"msg":  msg,
-			"data": data[0],
-		})
-	} else {
-		c.JSON(httpCode, gin.H{
-			"code": code,
-			"msg":  msg,
-		})
-	}
+func ResponseFail[T any](c *gin.Context, httpCode int, code int, msg string, data T) {
+	c.JSON(httpCode, gin.H{
+		"code": code,
+		"msg":  msg,
+		"data": data,
+	})
 	return
 }
 
