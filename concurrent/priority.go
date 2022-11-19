@@ -3,7 +3,7 @@ package concurrent
 import (
 	"time"
 
-	"github.com/aronlt/toolkit/types"
+	"github.com/aronlt/toolkit/ttypes"
 )
 
 type PriorityChan[T any] struct {
@@ -18,18 +18,73 @@ func NewPriorityChan[T any](size int) *PriorityChan[T] {
 	}
 }
 
+func (p *PriorityChan[T]) Put(event T, t ttypes.PriorityType) {
+	switch t {
+	case ttypes.HighPriorityType:
+		p.highPriority <- event
+	case ttypes.LowPriorityType:
+		p.lowPriority <- event
+	default:
+		return
+	}
+}
+
+func (p *PriorityChan[T]) TryPut(event T, t ttypes.PriorityType) error {
+	switch t {
+	case ttypes.HighPriorityType:
+		select {
+		case p.highPriority <- event:
+			return nil
+		default:
+			return ttypes.ErrorFullChan
+		}
+	case ttypes.LowPriorityType:
+		select {
+		case p.lowPriority <- event:
+			return nil
+		default:
+			return ttypes.ErrorFullChan
+		}
+	default:
+		return ttypes.ErrorInvalidParameter
+	}
+}
+
+func (p *PriorityChan[T]) PutWithTimeout(event T, t ttypes.PriorityType, timeout time.Duration) error {
+	ticker := time.NewTicker(timeout)
+	defer ticker.Stop()
+	switch t {
+	case ttypes.HighPriorityType:
+		select {
+		case p.highPriority <- event:
+			return nil
+		case <-ticker.C:
+			return ttypes.ErrorTimeout
+		}
+	case ttypes.LowPriorityType:
+		select {
+		case p.lowPriority <- event:
+			return nil
+		case <-ticker.C:
+			return ttypes.ErrorTimeout
+		}
+	default:
+		return ttypes.ErrorInvalidParameter
+	}
+}
+
 // HandleSignal 通过传入处理函数，处理队列信号
-func (p *PriorityChan[T]) HandleSignal(highHandler types.PriorityHandler, lowHandler types.PriorityHandler) error {
+func (p *PriorityChan[T]) HandleSignal(highHandler ttypes.PriorityHandler[T], lowHandler ttypes.PriorityHandler[T]) error {
 	select {
-	case <-p.highPriority:
-		return highHandler()
+	case t := <-p.highPriority:
+		return highHandler(t)
 	default:
 	}
 	select {
-	case <-p.highPriority:
-		return highHandler()
-	case <-p.lowPriority:
-		return lowHandler()
+	case t := <-p.highPriority:
+		return highHandler(t)
+	case t := <-p.lowPriority:
+		return lowHandler(t)
 	}
 }
 
@@ -53,7 +108,7 @@ func (p *PriorityChan[T]) GetWithTimeout(timeout time.Duration) (T, error) {
 		return v, nil
 	case <-ticker.C:
 		var empty T
-		return empty, types.ErrorTimeout
+		return empty, ttypes.ErrorTimeout
 	}
 }
 

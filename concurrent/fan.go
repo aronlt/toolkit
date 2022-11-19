@@ -1,8 +1,8 @@
 package concurrent
 
-import "github.com/aronlt/toolkit/types"
+import "github.com/aronlt/toolkit/ttypes"
 
-func FanOut[T any](data types.IFanOut[T], number int) []T {
+func FanOut[T any](data ttypes.IFanOut[T], number int) []T {
 	in := data.Produce()
 
 	// FAN-OUT
