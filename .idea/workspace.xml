@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/ds/map_locker.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ds/map_rwlocker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thttp/url.go" beforeDir="false" afterPath="$PROJECT_DIR$/thttp/url.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +49,7 @@
     &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/lintong/go/src/toolkit&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/bytedance&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go&quot;
   }
 }</component>
@@ -60,15 +59,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Go Test.TestGetFieldValue in github.com/aronlt/toolkit/treflect">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="toolkit" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
     <configuration name="TestCopy in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$/treflect" />
@@ -127,16 +117,6 @@
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
       <pattern value="^\QTestSetField\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <package value="toolkit" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
       <method v="2" />
     </configuration>
     <recent_temporary>

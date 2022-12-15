@@ -11,7 +11,7 @@ func AddQuery(rawUrl string, key string, value string) (string, error) {
 		return rawUrl, err
 	}
 	values := u.Query()
-	values.Add(key, value)
+	values.Set(key, value)
 	u.RawQuery = values.Encode()
 	return u.String(), nil
 }
