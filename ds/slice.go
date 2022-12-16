@@ -6,12 +6,33 @@ import (
 	"github.com/aronlt/toolkit/ttypes"
 )
 
+// SliceInclude 判断元素是否在slice中
+func SliceInclude[T comparable](a []T, b T) bool {
+	for i := range a {
+		if a[i] == b {
+			return true
+		}
+	}
+	return false
+}
+
+// SliceExclude 判断元素是否不在slice中
+func SliceExclude[T comparable](a []T, b T) bool {
+	for i := range a {
+		if a[i] == b {
+			return false
+		}
+	}
+	return true
+}
+
 // SliceFilter 过滤slice
 func SliceFilter[T any](a []T, filter func(v T) bool) []T {
 	newSlice := make([]T, 0)
-	for _, v := range a {
+	for i := range a {
+		v := a[i]
 		if filter(v) {
-			newSlice = append(newSlice, v)
+			newSlice = append(newSlice, a[i])
 		}
 	}
 	return newSlice

@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/bytes/binary.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bytes/binary_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bytes/format.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bytes/format_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thttp/url.go" beforeDir="false" afterPath="$PROJECT_DIR$/thttp/url.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ds/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/set.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ds/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/slice.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,40 +42,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/bytedance&quot;,
-    &quot;two.files.diff.last.used.file&quot;: &quot;/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/bytedance/go/src/toolkit",
+    "two.files.diff.last.used.file": "/Users/bytedance/go/src/favorite/gf/crypto/gaes/gaes.go"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/treflect" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestGetFieldValue in github.com/aronlt/toolkit/treflect">
-    <configuration name="TestCopy in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/treflect" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/treflect" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestCopy\E$" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Go Test.TestIBytesToString in github.com/aronlt/toolkit/bytes">
     <configuration name="TestGetFieldValue in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
       <working_directory value="$PROJECT_DIR$/treflect" />
@@ -83,28 +79,16 @@
       <pattern value="^\QTestGetFieldValue\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestNewCounterMap in github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestIBytesToString in github.com/aronlt/toolkit/bytes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/ds" />
+      <working_directory value="$PROJECT_DIR$/bytes" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/ds" />
+      <package value="github.com/aronlt/toolkit/bytes" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestNewCounterMap\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="TestNewGroupMap in github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/ds" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/ds" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestNewGroupMap\E$" />
+      <pattern value="^\QTestIBytesToString\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestSetField in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -119,13 +103,36 @@
       <pattern value="^\QTestSetField\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestU32SliceToBytes in github.com/aronlt/toolkit/bytes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/bytes" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/bytes" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestU32SliceToBytes\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="binary_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/bytes" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="github.com/aronlt/toolkit" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/bytes/binary_test.go" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestIBytesToString in github.com/aronlt/toolkit/bytes" />
+        <item itemvalue="Go Test.binary_test.go" />
+        <item itemvalue="Go Test.TestU32SliceToBytes in github.com/aronlt/toolkit/bytes" />
         <item itemvalue="Go Test.TestGetFieldValue in github.com/aronlt/toolkit/treflect" />
         <item itemvalue="Go Test.TestSetField in github.com/aronlt/toolkit/treflect" />
-        <item itemvalue="Go Test.TestCopy in github.com/aronlt/toolkit/treflect" />
-        <item itemvalue="Go Test.TestNewCounterMap in github.com/aronlt/toolkit/ds" />
-        <item itemvalue="Go Test.TestNewGroupMap in github.com/aronlt/toolkit/ds" />
       </list>
     </recent_temporary>
   </component>

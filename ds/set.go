@@ -11,9 +11,19 @@ func NewSet[K comparable]() BuiltinSet[K] {
 
 // SetOf creates a new BuiltinSet object with the initial content from ks.
 func SetOf[K comparable](ks ...K) BuiltinSet[K] {
-	s := make(BuiltinSet[K])
+	s := make(BuiltinSet[K], len(ks))
 	s.InsertN(ks...)
 	return s
+}
+
+// SetFromSlice create a new BuiltinSet object with the initial content from slice.
+func SetFromSlice[K comparable](ks []K) BuiltinSet[K] {
+	return SetOf(ks...)
+}
+
+// SetToSlice convert from set to slice
+func SetToSlice[K comparable](u BuiltinSet[K]) []K {
+	return u.Keys()
 }
 
 // IsEmpty implements the Container interface.
