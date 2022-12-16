@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/bytes/binary.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bytes/binary_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bytes/format.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bytes/format_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/enum/enum.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/enum/enum_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ds/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/set.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ds/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/slice.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,73 +64,74 @@
       <recent name="$PROJECT_DIR$/treflect" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestIBytesToString in github.com/aronlt/toolkit/bytes">
-    <configuration name="TestGetFieldValue in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestGorm in github.com/aronlt/toolkit/enum">
+    <configuration name="TestCreateUserMock in github.com/aronlt/toolkit/enum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/treflect" />
+      <working_directory value="$PROJECT_DIR$/enum" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/treflect" />
+      <package value="github.com/aronlt/toolkit/enum" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestGetFieldValue\E$" />
+      <pattern value="^\QTestCreateUserMock\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestIBytesToString in github.com/aronlt/toolkit/bytes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestEmployeesRepository_CreateEmployees in github.com/aronlt/toolkit/enum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/bytes" />
+      <working_directory value="$PROJECT_DIR$/enum" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/bytes" />
+      <package value="github.com/aronlt/toolkit/enum" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestIBytesToString\E$" />
+      <pattern value="^\QTestEmployeesRepository_CreateEmployees\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestSetField in github.com/aronlt/toolkit/treflect" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestGORMV2 in github.com/aronlt/toolkit/enum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/treflect" />
+      <working_directory value="$PROJECT_DIR$/enum" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/treflect" />
+      <package value="github.com/aronlt/toolkit/enum" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSetField\E$" />
+      <pattern value="^\QTestGORMV2\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestU32SliceToBytes in github.com/aronlt/toolkit/bytes" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestGorm in github.com/aronlt/toolkit/enum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/bytes" />
+      <working_directory value="$PROJECT_DIR$/enum" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/bytes" />
+      <package value="github.com/aronlt/toolkit/enum" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestU32SliceToBytes\E$" />
+      <pattern value="^\QTestGorm\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="binary_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestJson in github.com/aronlt/toolkit/enum" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/bytes" />
+      <working_directory value="$PROJECT_DIR$/enum" />
       <root_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <package value="github.com/aronlt/toolkit" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/enum" />
       <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/bytes/binary_test.go" />
+      <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
+      <pattern value="^\QTestJson\E$" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestIBytesToString in github.com/aronlt/toolkit/bytes" />
-        <item itemvalue="Go Test.binary_test.go" />
-        <item itemvalue="Go Test.TestU32SliceToBytes in github.com/aronlt/toolkit/bytes" />
-        <item itemvalue="Go Test.TestGetFieldValue in github.com/aronlt/toolkit/treflect" />
-        <item itemvalue="Go Test.TestSetField in github.com/aronlt/toolkit/treflect" />
+        <item itemvalue="Go Test.TestGorm in github.com/aronlt/toolkit/enum" />
+        <item itemvalue="Go Test.TestGORMV2 in github.com/aronlt/toolkit/enum" />
+        <item itemvalue="Go Test.TestCreateUserMock in github.com/aronlt/toolkit/enum" />
+        <item itemvalue="Go Test.TestEmployeesRepository_CreateEmployees in github.com/aronlt/toolkit/enum" />
+        <item itemvalue="Go Test.TestJson in github.com/aronlt/toolkit/enum" />
       </list>
     </recent_temporary>
   </component>
@@ -155,6 +154,11 @@
           <url>file://$PROJECT_DIR$/treflect/reflect.go</url>
           <line>23</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/enum/enum_test.go</url>
+          <line>14</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
