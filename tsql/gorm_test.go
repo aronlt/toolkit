@@ -16,13 +16,13 @@ type Blog struct {
 func TestSelectAll(t *testing.T) {
 	b := Blog{}
 	sql := SelectAll(b)
-	expect := "`id`,`user`"
+	expect := "`id` ,`user` "
 	assert.Equal(t, sql, expect)
 }
 
 func TestSelectAllWithPrefix(t *testing.T) {
 	b := Blog{}
 	sql := SelectAll(b, "blog")
-	expect := "blog.`id`,blog.`user`"
+	expect := "blog.`id` ,blog.`user` "
 	assert.Equal(t, sql, expect)
 }

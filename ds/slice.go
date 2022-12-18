@@ -1,10 +1,21 @@
 package ds
 
 import (
+	"math/rand"
 	"sort"
 
 	"github.com/aronlt/toolkit/ttypes"
 )
+
+// SliceIndex 获取元素在切片中的下标，如果不存在返回-1
+func SliceIndex[T comparable](a []T, b T) int {
+	for i := range a {
+		if a[i] == b {
+			return i
+		}
+	}
+	return -1
+}
 
 // SliceInclude 判断元素是否在slice中
 func SliceInclude[T comparable](a []T, b T) bool {
@@ -27,11 +38,10 @@ func SliceExclude[T comparable](a []T, b T) bool {
 }
 
 // SliceFilter 过滤slice
-func SliceFilter[T any](a []T, filter func(v T) bool) []T {
+func SliceFilter[T any](a []T, filter func(i int) bool) []T {
 	newSlice := make([]T, 0)
 	for i := range a {
-		v := a[i]
-		if filter(v) {
+		if filter(i) {
 			newSlice = append(newSlice, a[i])
 		}
 	}
@@ -39,9 +49,9 @@ func SliceFilter[T any](a []T, filter func(v T) bool) []T {
 }
 
 // SliceMap 对slice中的元素执行操作
-func SliceMap[T any](a []T, handler func(v *T)) {
+func SliceMap[T any](a []T, handler func(i int)) {
 	for i := range a {
-		handler(&a[i])
+		handler(i)
 	}
 }
 
@@ -51,10 +61,8 @@ func SliceAbsoluteEqual[T comparable](a []T, b []T) bool {
 		return false
 	}
 	for i := 0; i < len(a); i++ {
-		for j := 0; j < len(b); j++ {
-			if a[i] != b[j] {
-				return false
-			}
+		if a[i] != b[i] {
+			return false
 		}
 	}
 	return true
@@ -77,6 +85,44 @@ func SliceLogicalEqual[T comparable](a []T, b []T) bool {
 func SliceReverse[T any](data []T) {
 	for i, j := 0, len(data)-1; i < j; i, j = i+1, j-1 {
 		data[i], data[j] = data[j], data[i]
+	}
+}
+
+// SliceReverseCopy 转置切片并复制
+func SliceReverseCopy[T any](data []T) []T {
+	b := make([]T, 0, len(data))
+	for i := len(data) - 1; i >= 0; i-- {
+		b = append(b, data[i])
+	}
+	return b
+}
+
+// SliceShuffle shuffle 切片
+func SliceShuffle[T any](data []T) {
+	rand.Shuffle(len(data), func(i, j int) {
+		data[i], data[j] = data[j], data[i]
+	})
+}
+
+// SliceReplace 原地替换元素
+func SliceReplace[T comparable](data []T, a T, b T) {
+	for i := range data {
+		if data[i] == a {
+			data[i] = b
+		}
+	}
+}
+
+// SliceRemove 原地删除元素
+func SliceRemove[T comparable](data *[]T, b T) {
+	for i := len(*data) - 1; i >= 0; i-- {
+		if (*data)[i] == b {
+			if i == len(*data)-1 {
+				*data = (*data)[:i]
+			} else {
+				*data = append((*data)[:i], (*data)[i+1:]...)
+			}
+		}
 	}
 }
 

@@ -11,10 +11,6 @@ type IBufferPool interface {
 	Put(b []byte)
 }
 
-func NewBufferPool(baseline int) IBufferPool {
-	return NewBufferPool(baseline)
-}
-
 type ICacheBuffer[T any] interface {
 	Close()
 	Get() (T, error)
