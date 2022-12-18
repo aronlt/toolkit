@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/demo/heap.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/heap_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ds/list_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ds/stack.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ds/stack_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ds/ring.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ds/ring_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ds/set_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsort/sort_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ds/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/list.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ds/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/set.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ds/slice.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/slice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ds/slice_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/ds/slice_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enum/enum_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/enum/enum_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tcache/cache.go" beforeDir="false" afterPath="$PROJECT_DIR$/tcache/cache.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enum/enum.go" beforeDir="false" afterPath="$PROJECT_DIR$/demo/enum.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enum/enum_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/demo/enum_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tsort/sort.go" beforeDir="false" afterPath="$PROJECT_DIR$/tsort/sort.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsql/gorm_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/tsql/gorm_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tutils/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/demo/log.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +71,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/demo" />
       <recent name="$PROJECT_DIR$/treflect" />
     </key>
   </component>
@@ -95,28 +88,16 @@
       <pattern value="^\QTestSelectAll\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestSliceFilter in github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestSortSlice in github.com/aronlt/toolkit/tsort" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/ds" />
+      <working_directory value="$PROJECT_DIR$/tsort" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/ds" />
+      <package value="github.com/aronlt/toolkit/tsort" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSliceFilter\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Test_NewStack in github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/ds" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/ds" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTest_NewStack\E$" />
+      <pattern value="^\QTestSortSlice\E$" />
       <method v="2" />
     </configuration>
     <configuration name="go test github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -125,6 +106,17 @@
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
       <package value="github.com/aronlt/toolkit/ds" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test github.com/aronlt/toolkit/tsort" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="toolkit" />
+      <working_directory value="$PROJECT_DIR$/tsort" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/tsort" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
@@ -143,10 +135,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Go Test.go test toolkit" />
-        <item itemvalue="Go Test.TestSelectAll in github.com/aronlt/toolkit/tsql" />
+        <item itemvalue="Go Test.go test github.com/aronlt/toolkit/tsort" />
+        <item itemvalue="Go Test.TestSortSlice in github.com/aronlt/toolkit/tsort" />
         <item itemvalue="Go Test.go test github.com/aronlt/toolkit/ds" />
-        <item itemvalue="Go Test.Test_NewStack in github.com/aronlt/toolkit/ds" />
-        <item itemvalue="Go Test.TestSliceFilter in github.com/aronlt/toolkit/ds" />
+        <item itemvalue="Go Test.TestSelectAll in github.com/aronlt/toolkit/tsql" />
       </list>
     </recent_temporary>
   </component>
@@ -171,7 +163,7 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/enum/enum_test.go</url>
+          <url>file://$PROJECT_DIR$/demo/enum_test.go</url>
           <line>10</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>

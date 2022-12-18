@@ -1,4 +1,4 @@
-// Package ds copy from https://github.com/chen3feng/stl4go/blob/master/builtin_set.go
+// Package ds BuiltinSet copy from https://github.com/chen3feng/stl4go/blob/master/builtin_set.go
 package ds
 
 import "fmt"

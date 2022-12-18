@@ -1,4 +1,4 @@
-package enum
+package demo
 
 import (
 	"encoding/json"

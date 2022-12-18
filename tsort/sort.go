@@ -29,13 +29,13 @@ func SortComparator[T ttypes.IComparator](data T) {
 	sort.Sort(data)
 }
 
-func IsSorted[T ttypes.Ordered](data []T, reverseOpts ...bool) {
+func IsSorted[T ttypes.Ordered](data []T, reverseOpts ...bool) bool {
 	if len(reverseOpts) == 0 || !reverseOpts[0] {
-		sort.SliceIsSorted(data, func(i int, j int) bool {
+		return sort.SliceIsSorted(data, func(i int, j int) bool {
 			return data[i] < data[j]
 		})
 	} else {
-		sort.SliceIsSorted(data, func(i int, j int) bool {
+		return sort.SliceIsSorted(data, func(i int, j int) bool {
 			return data[i] > data[j]
 		})
 	}
