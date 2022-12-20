@@ -50,5 +50,6 @@ func HashFile(path string, hashType ...string) (string, error) {
 // HashBytes 计算bytes的CRC值
 func HashBytes(content []byte, hashType ...string) string {
 	Hash := hashFactory(hashType...)
-	return hex.EncodeToString(Hash.Sum(content))
+	Hash.Write(content)
+	return hex.EncodeToString(Hash.Sum(nil))
 }
