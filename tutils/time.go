@@ -1,6 +1,7 @@
 package tutils
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,6 +13,23 @@ func GetTimeFromTimestamp(tm int64, format ...string) string {
 		layout = format[0]
 	}
 	return t.Format(layout)
+}
+
+// demo
+func GetDaysDiff(date1 time.Time, date2 time.Time) int {
+	diff := date1.Sub(date2)
+
+	//func Since(t Time) Duration
+	//Since returns the time elapsed since t.
+	//It is shorthand for time.Now().Sub(t).
+
+	fmt.Println(diff.Hours())       // number of Hours
+	fmt.Println(diff.Nanoseconds()) // number of Nanoseconds
+	fmt.Println(diff.Minutes())     // number of Minutes
+	fmt.Println(diff.Seconds())     // number of Seconds
+
+	fmt.Println(int(diff.Hours() / 24)) // number of days
+	return int(diff.Hours() / 24)
 }
 
 // GetDateAgo 获取n天前的时间
