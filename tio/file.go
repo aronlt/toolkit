@@ -1,7 +1,6 @@
 package tio
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -31,7 +30,7 @@ func ExistDir(name string) (bool, error) {
 
 // ReadDir 读取目录的内容，分别返回目录，文件的全路径集合
 func ReadDir(path string) ([]string, []string, error) {
-	fileInfos, err := ioutil.ReadDir(path)
+	fileInfos, err := os.ReadDir(path)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "call ReadDir error")
 	}

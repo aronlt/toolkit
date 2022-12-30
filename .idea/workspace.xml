@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="667b604e-c9cd-4b3c-a761-01c86e2cbcb6" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/demo/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/reader.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/reflect.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/temp_dir.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thttp/client.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/thttp/url_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tio/file_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tutils/time_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thttp/http.go" beforeDir="false" afterPath="$PROJECT_DIR$/thttp/response.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tio/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/tio/file.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tutils/time.go" beforeDir="false" afterPath="$PROJECT_DIR$/tutils/time.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,58 +78,61 @@
       <recent name="$PROJECT_DIR$/treflect" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.go test toolkit">
-    <configuration name="TestSelectAll in github.com/aronlt/toolkit/tsql" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Test.TestReadDir in github.com/aronlt/toolkit/tio">
+    <configuration name="TestExistDir in github.com/aronlt/toolkit/tio" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/tsql" />
+      <working_directory value="$PROJECT_DIR$/tio" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/tsql" />
+      <package value="github.com/aronlt/toolkit/tio" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSelectAll\E$" />
+      <pattern value="^\QTestExistDir\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestSortSlice in github.com/aronlt/toolkit/tsort" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestExistFile in github.com/aronlt/toolkit/tio" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/tsort" />
+      <working_directory value="$PROJECT_DIR$/tio" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/tsort" />
+      <package value="github.com/aronlt/toolkit/tio" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestSortSlice\E$" />
+      <pattern value="^\QTestExistFile\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="go test github.com/aronlt/toolkit/ds" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestGetDaysDiff in github.com/aronlt/toolkit/tutils" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/ds" />
+      <working_directory value="$PROJECT_DIR$/tutils" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/ds" />
+      <package value="github.com/aronlt/toolkit/tutils" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
+      <pattern value="^\QTestGetDaysDiff\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="go test github.com/aronlt/toolkit/tsort" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestReadDir in github.com/aronlt/toolkit/tio" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$/tsort" />
+      <working_directory value="$PROJECT_DIR$/tio" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/aronlt/toolkit/tsort" />
+      <package value="github.com/aronlt/toolkit/tio" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
+      <pattern value="^\QTestReadDir\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="go test toolkit" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="go test github.com/aronlt/toolkit/tutils" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="toolkit" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <package value="github.com/aronlt/toolkit" />
+      <working_directory value="$PROJECT_DIR$/tutils" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/aronlt/toolkit/tutils" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
@@ -127,11 +140,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.go test toolkit" />
-        <item itemvalue="Go Test.go test github.com/aronlt/toolkit/tsort" />
-        <item itemvalue="Go Test.TestSortSlice in github.com/aronlt/toolkit/tsort" />
-        <item itemvalue="Go Test.go test github.com/aronlt/toolkit/ds" />
-        <item itemvalue="Go Test.TestSelectAll in github.com/aronlt/toolkit/tsql" />
+        <item itemvalue="Go Test.TestReadDir in github.com/aronlt/toolkit/tio" />
+        <item itemvalue="Go Test.TestExistDir in github.com/aronlt/toolkit/tio" />
+        <item itemvalue="Go Test.TestExistFile in github.com/aronlt/toolkit/tio" />
+        <item itemvalue="Go Test.TestGetDaysDiff in github.com/aronlt/toolkit/tutils" />
+        <item itemvalue="Go Test.go test github.com/aronlt/toolkit/tutils" />
       </list>
     </recent_temporary>
   </component>
@@ -154,6 +167,16 @@
           <url>file://$PROJECT_DIR$/treflect/reflect.go</url>
           <line>23</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/tutils/time.go</url>
+          <line>9</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/tutils/time.go</url>
+          <line>22</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
