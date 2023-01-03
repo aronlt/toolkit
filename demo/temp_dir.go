@@ -7,6 +7,9 @@ import (
 	"os"
 )
 
+/*
+* 创建临时目录，临时文件
+ */
 func tempDir() {
 	// Create our Temp File
 	tmpFile, err := ioutil.TempFile(os.TempDir(), "prefix-")

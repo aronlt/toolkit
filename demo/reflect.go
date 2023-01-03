@@ -2,7 +2,9 @@ package demo
 
 import "fmt"
 
-// interface to specific
+/*
+* 判断interface的具体类型
+ */
 func interfaceToSpecific(itr interface{}) {
 	switch itr.(type) {
 	case string:
