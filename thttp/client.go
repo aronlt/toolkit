@@ -46,7 +46,7 @@ func GetToStruct[T any](u string) (T, error) {
 	var data T
 	bs, err := Get(u)
 	if err != nil {
-		return nil, err
+		return data, err
 	}
 	err = json.Unmarshal(bs, &data)
 	if err != nil {
@@ -113,7 +113,7 @@ func PostToStruct[T any](u string, jsonByte []byte) (T, error) {
 	}
 	err = json.Unmarshal(bs, &data)
 	if err != nil {
-		return nil, errors.WithMessage(err, "call json.Unmarshal fail")
+		return data, errors.WithMessage(err, "call json.Unmarshal fail")
 	}
 	return data, nil
 }
