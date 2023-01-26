@@ -2,6 +2,7 @@ package thttp
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
@@ -11,21 +12,40 @@ import (
 	"strings"
 )
 
-// Get 根据path请求资源
-func Get(u string, headers ...map[string]string) ([]byte, error) {
-	req, _ := http.NewRequest("GET", u, nil)
+type Option struct {
+	Decompress bool
+	Header     map[string]string
+}
 
-	for _, header := range headers {
-		for k, v := range header {
-			req.Header.Set(k, v)
-		}
+func Decompress(option Option, resp []byte) ([]byte, error) {
+	if !option.Decompress {
+		return resp, nil
+	}
+	r, err := gzip.NewReader(bytes.NewReader(resp))
+	if err != nil {
+		return resp, err
+	}
+	defer r.Close()
+	r2, err := io.ReadAll(r)
+	return r2, err
+}
+
+// Get 根据path请求资源
+func Get(u string, options ...Option) ([]byte, error) {
+	req, _ := http.NewRequest("GET", u, nil)
+	var option Option
+	if len(options) != 0 {
+		option = options[0]
+	}
+
+	for k, v := range option.Header {
+		req.Header.Set(k, v)
 	}
 
 	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.Get() fail")
 	}
-
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http get error-> status = %d", resp.StatusCode)
@@ -34,13 +54,17 @@ func Get(u string, headers ...map[string]string) ([]byte, error) {
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
+	bs, err = Decompress(option, bs)
+	if err != nil {
+		return nil, errors.WithMessage(err, "call Decompress fail")
+	}
 	return bs, nil
 }
 
 // GetToMap 请求资源，以map形式返回结果
-func GetToMap(u string, header ...map[string]string) (map[string]interface{}, error) {
+func GetToMap(u string, options ...Option) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := Get(u, header...)
+	bs, err := Get(u, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +76,9 @@ func GetToMap(u string, header ...map[string]string) (map[string]interface{}, er
 }
 
 // GetToStruct 请求资源，以struct形式返回结果
-func GetToStruct[T any](u string, header ...map[string]string) (T, error) {
+func GetToStruct[T any](u string, options ...Option) (T, error) {
 	var data T
-	bs, err := Get(u, header...)
+	bs, err := Get(u, options...)
 	if err != nil {
 		return data, err
 	}
@@ -66,10 +90,10 @@ func GetToStruct[T any](u string, header ...map[string]string) (T, error) {
 }
 
 // PostForm 以form格式请求
-func PostForm(u string, form url.Values, headers ...map[string]string) ([]byte, error) {
+func PostForm(u string, form url.Values, options ...Option) ([]byte, error) {
 	var resp *http.Response
 	var err error
-	if len(headers) == 0 {
+	if len(options) == 0 {
 		resp, err = http.PostForm(u, form)
 	} else {
 		req, err := http.NewRequest("POST", u, nil)
@@ -77,10 +101,8 @@ func PostForm(u string, form url.Values, headers ...map[string]string) ([]byte, 
 			return nil, err
 		}
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		for _, header := range headers {
-			for k, v := range header {
-				req.Header.Set(k, v)
-			}
+		for k, v := range options[0].Header {
+			req.Header.Set(k, v)
 		}
 		resp, err = (&http.Client{}).Post(u, "application/x-www-form-urlencoded", strings.NewReader(form.Encode()))
 	}
@@ -95,20 +117,27 @@ func PostForm(u string, form url.Values, headers ...map[string]string) ([]byte, 
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
+	bs, err = Decompress(options[0], bs)
+	if err != nil {
+		return nil, errors.WithMessage(err, "call Decompress fail")
+	}
 	return bs, nil
 }
 
 // PostJSON 以json格式请求
-func PostJSON(u string, jsonByte []byte, headers ...map[string]string) ([]byte, error) {
+func PostJSON(u string, jsonByte []byte, options ...Option) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodPost, u, bytes.NewBuffer(jsonByte))
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.NewRequest fail")
 	}
 	req.Header.Set("Content-Type", "application/json")
-	for _, header := range headers {
-		for k, v := range header {
-			req.Header.Add(k, v)
-		}
+	var option Option
+	if len(options) > 0 {
+		option = options[0]
+	}
+
+	for k, v := range option.Header {
+		req.Header.Add(k, v)
 	}
 	client := &http.Client{}
 	rsp, err := client.Do(req)
@@ -120,12 +149,16 @@ func PostJSON(u string, jsonByte []byte, headers ...map[string]string) ([]byte, 
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
+	b, err = Decompress(option, b)
+	if err != nil {
+		return nil, errors.WithMessage(err, "call Decompress fail")
+	}
 	return b, nil
 }
 
-func PostToMap(u string, jsonByte []byte, header ...map[string]string) (map[string]interface{}, error) {
+func PostToMap(u string, jsonByte []byte, option ...Option) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := PostJSON(u, jsonByte, header...)
+	bs, err := PostJSON(u, jsonByte, option...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,9 +169,9 @@ func PostToMap(u string, jsonByte []byte, header ...map[string]string) (map[stri
 	return data, nil
 }
 
-func PostToStruct[T any](u string, jsonByte []byte, header ...map[string]string) (T, error) {
+func PostToStruct[T any](u string, jsonByte []byte, option ...Option) (T, error) {
 	var data T
-	bs, err := PostJSON(u, jsonByte, header...)
+	bs, err := PostJSON(u, jsonByte, option...)
 	if err != nil {
 		return data, err
 	}
