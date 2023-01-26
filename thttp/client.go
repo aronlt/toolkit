@@ -8,14 +8,24 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // Get 根据path请求资源
-func Get(u string) ([]byte, error) {
-	resp, err := http.Get(u)
+func Get(u string, headers ...map[string]string) ([]byte, error) {
+	req, _ := http.NewRequest("GET", u, nil)
+
+	for _, header := range headers {
+		for k, v := range header {
+			req.Header.Set(k, v)
+		}
+	}
+
+	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.Get() fail")
 	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("http get error-> status = %d", resp.StatusCode)
@@ -28,9 +38,9 @@ func Get(u string) ([]byte, error) {
 }
 
 // GetToMap 请求资源，以map形式返回结果
-func GetToMap(u string) (map[string]interface{}, error) {
+func GetToMap(u string, header ...map[string]string) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := Get(u)
+	bs, err := Get(u, header...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,9 +52,9 @@ func GetToMap(u string) (map[string]interface{}, error) {
 }
 
 // GetToStruct 请求资源，以struct形式返回结果
-func GetToStruct[T any](u string) (T, error) {
+func GetToStruct[T any](u string, header ...map[string]string) (T, error) {
 	var data T
-	bs, err := Get(u)
+	bs, err := Get(u, header...)
 	if err != nil {
 		return data, err
 	}
@@ -56,8 +66,24 @@ func GetToStruct[T any](u string) (T, error) {
 }
 
 // PostForm 以form格式请求
-func PostForm(u string, form url.Values) ([]byte, error) {
-	resp, err := http.PostForm(u, form)
+func PostForm(u string, form url.Values, headers ...map[string]string) ([]byte, error) {
+	var resp *http.Response
+	var err error
+	if len(headers) == 0 {
+		resp, err = http.PostForm(u, form)
+	} else {
+		req, err := http.NewRequest("POST", u, nil)
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		for _, header := range headers {
+			for k, v := range header {
+				req.Header.Set(k, v)
+			}
+		}
+		resp, err = (&http.Client{}).Post(u, "application/x-www-form-urlencoded", strings.NewReader(form.Encode()))
+	}
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.PostForm fail")
 	}
@@ -73,12 +99,17 @@ func PostForm(u string, form url.Values) ([]byte, error) {
 }
 
 // PostJSON 以json格式请求
-func PostJSON(u string, jsonByte []byte) ([]byte, error) {
+func PostJSON(u string, jsonByte []byte, headers ...map[string]string) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodPost, u, bytes.NewBuffer(jsonByte))
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.NewRequest fail")
 	}
 	req.Header.Set("Content-Type", "application/json")
+	for _, header := range headers {
+		for k, v := range header {
+			req.Header.Add(k, v)
+		}
+	}
 	client := &http.Client{}
 	rsp, err := client.Do(req)
 	if err != nil {
@@ -92,9 +123,9 @@ func PostJSON(u string, jsonByte []byte) ([]byte, error) {
 	return b, nil
 }
 
-func PostToMap(u string, jsonByte []byte) (map[string]interface{}, error) {
+func PostToMap(u string, jsonByte []byte, header ...map[string]string) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := PostJSON(u, jsonByte)
+	bs, err := PostJSON(u, jsonByte, header...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,9 +136,9 @@ func PostToMap(u string, jsonByte []byte) (map[string]interface{}, error) {
 	return data, nil
 }
 
-func PostToStruct[T any](u string, jsonByte []byte) (T, error) {
+func PostToStruct[T any](u string, jsonByte []byte, header ...map[string]string) (T, error) {
 	var data T
-	bs, err := PostJSON(u, jsonByte)
+	bs, err := PostJSON(u, jsonByte, header...)
 	if err != nil {
 		return data, err
 	}
