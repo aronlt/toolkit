@@ -1,0 +1,99 @@
+package ds
+
+import (
+	"reflect"
+
+	"github.com/aronlt/toolkit/ttypes"
+)
+
+type MapCompareResult int
+
+const (
+	LeftKeyMiss MapCompareResult = iota + 1
+	RightKeyMiss
+	AllKeyMiss
+	NotEqual
+	Equal
+	LeftLargeThanRight
+	LeftLessThanRight
+)
+
+// MapNativeCompareWithKey 简单值的key比较
+func MapNativeCompareWithKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V, key T) MapCompareResult {
+	va, ok1 := a[key]
+	vb, ok2 := b[key]
+	if !ok1 && !ok2 {
+		return AllKeyMiss
+	}
+	if !ok1 {
+		return LeftKeyMiss
+	}
+	if !ok2 {
+		return RightKeyMiss
+	}
+	if va < vb {
+		return LeftLessThanRight
+	}
+	if va > vb {
+		return LeftLargeThanRight
+	}
+	if va == vb {
+		return Equal
+	}
+	return NotEqual
+}
+
+// MapComplexCompareWithKey 复杂值的key比较
+func MapComplexCompareWithKey[T comparable, V any](a map[T]V, b map[T]V, key T) MapCompareResult {
+	va, ok1 := a[key]
+	vb, ok2 := b[key]
+	if !ok1 && !ok2 {
+		return AllKeyMiss
+	}
+	if !ok1 {
+		return LeftKeyMiss
+	}
+	if !ok2 {
+		return RightKeyMiss
+	}
+	ok3 := reflect.DeepEqual(va, vb)
+	if !ok3 {
+		return NotEqual
+	}
+	return Equal
+}
+
+// MapNativeFullCompare 简单值的全部比较
+func MapNativeFullCompare[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V) MapCompareResult {
+	for ka, va := range a {
+		if vb, ok := b[ka]; !ok || vb != va {
+			return NotEqual
+		}
+	}
+	for kb, vb := range b {
+		if va, ok := a[kb]; !ok || vb != va {
+			return NotEqual
+		}
+	}
+	return Equal
+}
+
+// MapComplexFullCompare 复杂值的全部比较
+func MapComplexFullCompare[T comparable, V any](a map[T]V, b map[T]V) MapCompareResult {
+	for ka := range a {
+		if _, ok := b[ka]; !ok {
+			return NotEqual
+		}
+	}
+	for kb := range b {
+		if _, ok := a[kb]; !ok {
+			return NotEqual
+		}
+	}
+
+	ok := reflect.DeepEqual(a, b)
+	if ok {
+		return Equal
+	}
+	return NotEqual
+}
