@@ -97,3 +97,19 @@ func MapComplexFullCompare[T comparable, V any](a map[T]V, b map[T]V) MapCompare
 	}
 	return NotEqual
 }
+
+func MapValueToSlice[T comparable, V any](a map[T]V) []V {
+	data := make([]V, 0, len(a))
+	for _, v := range a {
+		data = append(data, v)
+	}
+	return data
+}
+
+func MapKeyToSlice[T comparable, V any](a map[T]V) []T {
+	data := make([]T, 0, len(a))
+	for k := range a {
+		data = append(data, k)
+	}
+	return data
+}
