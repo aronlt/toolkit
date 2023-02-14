@@ -113,3 +113,14 @@ func MapKeyToSlice[T comparable, V any](a map[T]V) []T {
 	}
 	return data
 }
+
+func MapZipSliceToMap[T comparable, V any](a []T, b []V) (map[T]V, error) {
+	result := make(map[T]V, len(a))
+	if len(a) != len(b) {
+		return result, ttypes.ErrorSliceNotEqualLength
+	}
+	for i := 0; i < len(a); i++ {
+		result[a[i]] = b[i]
+	}
+	return result, nil
+}
