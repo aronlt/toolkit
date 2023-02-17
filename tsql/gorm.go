@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"jupiter/pkg/store/gorm"
+	"gorm.io/gorm"
 )
 
 func SelectAll[T any](data T, prefix ...string) string {
