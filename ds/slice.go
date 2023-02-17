@@ -39,11 +39,15 @@ func SliceExclude[T comparable](a []T, b T) bool {
 
 // SliceFilter 过滤slice
 func SliceFilter[T any](a []T, filter func(i int) bool) []T {
-	newSlice := make([]T, 0)
+	newSlice := make([]T, 0, len(a))
 	for i := range a {
 		if filter(i) {
 			newSlice = append(newSlice, a[i])
 		}
+	}
+	// 收缩内存
+	if len(a) > 2*len(newSlice) {
+		newSlice = newSlice[:]
 	}
 	return newSlice
 }
@@ -135,6 +139,9 @@ func SliceUnique[T comparable](data []T) []T {
 			record[data[i]] = struct{}{}
 			result = append(result, data[i])
 		}
+	}
+	if len(data) > 2*len(result) {
+		result = result[:]
 	}
 	return result
 }
