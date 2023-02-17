@@ -2,10 +2,13 @@ package tsql
 
 import (
 	"database/sql/driver"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 	"time"
+
+	"jupiter/pkg/store/gorm"
 )
 
 func SelectAll[T any](data T, prefix ...string) string {
@@ -69,4 +72,8 @@ func (s *SecTimestamp) Scan(src interface{}) error {
 
 func (s *SecTimestamp) Value() (driver.Value, error) {
 	return s.Time(), nil
+}
+
+func IsNotFoundErr(err error) bool {
+	return errors.Is(err, gorm.ErrRecordNotFound)
 }
