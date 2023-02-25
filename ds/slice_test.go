@@ -146,3 +146,21 @@ func TestMin(t *testing.T) {
 	m := Min(1, 2, 10, 18, 99, 10, 12)
 	assert.Equal(t, m, 1)
 }
+
+func TestMinN(t *testing.T) {
+	data := []int{1, 2, 11, 23, 12, 113, 11}
+	result := MinNWithOrder(data, 4)
+	assert.Equal(t, result[0], 1)
+	assert.Equal(t, result[1], 2)
+	assert.Equal(t, result[2], 11)
+	assert.Equal(t, result[3], 11)
+}
+
+func TestMaxN(t *testing.T) {
+	data := []int{1, 2, 11, 23, 12, 113, 11}
+	result := MaxNWithOrder(data, 4)
+	assert.Equal(t, result[0], 113)
+	assert.Equal(t, result[1], 23)
+	assert.Equal(t, result[2], 12)
+	assert.Equal(t, result[3], 11)
+}

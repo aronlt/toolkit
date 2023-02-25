@@ -3,6 +3,7 @@ package ds
 import (
 	"math/rand"
 	"sort"
+	"toolkit/tsort"
 
 	"github.com/aronlt/toolkit/ttypes"
 )
@@ -147,7 +148,16 @@ func SliceUnique[T comparable](data []T) []T {
 }
 
 // SliceCopy 复制切片
-func SliceCopy[T any](data []T) []T {
+func SliceCopy[T any](data []T, ns ...int) []T {
+	if len(ns) > 0 {
+		n := ns[0]
+		if n <= 0 || n > len(data) {
+			return []T{}
+		}
+		dst := make([]T, n)
+		copy(dst, data[:n])
+		return dst
+	}
 	dst := make([]T, len(data))
 	copy(dst, data)
 	return dst
@@ -204,4 +214,116 @@ func SliceMin[T ttypes.Ordered](data []T) T {
 // Min 求最小值
 func Min[T ttypes.Ordered](data ...T) T {
 	return SliceMin[T](data)
+}
+
+func MaxNWithOrder[T ttypes.Ordered](data []T, n int) []T {
+	result := MaxN(data, n)
+	tsort.SortSlice(result, true)
+	return result
+}
+
+func MaxN[T ttypes.Ordered](data []T, n int) []T {
+	if len(data) < n || n <= 0 {
+		return []T{}
+	}
+	if n == 1 {
+		return []T{SliceMax(data)}
+	}
+	tmpData := SliceCopy(data)
+	if n == len(data) {
+		tsort.SortSlice(tmpData, true)
+		return tmpData
+	}
+
+	var fastSort func(left, right, k int)
+	fastSort = func(left, right, k int) {
+		l, r, tmp := left, right, tmpData[left]
+		for l < r {
+			for l < r && tmp >= tmpData[r] {
+				r--
+			}
+			if l < r {
+				tmpData[l] = tmpData[r]
+				l++
+			}
+			for l < r && tmp <= tmpData[l] {
+				l++
+			}
+			if l < r {
+				tmpData[r] = tmpData[l]
+				r--
+			}
+		}
+		tmpData[l] = tmp
+		if k == l-left+1 || k == l-left {
+			return
+		}
+		if k < l-left {
+			fastSort(left, l-1, k)
+			return
+		}
+		if k > l-left+1 {
+			fastSort(l+1, right, k-(l-left+1))
+			return
+		}
+		return
+	}
+	fastSort(0, len(tmpData)-1, n)
+	return SliceCopy(tmpData, n)
+}
+
+func MinNWithOrder[T ttypes.Ordered](data []T, n int) []T {
+	result := MinN(data, n)
+	tsort.SortSlice(result)
+	return result
+}
+
+func MinN[T ttypes.Ordered](data []T, n int) []T {
+	if len(data) < n || n <= 0 {
+		return []T{}
+	}
+	if n == 1 {
+		return []T{SliceMin(data)}
+	}
+	tmpData := SliceCopy(data)
+	if n == len(data) {
+		tsort.SortSlice(tmpData)
+		return tmpData
+	}
+
+	var fastSort func(left, right, k int)
+	fastSort = func(left, right, k int) {
+		l, r, tmp := left, right, tmpData[left]
+		for l < r {
+			for l < r && tmp <= tmpData[r] {
+				r--
+			}
+			if l < r {
+				tmpData[l] = tmpData[r]
+				l++
+			}
+			for l < r && tmp >= tmpData[l] {
+				l++
+			}
+			if l < r {
+				tmpData[r] = tmpData[l]
+				r--
+			}
+		}
+		tmpData[l] = tmp
+		if k == l-left+1 || k == l-left {
+			return
+		}
+		if k < l-left {
+			fastSort(left, l-1, k)
+			return
+		}
+		if k > l-left+1 {
+			fastSort(l+1, right, k-(l-left+1))
+			return
+		}
+		return
+	}
+	fastSort(0, len(tmpData)-1, n)
+	return SliceCopy(tmpData, n)
 }

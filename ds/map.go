@@ -2,8 +2,7 @@ package ds
 
 import (
 	"reflect"
-
-	"github.com/aronlt/toolkit/ttypes"
+	"toolkit/ttypes"
 )
 
 type MapCompareResult int
