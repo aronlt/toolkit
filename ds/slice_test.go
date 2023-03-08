@@ -164,3 +164,47 @@ func TestMaxN(t *testing.T) {
 	assert.Equal(t, result[2], 12)
 	assert.Equal(t, result[3], 11)
 }
+
+func TestSliceConvertToInt64(t *testing.T) {
+	data := []uint{1, 2, 3, 4, 5}
+	ints, err := SliceConvertToInt64(data)
+	assert.Nil(t, err)
+	assert.Equal(t, ints[0], int64(1))
+	assert.Equal(t, len(data), len(ints))
+
+	strs := []string{"1", "2", "3"}
+	ints, err = SliceConvertToInt64(strs)
+	assert.Nil(t, err)
+	assert.Equal(t, ints[0], int64(1))
+	assert.Equal(t, len(strs), len(ints))
+}
+
+func TestSliceConvertToInt(t *testing.T) {
+	data := []uint{1, 2, 3, 4, 5}
+	ints, err := SliceConvertToInt(data)
+	assert.Nil(t, err)
+	assert.Equal(t, ints[0], 1)
+	assert.Equal(t, len(data), len(ints))
+
+	strs := []string{"1", "2", "3"}
+	ints, err = SliceConvertToInt(strs)
+	assert.Nil(t, err)
+	assert.Equal(t, ints[0], 1)
+	assert.Equal(t, len(strs), len(ints))
+
+	strs2 := []string{"1", "2", "3FFXX"}
+	ints, err = SliceConvertToInt(strs2)
+	assert.NotNil(t, err)
+}
+
+func TestSliceConvertToString(t *testing.T) {
+	data := []uint{1, 2, 3, 4, 5}
+	ints, err := SliceConvertToString(data)
+	assert.Nil(t, err)
+	assert.Equal(t, ints[0], "1")
+	assert.Equal(t, len(data), len(ints))
+
+	strs := []string{"1", "2", "3FFFFx"}
+	ints, err = SliceConvertToString(strs)
+	assert.Nil(t, err)
+}

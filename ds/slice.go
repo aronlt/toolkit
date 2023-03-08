@@ -1,8 +1,12 @@
 package ds
 
 import (
+	"fmt"
+	"math"
 	"math/rand"
 	"sort"
+	"strconv"
+
 	"toolkit/tsort"
 
 	"github.com/aronlt/toolkit/ttypes"
@@ -326,4 +330,218 @@ func MinN[T ttypes.Ordered](data []T, n int) []T {
 	}
 	fastSort(0, len(tmpData)-1, n)
 	return SliceCopy(tmpData, n)
+}
+
+func SliceConvertToInt64(data interface{}) ([]int64, error) {
+	switch data.(type) {
+	case []int:
+		oriData := data.([]int)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []int8:
+		oriData := data.([]int8)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []int16:
+		oriData := data.([]int16)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []int32:
+		oriData := data.([]int32)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []int64:
+		oriData := data.([]int64)
+		return SliceCopy(oriData), nil
+	case []uint:
+		oriData := data.([]uint)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []uint8:
+		oriData := data.([]uint8)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []uint16:
+		oriData := data.([]uint16)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []uint32:
+		oriData := data.([]uint32)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []uint64:
+		oriData := data.([]uint64)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			if oriData[i] > math.MaxInt64 {
+				return make([]int64, 0), fmt.Errorf("overflow uint64:%d", oriData[i])
+			}
+			result = append(result, int64(oriData[i]))
+		}
+		return result, nil
+	case []string:
+		oriData := data.([]string)
+		result := make([]int64, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			v, err := strconv.ParseInt(oriData[i], 10, 64)
+			if err != nil {
+				return make([]int64, 0), fmt.Errorf("convert string:%s fail, error:%+v", oriData[i], err)
+			}
+			result = append(result, v)
+		}
+		return result, nil
+	default:
+		return make([]int64, 0), fmt.Errorf("unspport convert type")
+	}
+}
+
+func SliceConvertToInt(data interface{}) ([]int, error) {
+	switch data.(type) {
+	case []int:
+		oriData := data.([]int)
+		return SliceCopy(oriData), nil
+	case []int8:
+		oriData := data.([]int8)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []int16:
+		oriData := data.([]int16)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []int32:
+		oriData := data.([]int32)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []int64:
+		oriData := data.([]int64)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			if oriData[i] > math.MaxInt {
+				return make([]int, 0), fmt.Errorf("overflow int64:%d", oriData[i])
+			}
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []uint:
+		oriData := data.([]uint)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			if oriData[i] > math.MaxInt {
+				return make([]int, 0), fmt.Errorf("overflow uint:%d", oriData[i])
+			}
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []uint8:
+		oriData := data.([]uint8)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []uint16:
+		oriData := data.([]uint16)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []uint32:
+		oriData := data.([]uint32)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []uint64:
+		oriData := data.([]uint64)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			if oriData[i] > math.MaxInt {
+				return make([]int, 0), fmt.Errorf("overflow uint16:%d", oriData[i])
+			}
+			result = append(result, int(oriData[i]))
+		}
+		return result, nil
+	case []string:
+		oriData := data.([]string)
+		result := make([]int, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			v, err := strconv.Atoi(oriData[i])
+			if err != nil {
+				return make([]int, 0), fmt.Errorf("convert string:%s fail, error:%+v", oriData[i], err)
+			}
+			result = append(result, v)
+		}
+		return result, nil
+	default:
+		return make([]int, 0), fmt.Errorf("unspport convert type")
+	}
+}
+
+func SliceConvertToString(data interface{}) ([]string, error) {
+	switch data.(type) {
+	case []int, []int8, []int16, []int32, []int64, []uint, []uint8, []uint16, []uint32, []uint64:
+		ints, err := SliceConvertToInt64(data)
+		if err != nil {
+			return make([]string, 0), err
+		}
+		result := make([]string, 0, len(ints))
+		for i := 0; i < len(ints); i++ {
+			result = append(result, strconv.FormatInt(ints[i], 10))
+		}
+		return result, nil
+	case []string:
+		oriData := data.([]string)
+		return SliceCopy(oriData), nil
+	case [][]byte:
+		oriData := data.([][]byte)
+		result := make([]string, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, string(oriData[i]))
+		}
+		return result, nil
+	case []error:
+		oriData := data.([]error)
+		result := make([]string, 0, len(oriData))
+		for i := 0; i < len(oriData); i++ {
+			result = append(result, oriData[i].Error())
+		}
+		return result, nil
+	default:
+		return make([]string, 0), fmt.Errorf("unspport convert type")
+	}
 }
