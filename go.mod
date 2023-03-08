@@ -1,4 +1,4 @@
-module toolkit
+module github.com/aronlt/toolkit
 
 go 1.19
 
