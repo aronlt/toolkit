@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strconv"
 
-	"toolkit/tsort"
+	"github.com/aronlt/toolkit/tsort"
 
 	"github.com/aronlt/toolkit/ttypes"
 )
