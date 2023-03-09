@@ -14,7 +14,7 @@ import (
 
 // SliceIndex 获取元素在切片中的下标，如果不存在返回-1
 func SliceIndex[T comparable](a []T, b T) int {
-	for i := range a {
+	for i := 0; i < len(a); i++ {
 		if a[i] == b {
 			return i
 		}
@@ -22,9 +22,13 @@ func SliceIndex[T comparable](a []T, b T) int {
 	return -1
 }
 
+func SliceIndexOrder[T ttypes.Ordered](a []T, b T) int {
+	return BinarySearch(a, b)
+}
+
 // SliceInclude 判断元素是否在slice中
 func SliceInclude[T comparable](a []T, b T) bool {
-	for i := range a {
+	for i := 0; i < len(a); i++ {
 		if a[i] == b {
 			return true
 		}
@@ -34,7 +38,7 @@ func SliceInclude[T comparable](a []T, b T) bool {
 
 // SliceExclude 判断元素是否不在slice中
 func SliceExclude[T comparable](a []T, b T) bool {
-	for i := range a {
+	for i := 0; i < len(a); i++ {
 		if a[i] == b {
 			return false
 		}
@@ -45,7 +49,7 @@ func SliceExclude[T comparable](a []T, b T) bool {
 // SliceFilter 过滤slice
 func SliceFilter[T any](a []T, filter func(i int) bool) []T {
 	newSlice := make([]T, 0, len(a))
-	for i := range a {
+	for i := 0; i < len(a); i++ {
 		if filter(i) {
 			newSlice = append(newSlice, a[i])
 		}
@@ -59,7 +63,7 @@ func SliceFilter[T any](a []T, filter func(i int) bool) []T {
 
 // SliceMap 对slice中的元素执行操作
 func SliceMap[T any](a []T, handler func(i int)) {
-	for i := range a {
+	for i := 0; i < len(a); i++ {
 		handler(i)
 	}
 }
@@ -106,6 +110,62 @@ func SliceReverseCopy[T any](data []T) []T {
 	return b
 }
 
+func adjustIndex[T any](data []T, i int) int {
+	length := len(data)
+	if i < 0 && i+length >= 0 {
+		i += length
+	}
+	if i > len(data) {
+		i = len(data)
+	}
+	if i < 0 {
+		i = 0
+	}
+	return i
+}
+
+// SliceInsert 把元素插入到data的指定位置
+func SliceInsert[T any](data *[]T, i int, x ...T) {
+	s := *data
+	i = adjustIndex(s, i)
+	total := len(s) + len(x)
+	if total <= cap(s) {
+		s2 := s[:total]
+		copy(s2[i+len(x):], s[i:])
+		copy(s2[i:], x)
+		*data = s2
+		return
+	}
+	s2 := make([]T, total)
+	copy(s2, s[:i])
+	copy(s2[i:], x)
+	copy(s2[i+len(x):], s[i:])
+	*data = s2
+	return
+}
+
+func SliceTail[T any](data []T, d ...T) T {
+	if len(data) == 0 {
+		if len(d) > 0 {
+			return d[0]
+		}
+		var t T
+		return t
+	}
+	return data[len(data)-1]
+}
+
+func SlicePopBack[T any](data *[]T) (T, bool) {
+	s := *data
+	if len(s) == 0 {
+		var t T
+		return t, false
+	}
+	t := s[len(s)-1]
+	*data = s[:len(s)-1]
+	return t, true
+}
+
 // SliceShuffle shuffle 切片
 func SliceShuffle[T any](data []T) {
 	rand.Shuffle(len(data), func(i, j int) {
@@ -115,7 +175,7 @@ func SliceShuffle[T any](data []T) {
 
 // SliceReplace 原地替换元素
 func SliceReplace[T comparable](data []T, a T, b T) {
-	for i := range data {
+	for i := 0; i < len(data); i++ {
 		if data[i] == a {
 			data[i] = b
 		}
@@ -133,6 +193,26 @@ func SliceRemove[T comparable](data *[]T, b T) {
 			}
 		}
 	}
+}
+
+func SliceRemoveIndex[T any](data *[]T, i int) {
+	if i < 0 || i >= len(*data) {
+		return
+	}
+	*data = append((*data)[:i], (*data)[i+1:]...)
+}
+
+func SliceRemoveRange[T any](data *[]T, i int, j int) {
+	if i < 0 || i >= len(*data) {
+		return
+	}
+	if j < 0 || j >= len(*data) {
+		return
+	}
+	if i >= j {
+		return
+	}
+	*data = append((*data)[:i], (*data)[j:]...)
 }
 
 // SliceUnique 去重切片
@@ -491,7 +571,7 @@ func SliceConvertToInt(data interface{}) ([]int, error) {
 		result := make([]int, 0, len(oriData))
 		for i := 0; i < len(oriData); i++ {
 			if oriData[i] > math.MaxInt {
-				return make([]int, 0), fmt.Errorf("overflow uint16:%d", oriData[i])
+				return make([]int, 0), fmt.Errorf("overflow uint64:%d", oriData[i])
 			}
 			result = append(result, int(oriData[i]))
 		}

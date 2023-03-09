@@ -214,3 +214,41 @@ func TestSliceConvertToString(t *testing.T) {
 	ints, err = SliceConvertToString(strs)
 	assert.Nil(t, err)
 }
+
+func TestSliceInsert(t *testing.T) {
+	data := []int{1, 2, 3, 4, 5}
+	SliceInsert(&data, 1, 8, 9)
+	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 5}, data)
+
+	SliceInsert(&data, 17, 10)
+	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 5, 10}, data)
+
+	SliceInsert(&data, -2, 11)
+	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 11, 5, 10}, data)
+}
+
+func TestSliceTail(t *testing.T) {
+	data := []int{1, 2, 3, 4, 5, 6}
+	v := SliceTail(data)
+	assert.Equal(t, v, 6)
+
+	var ok bool
+	v, ok = SlicePopBack(&data)
+
+	assert.True(t, ok, true)
+	assert.Equal(t, v, 6)
+	assert.Equal(t, data, []int{1, 2, 3, 4, 5})
+}
+
+func TestSliceRemoveIndex(t *testing.T) {
+	data := []int{1, 2, 3, 4, 5, 6}
+	SliceRemoveIndex(&data, 3)
+	assert.Equal(t, data, []int{1, 2, 3, 5, 6})
+
+}
+
+func TestSliceRemoveRange(t *testing.T) {
+	data := []int{1, 2, 3, 4, 5, 6}
+	SliceRemoveRange(&data, 3, 5)
+	assert.Equal(t, data, []int{1, 2, 3, 6})
+}
