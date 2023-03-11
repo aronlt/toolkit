@@ -625,3 +625,15 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 		return make([]string, 0), fmt.Errorf("unspport convert type")
 	}
 }
+
+func Include[T comparable](a T, others ...T) bool {
+	if len(others) == 0 {
+		return false
+	}
+	for i := 0; i < len(others); i++ {
+		if a == others[i] {
+			return true
+		}
+	}
+	return false
+}

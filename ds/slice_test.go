@@ -252,3 +252,10 @@ func TestSliceRemoveRange(t *testing.T) {
 	SliceRemoveRange(&data, 3, 5)
 	assert.Equal(t, data, []int{1, 2, 3, 6})
 }
+
+func TestInclude(t *testing.T) {
+	ok := Include(1, 2, 3, 1)
+	assert.True(t, ok)
+	ok = Include(4, 2, 3, 1)
+	assert.False(t, ok)
+}
