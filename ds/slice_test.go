@@ -263,7 +263,7 @@ func TestInclude(t *testing.T) {
 func TestDiffTwoSlice(t *testing.T) {
 	a := []int{1, 2, 3, 4, 5, 6, 7}
 	b := []int{6, 7, 8, 9, 10}
-	sa, sb := DiffTwoSlice(a, b)
+	sa, sb := SliceTwoDiff(a, b)
 	assert.True(t, SliceLogicalEqual(sa, []int{1, 2, 3, 4, 5}))
 	assert.True(t, SliceLogicalEqual(sb, []int{8, 9, 10}))
 }
