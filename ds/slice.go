@@ -637,3 +637,9 @@ func Include[T comparable](a T, others ...T) bool {
 	}
 	return false
 }
+
+func DiffTwoSlice[T comparable](a []T, b []T) ([]T, []T) {
+	sa := SetFromSlice(a)
+	sb := SetFromSlice(b)
+	return SetToSlice(sa.Difference(sb)), SetToSlice(sb.Difference(sa))
+}
