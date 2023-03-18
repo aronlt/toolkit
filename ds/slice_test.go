@@ -38,20 +38,6 @@ func TestSliceFilter(t *testing.T) {
 	assert.Equal(t, v, []int{5, 6})
 }
 
-func TestSliceMap(t *testing.T) {
-	m := []int{1, 2, 3, 4, 5, 6}
-	SliceMap(m, func(i int) {
-		m[i] += 1
-	})
-
-	ds := make([]int, 0)
-	SliceMap(m, func(i int) {
-		ds = append(ds, m[i])
-	})
-	assert.Equal(t, m, []int{2, 3, 4, 5, 6, 7})
-	assert.Equal(t, ds, []int{2, 3, 4, 5, 6, 7})
-}
-
 func TestSliceAbsoluteEqual(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	n := []int{1, 3, 4, 2, 5, 6}

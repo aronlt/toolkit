@@ -6,7 +6,10 @@ import "fmt"
 // BuiltinSet is an associative container that contains an unordered set of unique objects of type K.
 type BuiltinSet[K comparable] map[K]struct{}
 
-func NewSet[K comparable]() BuiltinSet[K] {
+func NewSet[K comparable](n ...int) BuiltinSet[K] {
+	if len(n) != 0 {
+		return make(BuiltinSet[K], n[0])
+	}
 	return make(BuiltinSet[K])
 }
 

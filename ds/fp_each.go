@@ -1,0 +1,51 @@
+package ds
+
+// FpEachSlice Iterates over a slice of elements, yielding each in turn to an iterate function, Returns the slice for chaining.
+func FpEachSlice[T any](a []T, iterate func(a []T, i int) T) []T {
+	for i := 0; i < len(a); i++ {
+		a[i] = iterate(a, i)
+	}
+	return a
+}
+
+// FpEachMap Iterates over map, yielding each key, value in turn to an iterate function, Returns the map for chaining.
+func FpEachMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) (K, V)) map[K]V {
+	set := NewSet[K]()
+	for k, v := range a {
+		k2, v2 := iterate(a, k, v)
+		if k2 != k {
+			set.Insert(k)
+		}
+		a[k2] = v2
+	}
+	set.ForEach(func(k K) {
+		delete(a, k)
+	})
+
+	return a
+}
+
+// FpEachList Iterates over list, yielding each value in turn to an iterate function, Returns the list for chaining.
+func FpEachList[T any](a List[T], iterate func(a List[T], node T) T) List[T] {
+	iterator := a.Iterate()
+	for iterator.IsNotEnd() {
+		p := iterator.Pointer()
+		*p = iterate(a, iterator.Value())
+		iterator.MoveToNext()
+	}
+	return a
+}
+
+// FpEachSet Iterates over set, yielding each value in turn to an iterate function, Returns the set for chaining.
+func FpEachSet[T comparable](a BuiltinSet[T], iterate func(a BuiltinSet[T], node T) T) BuiltinSet[T] {
+	b := NewSet[T](a.Len())
+	a.ForEach(func(v T) {
+		v2 := iterate(a, v)
+		b.Insert(v2)
+	})
+	a.Clear()
+	b.ForEach(func(k T) {
+		a.Insert(k)
+	})
+	return a
+}

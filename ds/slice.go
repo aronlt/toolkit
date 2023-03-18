@@ -64,13 +64,6 @@ func SliceFilter[T any](a []T, filter func(i int) bool) []T {
 	return newSlice
 }
 
-// SliceMap 对slice中的元素执行操作
-func SliceMap[T any](a []T, handler func(i int)) {
-	for i := 0; i < len(a); i++ {
-		handler(i)
-	}
-}
-
 // SliceAbsoluteEqual 判断两个slice是否一样，严格按照顺序比较
 func SliceAbsoluteEqual[T comparable](a []T, b []T) bool {
 	if len(a) != len(b) {
