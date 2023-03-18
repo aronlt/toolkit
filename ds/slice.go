@@ -22,8 +22,9 @@ func SliceIndex[T comparable](a []T, b T) int {
 	return -1
 }
 
+// SliceIndexOrder 有序slice的元素搜索
 func SliceIndexOrder[T ttypes.Ordered](a []T, b T) int {
-	return BinarySearch(a, b)
+	return SliceBinarySearch(a, b)
 }
 
 // SliceInclude 判断元素是否在slice中
@@ -56,7 +57,9 @@ func SliceFilter[T any](a []T, filter func(i int) bool) []T {
 	}
 	// 收缩内存
 	if len(a) > 2*len(newSlice) {
-		newSlice = newSlice[:]
+		newSlice2 := make([]T, len(newSlice))
+		copy(newSlice2, newSlice)
+		newSlice = newSlice2
 	}
 	return newSlice
 }
@@ -89,9 +92,9 @@ func SliceLogicalEqual[T comparable](a []T, b []T) bool {
 	if len(a) == 0 && len(b) == 0 {
 		return true
 	}
-	mapA := NewCounterMap(a)
-	mapB := NewCounterMap(b)
-	return mapA.Equal(mapB)
+	mapA := SliceGroupByCounter(a)
+	mapB := SliceGroupByCounter(b)
+	return MapEqualCounter(mapA, mapB)
 }
 
 // SliceReverse 转置切片
@@ -144,6 +147,7 @@ func SliceInsert[T any](data *[]T, i int, x ...T) {
 	return
 }
 
+// SliceTail 获取切片最后一个元素，如果没有则用默认值
 func SliceTail[T any](data []T, d ...T) T {
 	if len(data) == 0 {
 		if len(d) > 0 {
@@ -155,6 +159,7 @@ func SliceTail[T any](data []T, d ...T) T {
 	return data[len(data)-1]
 }
 
+// SlicePopBack 弹出切片最后一个元素
 func SlicePopBack[T any](data *[]T) (T, bool) {
 	s := *data
 	if len(s) == 0 {
@@ -195,6 +200,7 @@ func SliceRemove[T comparable](data *[]T, b T) {
 	}
 }
 
+// SliceRemoveIndex 删除某个索引位置的切片
 func SliceRemoveIndex[T any](data *[]T, i int) {
 	if i < 0 || i >= len(*data) {
 		return
@@ -202,6 +208,7 @@ func SliceRemoveIndex[T any](data *[]T, i int) {
 	*data = append((*data)[:i], (*data)[i+1:]...)
 }
 
+// SliceRemoveRange 删除某个范围内的切片
 func SliceRemoveRange[T any](data *[]T, i int, j int) {
 	if i < 0 || i >= len(*data) {
 		return
@@ -247,8 +254,8 @@ func SliceCopy[T any](data []T, ns ...int) []T {
 	return dst
 }
 
-// BinarySearch 二分搜索
-func BinarySearch[T ttypes.Ordered](data []T, value T) int {
+// SliceBinarySearch 二分搜索
+func SliceBinarySearch[T ttypes.Ordered](data []T, value T) int {
 	idx := sort.Search(len(data), func(i int) bool {
 		return data[i] >= value
 	})
@@ -275,8 +282,8 @@ func SliceMax[T ttypes.Ordered](data []T) T {
 	return max
 }
 
-// Max 求最大值
-func Max[T ttypes.Ordered](data ...T) T {
+// SliceUnpackMax 求最大值
+func SliceUnpackMax[T ttypes.Ordered](data ...T) T {
 	return SliceMax[T](data)
 }
 
@@ -295,18 +302,20 @@ func SliceMin[T ttypes.Ordered](data []T) T {
 	return min
 }
 
-// Min 求最小值
-func Min[T ttypes.Ordered](data ...T) T {
+// SliceUnpackMin 求最小值
+func SliceUnpackMin[T ttypes.Ordered](data ...T) T {
 	return SliceMin[T](data)
 }
 
-func MaxNWithOrder[T ttypes.Ordered](data []T, n int) []T {
-	result := MaxN(data, n)
+// SliceMaxNWithOrder 按序返回切片中最大的N个元素
+func SliceMaxNWithOrder[T ttypes.Ordered](data []T, n int) []T {
+	result := SliceMaxN(data, n)
 	tsort.SortSlice(result, true)
 	return result
 }
 
-func MaxN[T ttypes.Ordered](data []T, n int) []T {
+// SliceMaxN 返回切片中最大N个元素
+func SliceMaxN[T ttypes.Ordered](data []T, n int) []T {
 	if len(data) < n || n <= 0 {
 		return []T{}
 	}
@@ -356,13 +365,15 @@ func MaxN[T ttypes.Ordered](data []T, n int) []T {
 	return SliceCopy(tmpData, n)
 }
 
-func MinNWithOrder[T ttypes.Ordered](data []T, n int) []T {
-	result := MinN(data, n)
+// SliceMinNWithOrder 有序返回切片中最小的N个元素
+func SliceMinNWithOrder[T ttypes.Ordered](data []T, n int) []T {
+	result := SliceMinN(data, n)
 	tsort.SortSlice(result)
 	return result
 }
 
-func MinN[T ttypes.Ordered](data []T, n int) []T {
+// SliceMinN 获取切片中最小的N个元素
+func SliceMinN[T ttypes.Ordered](data []T, n int) []T {
 	if len(data) < n || n <= 0 {
 		return []T{}
 	}
@@ -412,6 +423,7 @@ func MinN[T ttypes.Ordered](data []T, n int) []T {
 	return SliceCopy(tmpData, n)
 }
 
+// SliceConvertToInt64 切片集合统一转换为[]int64
 func SliceConvertToInt64(data interface{}) ([]int64, error) {
 	switch data.(type) {
 	case []int:
@@ -499,6 +511,7 @@ func SliceConvertToInt64(data interface{}) ([]int64, error) {
 	}
 }
 
+// SliceConvertToInt 切片集合统一转换为[]int
 func SliceConvertToInt(data interface{}) ([]int, error) {
 	switch data.(type) {
 	case []int:
@@ -592,6 +605,7 @@ func SliceConvertToInt(data interface{}) ([]int, error) {
 	}
 }
 
+// SliceConvertToString 切片集合统一转换为[]string
 func SliceConvertToString(data interface{}) ([]string, error) {
 	switch data.(type) {
 	case []int, []int8, []int16, []int32, []int64, []uint, []uint8, []uint16, []uint32, []uint64:
@@ -626,7 +640,8 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 	}
 }
 
-func Include[T comparable](a T, others ...T) bool {
+// SliceUnpackInclude 判断第一个元素是否在后续元素集合中
+func SliceUnpackInclude[T comparable](a T, others ...T) bool {
 	if len(others) == 0 {
 		return false
 	}
@@ -638,8 +653,76 @@ func Include[T comparable](a T, others ...T) bool {
 	return false
 }
 
+// SliceTwoDiff 显示两个切片的区别
 func SliceTwoDiff[T comparable](a []T, b []T) ([]T, []T) {
 	sa := SetFromSlice(a)
 	sb := SetFromSlice(b)
 	return SetToSlice(sa.Difference(sb)), SetToSlice(sb.Difference(sa))
+}
+
+// SliceGroupByHandler 对切片进行分类
+func SliceGroupByHandler[K comparable, V any](data []V, getKeyHandler func(int) K) map[K][]V {
+	group := make(map[K][]V, len(data))
+	var key K
+	for i := 0; i < len(data); i++ {
+		key = getKeyHandler(i)
+		group[key] = append(group[key], data[i])
+	}
+	return group
+}
+
+// SliceGroupByValue 对切片按照元素进行分类
+func SliceGroupByValue[V comparable](data []V) map[V][]V {
+	group := make(map[V][]V, len(data))
+	for i := 0; i < len(data); i++ {
+		group[data[i]] = append(group[data[i]], data[i])
+	}
+	return group
+}
+
+// SliceGroupIntoSlice 切片按照元素内容分成不同Slice
+func SliceGroupIntoSlice[V ttypes.Ordered](data []V) [][]V {
+	if !tsort.IsSorted(data) {
+		tsort.SortSlice(data)
+	}
+	result := make([][]V, 0, len(data))
+	j := 0
+	i := 0
+	for i < len(data) {
+		j = i + 1
+		for j < len(data) {
+			if data[j] != data[i] {
+				break
+			} else {
+				j++
+			}
+		}
+		result = append(result, data[i:j])
+		i = j
+	}
+	return result
+}
+
+// SliceGroupByCounter 对元素按照Value进行进行计数
+func SliceGroupByCounter[V comparable](data []V) map[V]int {
+	counter := make(map[V]int, len(data))
+	for i := 0; i < len(data); i++ {
+		counter[data[i]] += 1
+	}
+	return counter
+}
+
+func MapEqualCounter[V comparable](c map[V]int, other map[V]int) bool {
+	for v, counter1 := range c {
+		if counter2, ok := other[v]; !ok || counter1 != counter2 {
+			return false
+		}
+	}
+
+	for v, counter1 := range other {
+		if counter2, ok := c[v]; !ok || counter1 != counter2 {
+			return false
+		}
+	}
+	return true
 }

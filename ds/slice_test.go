@@ -121,13 +121,13 @@ func TestCopySlice(t *testing.T) {
 
 func TestBinarySearch(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	idx := BinarySearch(m, 4)
+	idx := SliceBinarySearch(m, 4)
 	assert.Equal(t, idx, 3)
 
 	m = []int{1, 2, 2, 2, 4, 4, 4, 5, 9}
-	idx = BinarySearch(m, 4)
+	idx = SliceBinarySearch(m, 4)
 	assert.Equal(t, idx, 4)
-	idx = BinarySearch(m, 3)
+	idx = SliceBinarySearch(m, 3)
 	assert.Equal(t, idx, -1)
 }
 
@@ -144,18 +144,18 @@ func TestSliceMin(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	m := Max(1, 2, 10, 18, 99, 10, 12)
+	m := SliceUnpackMax(1, 2, 10, 18, 99, 10, 12)
 	assert.Equal(t, m, 99)
 }
 
 func TestMin(t *testing.T) {
-	m := Min(1, 2, 10, 18, 99, 10, 12)
+	m := SliceUnpackMin(1, 2, 10, 18, 99, 10, 12)
 	assert.Equal(t, m, 1)
 }
 
 func TestMinN(t *testing.T) {
 	data := []int{1, 2, 11, 23, 12, 113, 11}
-	result := MinNWithOrder(data, 4)
+	result := SliceMinNWithOrder(data, 4)
 	assert.Equal(t, result[0], 1)
 	assert.Equal(t, result[1], 2)
 	assert.Equal(t, result[2], 11)
@@ -164,7 +164,7 @@ func TestMinN(t *testing.T) {
 
 func TestMaxN(t *testing.T) {
 	data := []int{1, 2, 11, 23, 12, 113, 11}
-	result := MaxNWithOrder(data, 4)
+	result := SliceMaxNWithOrder(data, 4)
 	assert.Equal(t, result[0], 113)
 	assert.Equal(t, result[1], 23)
 	assert.Equal(t, result[2], 12)
@@ -254,9 +254,9 @@ func TestSliceRemoveRange(t *testing.T) {
 }
 
 func TestInclude(t *testing.T) {
-	ok := Include(1, 2, 3, 1)
+	ok := SliceUnpackInclude(1, 2, 3, 1)
 	assert.True(t, ok)
-	ok = Include(4, 2, 3, 1)
+	ok = SliceUnpackInclude(4, 2, 3, 1)
 	assert.False(t, ok)
 }
 
@@ -266,4 +266,39 @@ func TestDiffTwoSlice(t *testing.T) {
 	sa, sb := SliceTwoDiff(a, b)
 	assert.True(t, SliceLogicalEqual(sa, []int{1, 2, 3, 4, 5}))
 	assert.True(t, SliceLogicalEqual(sb, []int{8, 9, 10}))
+}
+
+func TestSliceGroupByHandler(t *testing.T) {
+	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
+	b := SliceGroupByHandler(a, func(i int) int {
+		return a[i]
+	})
+
+	assert.Equal(t, b[1], []int{1, 1})
+	assert.Equal(t, b[33], []int{33})
+}
+
+func TestSliceGroupByCounter(t *testing.T) {
+	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
+	b := SliceGroupByCounter(a)
+
+	assert.Equal(t, b[1], 2)
+	assert.Equal(t, b[33], 1)
+}
+
+func TestSliceGroupIntoSlice(t *testing.T) {
+	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
+	b := SliceGroupIntoSlice(a)
+
+	assert.Equal(t, b[0], []int{1, 1})
+	assert.Equal(t, b[1], []int{2, 2})
+	assert.Equal(t, len(b), 5)
+}
+
+func TestSliceGroupByValue(t *testing.T) {
+	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
+	b := SliceGroupByValue(a)
+
+	assert.Equal(t, b[1], []int{1, 1})
+	assert.Equal(t, b[2], []int{2, 2})
 }

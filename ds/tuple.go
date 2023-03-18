@@ -1,5 +1,6 @@
 package ds
 
+// Tuple2E 自定义两个元素的Tuple
 type Tuple2E[A any, B any] struct {
 	E1 A
 	E2 B

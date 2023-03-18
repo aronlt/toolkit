@@ -85,6 +85,7 @@ func (pq *WaitForPriorityQueue[T]) Len() int {
 	return len(pq.queue)
 }
 
+// Pop 弹出优先级队列元素
 func (pq *WaitForPriorityQueue[T]) Pop() *WaitFor[T] {
 	k := heap.Pop(&pq.queue)
 	w := k.(*WaitFor[T])
