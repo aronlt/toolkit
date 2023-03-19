@@ -38,7 +38,7 @@ func FpFilterList[T any](a List[T], iterate func(a List[T], node T) bool) List[T
 		}
 		iterator.MoveToNext()
 	}
-	return a
+	return b
 }
 
 // FpFilterSet Looks through each value in the set, returning a set of all the values that pass a truth test (predicate).

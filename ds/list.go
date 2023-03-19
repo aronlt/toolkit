@@ -12,6 +12,10 @@ type listNode[T any] struct {
 	value      T
 }
 
+func NewList[T any]() List[T] {
+	return List[T]{}
+}
+
 // ListOf make a new List from a serial of values.
 func ListOf[T any](vs ...T) List[T] {
 	l := List[T]{}

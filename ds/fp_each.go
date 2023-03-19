@@ -9,19 +9,11 @@ func FpEachSlice[T any](a []T, iterate func(a []T, i int) T) []T {
 }
 
 // FpEachMap Iterates over map, yielding each key, value in turn to an iterate function, Returns the map for chaining.
-func FpEachMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) (K, V)) map[K]V {
-	set := NewSet[K]()
+func FpEachMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) V) map[K]V {
 	for k, v := range a {
-		k2, v2 := iterate(a, k, v)
-		if k2 != k {
-			set.Insert(k)
-		}
-		a[k2] = v2
+		v2 := iterate(a, k, v)
+		a[k] = v2
 	}
-	set.ForEach(func(k K) {
-		delete(a, k)
-	})
-
 	return a
 }
 

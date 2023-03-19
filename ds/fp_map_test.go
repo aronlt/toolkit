@@ -24,3 +24,37 @@ func TestMapMap(t *testing.T) {
 
 	assert.Equal(t, m2, map[int]int{1: 3, 2: 4, 3: 5})
 }
+
+func TestMapList(t *testing.T) {
+	a := List[int]{}
+	a.PushBack(1)
+	a.PushBack(2)
+	a.PushBack(3)
+
+	b := FpMapList(a, func(a List[int], node int) int {
+		return node + 1
+	})
+
+	count := 2
+	b.ForEach(func(val int) {
+		assert.Equal(t, val, count)
+		count += 1
+	})
+}
+
+func TestMapSet(t *testing.T) {
+	a := NewSet[int]()
+	a.Insert(1)
+	a.Insert(2)
+	a.Insert(3)
+
+	b := FpMapSet(a, func(a BuiltinSet[int], node int) int {
+		return node + 1
+	})
+
+	c := []int{2, 3, 4}
+	FpIterSlice(c, func(a []int, i int) {
+		assert.True(t, b.Has(a[i]))
+	})
+
+}
