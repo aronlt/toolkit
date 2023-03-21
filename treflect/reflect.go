@@ -73,3 +73,34 @@ func ToAnyMap(item interface{}) map[string]interface{} {
 	}
 	return result
 }
+
+// ContainTag 判断结构体是否含有特定的json内容
+func ContainTag(item interface{}, tag string) bool {
+	v := reflect.ValueOf(item)
+	if v.Kind() == reflect.Pointer {
+		v = v.Elem()
+	}
+	if v.Kind() != reflect.Struct {
+		return false
+	}
+	r := reflect.TypeOf(item)
+	if r.Kind() == reflect.Pointer {
+		r = r.Elem()
+	}
+	n := r.NumField()
+	for i := 0; i < n; i++ {
+		field := r.FieldByIndex([]int{i})
+		ftag := field.Tag.Get("json")
+		if ftag == "" {
+			continue
+		}
+		if idx := strings.Index(ftag, ","); idx != -1 {
+			ftag = ftag[:idx]
+		}
+		ftag = strings.TrimSpace(ftag)
+		if ftag == tag {
+			return true
+		}
+	}
+	return false
+}
