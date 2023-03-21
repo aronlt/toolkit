@@ -50,11 +50,17 @@ func ToAnyMap(item interface{}) map[string]interface{} {
 	if v.Kind() == reflect.Pointer {
 		v = v.Elem()
 	}
+	if v.Kind() != reflect.Struct {
+		return result
+	}
 	n := r.NumField()
 	for i := 0; i < n; i++ {
 		field := r.FieldByIndex([]int{i})
 		value := v.FieldByIndex([]int{i})
 		tag := field.Tag.Get("json")
+		if tag == "" {
+			continue
+		}
 		if idx := strings.Index(tag, ","); idx != -1 {
 			tag = tag[:idx]
 		}
