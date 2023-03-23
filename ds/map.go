@@ -20,6 +20,21 @@ const (
 	LeftLessThanRight
 )
 
+// MapRemoveEmptyString 删除空字符串的
+func MapRemoveEmptyString[K comparable](m map[K]interface{}) map[K]interface{} {
+	nm := make(map[K]interface{}, len(m))
+	for k, v := range m {
+		if v2, ok := v.(string); ok {
+			if v2 != "" {
+				nm[k] = v
+			}
+		} else {
+			nm[k] = v
+		}
+	}
+	return nm
+}
+
 // MapMerge 合并两个map，如果key重复则以第二个元素中的key为主
 func MapMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	len1 := len(m1)
