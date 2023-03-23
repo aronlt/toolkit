@@ -51,12 +51,19 @@ func TestSetField(t *testing.T) {
 }
 
 func TestToAnyMap(t *testing.T) {
+	type M struct {
+		Age int `json:"age"`
+	}
 	type V struct {
+		M
 		Name    string  `json:"name,omitempty"`
 		Address *string `json:"address"`
 	}
 	address := "address"
 	v := V{
+		M: M{
+			Age: 10,
+		},
 		Name:    "name",
 		Address: &address,
 	}

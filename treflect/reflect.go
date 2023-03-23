@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/aronlt/toolkit/ds"
 )
 
 func SetField(item interface{}, fieldName string, value interface{}) error {
@@ -57,6 +59,10 @@ func ToAnyMap(item interface{}) map[string]interface{} {
 	for i := 0; i < n; i++ {
 		field := r.FieldByIndex([]int{i})
 		value := v.FieldByIndex([]int{i})
+		if value.Kind() == reflect.Struct {
+			m := ToAnyMap(value.Interface())
+			result = ds.MapMerge(result, m)
+		}
 		tag := field.Tag.Get("json")
 		if tag == "" {
 			continue

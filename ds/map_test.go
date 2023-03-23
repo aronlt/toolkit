@@ -119,3 +119,13 @@ func TestSortedMap(t *testing.T) {
 		assert.Equal(t, sortedMap.Tuples[i].Value, i+1)
 	}
 }
+
+func TestMergeMap(t *testing.T) {
+	m1 := map[int]int{1: 1, 2: 2, 3: 3}
+	m2 := map[int]int{1: 2, 4: 4, 5: 5}
+	m3 := MapMerge(m1, m2)
+	assert.Equal(t, MapComplexFullCompare(m3, map[int]int{
+		1: 2, 2: 2, 3: 3, 4: 4, 5: 5,
+	}), Equal)
+
+}

@@ -20,6 +20,20 @@ const (
 	LeftLessThanRight
 )
 
+// MapMerge 合并两个map，如果key重复则以第二个元素中的key为主
+func MapMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
+	len1 := len(m1)
+	len2 := len(m2)
+	m3 := make(map[K]V, SliceUnpackMax(len1, len2))
+	for k, v := range m1 {
+		m3[k] = v
+	}
+	for k, v := range m2 {
+		m3[k] = v
+	}
+	return m3
+}
+
 // MapNativeCompareWithKey 简单值的key比较
 func MapNativeCompareWithKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V, key T) MapCompareResult {
 	va, ok1 := a[key]
