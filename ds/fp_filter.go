@@ -28,9 +28,9 @@ func FpFilterMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v 
 }
 
 // FpFilterList Looks through each value in the list, returning a list of all the values that pass a truth test (predicate).
-func FpFilterList[T any](a List[T], iterate func(a List[T], node T) bool) List[T] {
+func FpFilterList[T any](a DList[T], iterate func(a DList[T], node T) bool) DList[T] {
 	iterator := a.Iterate()
-	b := List[T]{}
+	b := DList[T]{}
 	for iterator.IsNotEnd() {
 		v := iterator.Value()
 		if iterate(a, iterator.Value()) {

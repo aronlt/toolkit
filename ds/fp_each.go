@@ -18,7 +18,7 @@ func FpEachMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V)
 }
 
 // FpEachList Iterates over list, yielding each value in turn to an iterate function, Returns the list for chaining.
-func FpEachList[T any](a List[T], iterate func(a List[T], node T) T) List[T] {
+func FpEachList[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		p := iterator.Pointer()

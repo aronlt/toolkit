@@ -35,24 +35,24 @@ func TestFpEveryMap(t *testing.T) {
 }
 
 func TestFpEveryList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 
-	v := FpEveryList(a, func(a List[int], node int) bool {
+	v := FpEveryList(a, func(a DList[int], node int) bool {
 		return node%2 == 0
 	})
 
 	assert.True(t, v)
 
-	a = List[int]{}
+	a = DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 	a.PushBack(7)
 
-	v = FpEveryList(a, func(a List[int], node int) bool {
+	v = FpEveryList(a, func(a DList[int], node int) bool {
 		return node%2 == 0
 	})
 

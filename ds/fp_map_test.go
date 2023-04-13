@@ -26,12 +26,12 @@ func TestMapMap(t *testing.T) {
 }
 
 func TestMapList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(1)
 	a.PushBack(2)
 	a.PushBack(3)
 
-	b := FpMapList(a, func(a List[int], node int) int {
+	b := FpMapList(a, func(a DList[int], node int) int {
 		return node + 1
 	})
 

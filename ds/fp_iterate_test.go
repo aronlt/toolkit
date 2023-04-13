@@ -10,7 +10,7 @@ func TestFpIterSlice(t *testing.T) {
 	a := []int{1, 2, 3, 4, 5}
 	counter := 1
 	FpIterSlice(a, func(a []int, i int) {
-		assert.Equal(t, a[i], 1)
+		assert.Equal(t, a[i], counter)
 		counter += 1
 	})
 }
@@ -26,14 +26,14 @@ func TestFpIterMap(t *testing.T) {
 }
 
 func TestFpIterList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(1)
 	a.PushBack(2)
 	a.PushBack(3)
 	a.PushBack(4)
 
 	counter := 1
-	FpIterList(a, func(a List[int], node int) {
+	FpIterList(a, func(a DList[int], node int) {
 		assert.Equal(t, node, counter)
 		counter += 1
 	})

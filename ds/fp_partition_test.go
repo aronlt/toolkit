@@ -25,13 +25,13 @@ func TestFpPartitionMap(t *testing.T) {
 }
 
 func TestFpPartitionList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 	a.PushBack(7)
 
-	pa, pb := FpPartitionList(a, func(a List[int], node int) bool {
+	pa, pb := FpPartitionList(a, func(a DList[int], node int) bool {
 		return node%2 == 0
 	})
 
@@ -64,4 +64,3 @@ func TestFpPartitionSet(t *testing.T) {
 		assert.True(t, k%2 == 1)
 	})
 }
-

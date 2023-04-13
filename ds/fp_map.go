@@ -21,8 +21,8 @@ func FpMapMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) 
 }
 
 // FpMapList Produces a new list by mapping each value in list through a transformation function (iterate).
-func FpMapList[T any](a List[T], iterate func(a List[T], node T) T) List[T] {
-	b := List[T]{}
+func FpMapList[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
+	b := DList[T]{}
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		b.PushBack(iterate(a, iterator.Value()))

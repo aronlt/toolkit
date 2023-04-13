@@ -23,12 +23,12 @@ func TestFpFilterMap(t *testing.T) {
 }
 
 func TestFpFilterList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 
-	v := FpFilterList(a, func(a List[int], node int) bool {
+	v := FpFilterList(a, func(a DList[int], node int) bool {
 		return node == 2
 	})
 	v.ForEach(func(val int) {

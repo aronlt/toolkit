@@ -30,10 +30,10 @@ func FpPartitionMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K,
 }
 
 // FpPartitionList Split list into two lists: one whose elements all satisfy predicate and one whose elements all do not satisfy predicate
-func FpPartitionList[T any](a List[T], iterate func(a List[T], node T) bool) (List[T], List[T]) {
-	pa := List[T]{}
-	pb := List[T]{}
-	FpIterList(a, func(a List[T], node T) {
+func FpPartitionList[T any](a DList[T], iterate func(a DList[T], node T) bool) (DList[T], DList[T]) {
+	pa := DList[T]{}
+	pb := DList[T]{}
+	FpIterList(a, func(a DList[T], node T) {
 		if iterate(a, node) {
 			pa.PushBack(node)
 		} else {

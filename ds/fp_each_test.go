@@ -23,13 +23,13 @@ func TestFpEachMap(t *testing.T) {
 }
 
 func TestFpEachList(t *testing.T) {
-	a := List[int]{}
+	a := DList[int]{}
 	a.PushBack(1)
 	a.PushBack(2)
 	a.PushBack(3)
 	a.PushBack(4)
 
-	FpEachList(a, func(a List[int], node int) int {
+	FpEachList(a, func(a DList[int], node int) int {
 		return node + 1
 	})
 

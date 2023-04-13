@@ -1,12 +1,13 @@
 package ds
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_List_Clean(t *testing.T) {
-	sl := List[int]{}
+	sl := DList[int]{}
 	sl.PushFront(1)
 	sl.Clear()
 	assert.True(t, sl.IsEmpty())
@@ -14,7 +15,7 @@ func Test_List_Clean(t *testing.T) {
 }
 
 func Test_List_PushFront(t *testing.T) {
-	sl := List[int]{}
+	sl := DList[int]{}
 	for i := 1; i < 10; i++ {
 		sl.PushFront(i)
 		assert.Equal(t, sl.Front(), i)
@@ -23,7 +24,7 @@ func Test_List_PushFront(t *testing.T) {
 }
 
 func Test_List_PushBack(t *testing.T) {
-	sl := List[int]{}
+	sl := DList[int]{}
 	for i := 1; i < 10; i++ {
 		sl.PushBack(i)
 		assert.Equal(t, sl.Back(), i)
@@ -33,7 +34,7 @@ func Test_List_PushBack(t *testing.T) {
 }
 
 func Test_List_PopFront(t *testing.T) {
-	sl := List[int]{}
+	sl := DList[int]{}
 	sl.PushFront(1)
 	sl.PushFront(2)
 	assert.Equal(t, sl.PopFront(), 2)
@@ -87,7 +88,7 @@ func Test_List_ForEachMutableIf(t *testing.T) {
 }
 
 func Test_List_Iterate(t *testing.T) {
-	sl := List[int]{}
+	sl := DList[int]{}
 	sl.PushBack(1)
 	sl.PushBack(2)
 	sl.PushBack(3)

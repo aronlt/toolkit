@@ -21,7 +21,7 @@ func FpEveryMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V
 }
 
 // FpEveryList Returns true if all of the values pass the predicate truth test
-func FpEveryList[T any](a List[T], iterate func(a List[T], node T) bool) bool {
+func FpEveryList[T any](a DList[T], iterate func(a DList[T], node T) bool) bool {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		if !iterate(a, iterator.Value()) {

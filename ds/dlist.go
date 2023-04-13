@@ -1,24 +1,21 @@
-// Package ds Dlist copy from https://github.com/chen3feng/stl4go/blob/master/dlist.go
 package ds
 
-// List is a doubly linked list.
-type List[T any] struct {
-	head   *listNode[T]
+// copy from https://github.com/chen3feng/stl4go/blob/master/dlist.go
+
+// DList is a doubly linked list.
+type DList[T any] struct {
+	head   *dListNode[T]
 	length int
 }
 
-type listNode[T any] struct {
-	prev, next *listNode[T]
+type dListNode[T any] struct {
+	prev, next *dListNode[T]
 	value      T
 }
 
-func NewList[T any]() List[T] {
-	return List[T]{}
-}
-
-// ListOf make a new List from a serial of values.
-func ListOf[T any](vs ...T) List[T] {
-	l := List[T]{}
+// ListOf make a new DList from a serial of values.
+func ListOf[T any](vs ...T) DList[T] {
+	l := DList[T]{}
 	for _, v := range vs {
 		l.PushBack(v)
 	}
@@ -26,7 +23,7 @@ func ListOf[T any](vs ...T) List[T] {
 }
 
 // Clear cleanup the list.
-func (l *List[T]) Clear() {
+func (l *DList[T]) Clear() {
 	if l.head != nil {
 		l.head.prev = l.head
 		l.head.next = l.head
@@ -35,38 +32,21 @@ func (l *List[T]) Clear() {
 }
 
 // Len return the length of the list.
-func (l *List[T]) Len() int {
+func (l *DList[T]) Len() int {
 	return l.length
 }
 
 // IsEmpty return whether the list is empty.
-func (l *List[T]) IsEmpty() bool {
+func (l *DList[T]) IsEmpty() bool {
 	return l.length == 0
 }
 
 type dlistIterator[T any] struct {
-	dl   *List[T]
-	node *listNode[T]
+	dl   *DList[T]
+	node *dListNode[T]
 }
 
-func (it *dlistIterator[T]) IsNotEnd() bool {
-	return it.node != it.dl.head
-}
-
-func (it *dlistIterator[T]) MoveToNext() {
-	it.node = it.node.next
-}
-
-func (it *dlistIterator[T]) Value() T {
-	return it.node.value
-}
-
-func (it *dlistIterator[T]) Pointer() *T {
-	return &it.node.value
-}
-
-// Iterate returns an iterator to the first element in the list.
-func (l *List[T]) Iterate() MutableIterator[T] {
+func (l *DList[T]) Iterate() MutableIterator[T] {
 	node := l.head
 	if node != nil {
 		node = node.next
@@ -87,8 +67,24 @@ type MutableIterator[T any] interface {
 	Pointer() *T // Return the pointer to the value of current element.
 }
 
+func (it *dlistIterator[T]) IsNotEnd() bool {
+	return it.node != it.dl.head
+}
+
+func (it *dlistIterator[T]) MoveToNext() {
+	it.node = it.node.next
+}
+
+func (it *dlistIterator[T]) Value() T {
+	return it.node.value
+}
+
+func (it *dlistIterator[T]) Pointer() *T {
+	return &it.node.value
+}
+
 // Front returns the first element in the container.
-func (l *List[T]) Front() T {
+func (l *DList[T]) Front() T {
 	if l.IsEmpty() {
 		panic("!IsEmpty")
 	}
@@ -96,7 +92,7 @@ func (l *List[T]) Front() T {
 }
 
 // Back returns the last element in the container.
-func (l *List[T]) Back() T {
+func (l *DList[T]) Back() T {
 	if l.IsEmpty() {
 		panic("!IsEmpty")
 	}
@@ -104,61 +100,61 @@ func (l *List[T]) Back() T {
 }
 
 // PushFront pushes an element at the front of the list.
-func (l *List[T]) PushFront(val T) {
+func (l *DList[T]) PushFront(val T) {
 	l.ensureHead()
-	n := listNode[T]{l.head, l.head.next, val}
+	n := dListNode[T]{l.head, l.head.next, val}
 	l.head.next.prev = &n
 	l.head.next = &n
 	l.length++
 }
 
 // PushBack pushes an element at the back of the list.
-func (l *List[T]) PushBack(val T) {
+func (l *DList[T]) PushBack(val T) {
 	l.ensureHead()
-	n := listNode[T]{l.head.prev, l.head, val}
+	n := dListNode[T]{l.head.prev, l.head, val}
 	l.head.prev.next = &n
 	l.head.prev = &n
 	l.length++
 }
 
-// PopFront popups a element from the front of the list.
-func (l *List[T]) PopFront() T {
+// PopFront popups an element from the front of the list.
+func (l *DList[T]) PopFront() T {
 	r, ok := l.TryPopFront()
 	if !ok {
-		panic("List.PopFront: empty list")
+		panic("DList.PopFront: empty list")
 	}
 	return r
 }
 
-// PopBack popups a element from the back of the list.
-func (l *List[T]) PopBack() T {
+// PopBack popups an element from the back of the list.
+func (l *DList[T]) PopBack() T {
 	r, ok := l.TryPopBack()
 	if !ok {
-		panic("List.PopBack: empty list")
+		panic("DList.PopBack: empty list")
 	}
 	return r
 }
 
-// TryPopFront tries to popup a element from the front of the list.
-func (l *List[T]) TryPopFront() (T, bool) {
+// TryPopFront tries to pop up an element from the front of the list.
+func (l *DList[T]) TryPopFront() (T, bool) {
 	var val T
-	if l.length == 0 {
+	if l.IsEmpty() {
 		return val, false
 	}
 	node := l.head.next
 	val = node.value
 	l.head.next = node.next
-	l.head.prev = l.head
+	l.head.next.prev = l.head
 	node.prev = nil
 	node.next = nil
 	l.length--
 	return val, true
 }
 
-// TryPopBack tries to popup a element from the back of the list.
-func (l *List[T]) TryPopBack() (T, bool) {
+// TryPopBack tries to pop up an element from the back of the list.
+func (l *DList[T]) TryPopBack() (T, bool) {
 	var val T
-	if l.length == 0 {
+	if l.IsEmpty() {
 		return val, false
 	}
 	node := l.head.prev
@@ -172,8 +168,8 @@ func (l *List[T]) TryPopBack() (T, bool) {
 }
 
 // ForEach iterate the list, apply each element to the cb callback function.
-func (l *List[T]) ForEach(cb func(val T)) {
-	if l.head == nil {
+func (l *DList[T]) ForEach(cb func(val T)) {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -183,8 +179,8 @@ func (l *List[T]) ForEach(cb func(val T)) {
 
 // ForEachIf iterate the list, apply each element to the cb callback function,
 // stop if cb returns false.
-func (l *List[T]) ForEachIf(cb func(val T) bool) {
-	if l.head == nil {
+func (l *DList[T]) ForEachIf(cb func(val T) bool) {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -195,8 +191,8 @@ func (l *List[T]) ForEachIf(cb func(val T) bool) {
 }
 
 // ForEachMutable iterate the list, apply pointer of each element to the cb callback function.
-func (l *List[T]) ForEachMutable(cb func(val *T)) {
-	if l.head == nil {
+func (l *DList[T]) ForEachMutable(cb func(val *T)) {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -206,8 +202,8 @@ func (l *List[T]) ForEachMutable(cb func(val *T)) {
 
 // ForEachMutableIf iterate the list, apply pointer of each element to the cb callback function,
 // stop if cb returns false.
-func (l *List[T]) ForEachMutableIf(cb func(val *T) bool) {
-	if l.head == nil {
+func (l *DList[T]) ForEachMutableIf(cb func(val *T) bool) {
+	if l.IsEmpty() {
 		return
 	}
 	for n := l.head.next; n != l.head; n = n.next {
@@ -218,9 +214,9 @@ func (l *List[T]) ForEachMutableIf(cb func(val *T) bool) {
 }
 
 // ensureHead ensure head is valid.
-func (l *List[T]) ensureHead() {
+func (l *DList[T]) ensureHead() {
 	if l.head == nil {
-		l.head = &listNode[T]{}
+		l.head = &dListNode[T]{}
 		l.head.prev = l.head
 		l.head.next = l.head
 	}

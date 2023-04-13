@@ -15,7 +15,7 @@ func FpIterMap[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V)
 }
 
 // FpIterList Iterate list by iterate func, do not modify list
-func FpIterList[T any](a List[T], iterate func(a List[T], node T)) {
+func FpIterList[T any](a DList[T], iterate func(a DList[T], node T)) {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		iterate(a, iterator.Value())
