@@ -42,7 +42,43 @@ func GetFieldValue(item interface{}, fieldName string) (reflect.Value, error) {
 }
 
 // ToAnyMap 把任意数据转换为json字符串形式的任意map
-func ToAnyMap(item interface{}) map[string]interface{} {
+func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
+	skipSet := ds.SetOf(skip...)
+	result := make(map[string]interface{})
+	r := reflect.TypeOf(item)
+	if r.Kind() == reflect.Pointer {
+		r = r.Elem()
+	}
+	v := reflect.ValueOf(item)
+	if v.Kind() == reflect.Pointer {
+		v = v.Elem()
+	}
+	if v.Kind() != reflect.Struct {
+		return result
+	}
+	n := r.NumField()
+	for i := 0; i < n; i++ {
+		field := r.FieldByIndex([]int{i})
+		value := v.FieldByIndex([]int{i})
+		if skipSet.Has(field.Name) {
+			continue
+		}
+		if value.Kind() == reflect.Struct {
+			m := ToAnyMap(value.Interface(), skip...)
+			result = ds.MapMerge(result, m)
+		}
+		if value.Kind() == reflect.Pointer {
+			result[field.Name] = value.Elem().Interface()
+		} else {
+			result[field.Name] = value.Interface()
+		}
+	}
+	return result
+}
+
+// ToAnyMapWithJson 把任意数据转换为json字符串形式的任意map
+func ToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
+	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
 	if r.Kind() == reflect.Pointer {
@@ -60,7 +96,7 @@ func ToAnyMap(item interface{}) map[string]interface{} {
 		field := r.FieldByIndex([]int{i})
 		value := v.FieldByIndex([]int{i})
 		if value.Kind() == reflect.Struct {
-			m := ToAnyMap(value.Interface())
+			m := ToAnyMapWithJson(value.Interface(), skip...)
 			result = ds.MapMerge(result, m)
 		}
 		tag := field.Tag.Get("json")
@@ -71,6 +107,9 @@ func ToAnyMap(item interface{}) map[string]interface{} {
 			tag = tag[:idx]
 		}
 		tag = strings.TrimSpace(tag)
+		if skipSet.Has(tag) {
+			continue
+		}
 		if value.Kind() == reflect.Pointer {
 			result[tag] = value.Elem().Interface()
 		} else {

@@ -50,12 +50,12 @@ func TestSetField(t *testing.T) {
 	assert.Equal(t, *v.Address, "address_two")
 }
 
-func TestToAnyMap(t *testing.T) {
+func TestToAnyMapWithJson(t *testing.T) {
 	type M struct {
 		Age int `json:"age"`
 	}
 	type V struct {
-		M
+		M       `json:"m"`
 		Name    string  `json:"name,omitempty"`
 		Address *string `json:"address"`
 	}
@@ -67,6 +67,38 @@ func TestToAnyMap(t *testing.T) {
 		Name:    "name",
 		Address: &address,
 	}
-	m := ToAnyMap(v)
-	t.Logf("%+v", m)
+	m := ToAnyMapWithJson(v, "name")
+	anyMap := map[string]interface{}{
+		"address": "address",
+		"age":     10,
+		"m":       M{Age: 10},
+	}
+	assert.Equal(t, m, anyMap)
+}
+
+func TestToAnyMap(t *testing.T) {
+	type M struct {
+		Age int
+	}
+	type V struct {
+		M
+		Name    string
+		Address *string
+	}
+	address := "address"
+	v := V{
+		M: M{
+			Age: 10,
+		},
+		Name:    "name",
+		Address: &address,
+	}
+	m := ToAnyMap(v, "Name")
+	anyMap := map[string]interface{}{
+		"Address": "address",
+		"Age":     10,
+		"M":       M{Age: 10},
+	}
+	assert.Equal(t, m, anyMap)
+
 }
