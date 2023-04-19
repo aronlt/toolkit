@@ -46,10 +46,17 @@ func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
+	// item is nil
+	if r == nil {
+		return make(map[string]interface{})
+	}
 	if r.Kind() == reflect.Pointer {
 		r = r.Elem()
 	}
 	v := reflect.ValueOf(item)
+	if reflect.DeepEqual(v, reflect.Value{}) {
+		return make(map[string]interface{})
+	}
 	if v.Kind() == reflect.Pointer {
 		v = v.Elem()
 	}
@@ -63,12 +70,12 @@ func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 		if skipSet.Has(field.Name) {
 			continue
 		}
-		if value.Kind() == reflect.Struct {
-			m := ToAnyMap(value.Interface(), skip...)
-			result = ds.MapMerge(result, m)
-		}
 		if value.Kind() == reflect.Pointer {
-			result[field.Name] = value.Elem().Interface()
+			if value.IsNil() {
+				result[field.Name] = nil
+			} else {
+				result[field.Name] = value.Elem().Interface()
+			}
 		} else {
 			result[field.Name] = value.Interface()
 		}
@@ -81,10 +88,16 @@ func ToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
+	if r == nil {
+		return make(map[string]interface{})
+	}
 	if r.Kind() == reflect.Pointer {
 		r = r.Elem()
 	}
 	v := reflect.ValueOf(item)
+	if reflect.DeepEqual(v, reflect.Value{}) {
+		return make(map[string]interface{})
+	}
 	if v.Kind() == reflect.Pointer {
 		v = v.Elem()
 	}
@@ -95,10 +108,7 @@ func ToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
 	for i := 0; i < n; i++ {
 		field := r.FieldByIndex([]int{i})
 		value := v.FieldByIndex([]int{i})
-		if value.Kind() == reflect.Struct {
-			m := ToAnyMapWithJson(value.Interface(), skip...)
-			result = ds.MapMerge(result, m)
-		}
+
 		tag := field.Tag.Get("json")
 		if tag == "" {
 			continue
@@ -111,7 +121,11 @@ func ToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
 			continue
 		}
 		if value.Kind() == reflect.Pointer {
-			result[tag] = value.Elem().Interface()
+			if value.IsNil() {
+				result[tag] = nil
+			} else {
+				result[tag] = value.Elem().Interface()
+			}
 		} else {
 			result[tag] = value.Interface()
 		}

@@ -96,9 +96,45 @@ func TestToAnyMap(t *testing.T) {
 	m := ToAnyMap(v, "Name")
 	anyMap := map[string]interface{}{
 		"Address": "address",
-		"Age":     10,
 		"M":       M{Age: 10},
 	}
 	assert.Equal(t, m, anyMap)
 
+	type V2 struct {
+		Age    int
+		Detail []struct {
+			Name    string
+			Address string
+		}
+	}
+
+	v2 := V2{
+		Age: 10,
+		Detail: []struct {
+			Name    string
+			Address string
+		}{
+			{
+				Name:    "a",
+				Address: "b",
+			},
+		},
+	}
+
+	m2 := ToAnyMap(v2)
+	t.Logf("%+v", m2)
+
+	type V3 struct {
+		M       *M
+		Name    string
+		Address *string
+	}
+
+	v3 := V3{
+		M:       nil,
+		Name:    "a",
+		Address: nil,
+	}
+	m3 := ToAnyMap(v3)
+	t.Logf("%+v", m3)
 }
