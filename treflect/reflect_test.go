@@ -137,4 +137,20 @@ func TestToAnyMap(t *testing.T) {
 	}
 	m3 := ToAnyMap(v3)
 	t.Logf("%+v", m3)
+
+	v4 := V3{
+		M:       &M{Age: 10},
+		Name:    "name",
+		Address: &address,
+	}
+	m4 := ToAnyMapDeep(v4)
+	t.Logf("%+v", m4)
+
+	v5 := V3{
+		M:       nil,
+		Name:    "name",
+		Address: &address,
+	}
+	m5 := ToAnyMapDeep(v5)
+	t.Logf("%+v", m5)
 }

@@ -41,7 +41,119 @@ func GetFieldValue(item interface{}, fieldName string) (reflect.Value, error) {
 	return f, nil
 }
 
-// ToAnyMap 把任意数据转换为json字符串形式的任意map
+// ToAnyMapDeep 把任意数据递归转换为字符串形式的任意map
+func ToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
+	skipSet := ds.SetOf(skip...)
+	result := make(map[string]interface{})
+	r := reflect.TypeOf(item)
+	// item is nil
+	if r == nil {
+		return make(map[string]interface{})
+	}
+	if r.Kind() == reflect.Pointer {
+		r = r.Elem()
+	}
+	v := reflect.ValueOf(item)
+	if reflect.DeepEqual(v, reflect.Value{}) {
+		return make(map[string]interface{})
+	}
+	if v.Kind() == reflect.Pointer {
+		v = v.Elem()
+	}
+	if v.Kind() != reflect.Struct {
+		return result
+	}
+	n := r.NumField()
+	for i := 0; i < n; i++ {
+		field := r.FieldByIndex([]int{i})
+		value := v.FieldByIndex([]int{i})
+		if skipSet.Has(field.Name) {
+			continue
+		}
+		if value.Kind() == reflect.Struct {
+			subResult := ToAnyMapDeep(value.Interface(), skip...)
+			result[field.Name] = subResult
+			continue
+		}
+		if value.Kind() == reflect.Pointer {
+			if value.IsNil() {
+				result[field.Name] = nil
+			} else {
+				if value.Elem().Kind() == reflect.Struct {
+					subResult := ToAnyMapDeep(value.Interface(), skip...)
+					result[field.Name] = subResult
+				} else {
+					result[field.Name] = value.Elem().Interface()
+				}
+			}
+		} else {
+			result[field.Name] = value.Interface()
+		}
+	}
+	return result
+}
+
+// ToAnyMapWithJsonDeep 把任意数据递归转换为json字符串形式的任意map
+func ToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface{} {
+	skipSet := ds.SetOf(skip...)
+	result := make(map[string]interface{})
+	r := reflect.TypeOf(item)
+	if r == nil {
+		return make(map[string]interface{})
+	}
+	if r.Kind() == reflect.Pointer {
+		r = r.Elem()
+	}
+	v := reflect.ValueOf(item)
+	if reflect.DeepEqual(v, reflect.Value{}) {
+		return make(map[string]interface{})
+	}
+	if v.Kind() == reflect.Pointer {
+		v = v.Elem()
+	}
+	if v.Kind() != reflect.Struct {
+		return result
+	}
+	n := r.NumField()
+	for i := 0; i < n; i++ {
+		field := r.FieldByIndex([]int{i})
+		value := v.FieldByIndex([]int{i})
+
+		tag := field.Tag.Get("json")
+		if tag == "" {
+			continue
+		}
+		if idx := strings.Index(tag, ","); idx != -1 {
+			tag = tag[:idx]
+		}
+		tag = strings.TrimSpace(tag)
+		if skipSet.Has(tag) {
+			continue
+		}
+		if value.Kind() == reflect.Struct {
+			subResult := ToAnyMapWithJsonDeep(value.Interface(), skip...)
+			result[tag] = subResult
+			continue
+		}
+		if value.Kind() == reflect.Pointer {
+			if value.IsNil() {
+				result[tag] = nil
+			} else {
+				if value.Elem().Kind() == reflect.Struct {
+					subResult := ToAnyMapWithJsonDeep(value.Interface(), skip...)
+					result[tag] = subResult
+				} else {
+					result[tag] = value.Elem().Interface()
+				}
+			}
+		} else {
+			result[tag] = value.Interface()
+		}
+	}
+	return result
+}
+
+// ToAnyMap 把任意数据转换为字符串形式的任意map
 func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
