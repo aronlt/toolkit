@@ -74,6 +74,13 @@ func TestSliceRemove(t *testing.T) {
 	assert.Equal(t, k, m)
 }
 
+func TestSliceRemoveMany(t *testing.T) {
+	m := []int{1, 2, 3, 3, 5, 6, 2, 1, 2, 3, 4, 2}
+	k := []int{1, 3, 2, 3, 1, 3, 4}
+	SliceRemoveMany(&m, k)
+	assert.Equal(t, m, []int{5, 6})
+}
+
 func TestSliceReplace(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	n := []int{1, 2, 9, 4, 5, 6}

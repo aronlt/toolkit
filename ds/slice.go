@@ -215,6 +215,20 @@ func SliceRemoveRange[T any](data *[]T, i int, j int) {
 	*data = append((*data)[:i], (*data)[j:]...)
 }
 
+// SliceRemoveMany 从Slice集合中移除另外一个Slice中的元素
+func SliceRemoveMany[T comparable](data *[]T, values []T) {
+	set := SetOf[T](values...)
+	for i := len(*data) - 1; i >= 0; i-- {
+		if set.Has((*data)[i]) {
+			if i == len(*data)-1 {
+				*data = (*data)[:i]
+			} else {
+				*data = append((*data)[:i], (*data)[i+1:]...)
+			}
+		}
+	}
+}
+
 // SliceUnique 去重切片
 func SliceUnique[T comparable](data []T) []T {
 	record := make(map[T]struct{}, len(data))
