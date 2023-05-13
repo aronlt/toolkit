@@ -275,3 +275,15 @@ func ContainTag(item interface{}, tag string) bool {
 	}
 	return false
 }
+
+// DeepCopySlice 深度复制切片
+func DeepCopySlice[T any](data []T, ns ...int) []T {
+	if len(ns) > 0 {
+		n := ns[0]
+		if n <= 0 || n > len(data) {
+			return []T{}
+		}
+		return Copy(data[:n]).([]T)
+	}
+	return Copy(data).([]T)
+}

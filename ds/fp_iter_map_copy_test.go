@@ -8,7 +8,7 @@ import (
 
 func TestMapSlice(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
-	m2 := FpMapSlice(m, func(m []int, i int) int {
+	m2 := SliceIterMapCopy(m, func(m []int, i int) int {
 		return m[i] + 1
 	})
 
@@ -18,7 +18,7 @@ func TestMapSlice(t *testing.T) {
 func TestMapMap(t *testing.T) {
 	m := map[int]int{1: 2, 2: 3, 3: 4}
 
-	m2 := FpMapMap(m, func(_ map[int]int, k int, v int) (int, int) {
+	m2 := MapIterMapKVCopy(m, func(_ map[int]int, k int, v int) (int, int) {
 		return k, v + 1
 	})
 
@@ -31,7 +31,7 @@ func TestMapList(t *testing.T) {
 	a.PushBack(2)
 	a.PushBack(3)
 
-	b := FpMapList(a, func(a DList[int], node int) int {
+	b := ListIterMapCopy(a, func(a DList[int], node int) int {
 		return node + 1
 	})
 
@@ -48,13 +48,14 @@ func TestMapSet(t *testing.T) {
 	a.Insert(2)
 	a.Insert(3)
 
-	b := FpMapSet(a, func(a BuiltinSet[int], node int) int {
+	b := SetIterMapCopy(a, func(a BuiltinSet[int], node int) int {
 		return node + 1
 	})
 
 	c := []int{2, 3, 4}
-	FpIterSlice(c, func(a []int, i int) {
+	SliceIterMapInPlace(c, func(a []int, i int) int {
 		assert.True(t, b.Has(a[i]))
+		return a[i]
 	})
 
 }

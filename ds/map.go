@@ -20,26 +20,27 @@ const (
 	LeftLessThanRight
 )
 
-// MapRemoveEmptyString 删除空字符串的
-func MapRemoveEmptyString[K comparable](m map[K]interface{}) map[K]interface{} {
-	nm := make(map[K]interface{}, len(m))
+/* Map操作
+MapOpRemoveEmptyString 删除空字符串的
+MapOpMerge 合并两个map，如果key重复则以第二个元素中的key为主
+*/
+
+// MapOpRemoveEmptyString 删除空字符串的
+func MapOpRemoveEmptyString[K comparable](m map[K]string) map[K]string {
+	nm := make(map[K]string, len(m))
 	for k, v := range m {
-		if v2, ok := v.(string); ok {
-			if v2 != "" {
-				nm[k] = v
-			}
-		} else {
+		if v != "" {
 			nm[k] = v
 		}
 	}
 	return nm
 }
 
-// MapMerge 合并两个map，如果key重复则以第二个元素中的key为主
-func MapMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
+// MapOpMerge 合并两个map，如果key重复则以第二个元素中的key为主
+func MapOpMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	len1 := len(m1)
 	len2 := len(m2)
-	m3 := make(map[K]V, SliceUnpackMax(len1, len2))
+	m3 := make(map[K]V, SliceMaxUnpack(len1, len2))
 	for k, v := range m1 {
 		m3[k] = v
 	}
@@ -49,8 +50,15 @@ func MapMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	return m3
 }
 
-// MapNativeCompareWithKey 简单值的key比较
-func MapNativeCompareWithKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V, key T) MapCompareResult {
+/* Map比较
+MapCmpWithSimpleKey 简单值的key比较
+MapCmpWithComplexKey 复杂值的key比较
+MapCmpFullSimpleKey 简单值的全部比较
+MapCmpFullComplexKey 复杂值的全部比较
+*/
+
+// MapCmpWithSimpleKey 简单值的key比较
+func MapCmpWithSimpleKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V, key T) MapCompareResult {
 	va, ok1 := a[key]
 	vb, ok2 := b[key]
 	if !ok1 && !ok2 {
@@ -74,8 +82,8 @@ func MapNativeCompareWithKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]
 	return NotEqual
 }
 
-// MapComplexCompareWithKey 复杂值的key比较
-func MapComplexCompareWithKey[T comparable, V any](a map[T]V, b map[T]V, key T) MapCompareResult {
+// MapCmpWithComplexKey 复杂值的key比较
+func MapCmpWithComplexKey[T comparable, V any](a map[T]V, b map[T]V, key T) MapCompareResult {
 	va, ok1 := a[key]
 	vb, ok2 := b[key]
 	if !ok1 && !ok2 {
@@ -94,8 +102,8 @@ func MapComplexCompareWithKey[T comparable, V any](a map[T]V, b map[T]V, key T) 
 	return Equal
 }
 
-// MapNativeFullCompare 简单值的全部比较
-func MapNativeFullCompare[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V) MapCompareResult {
+// MapCmpFullSimpleKey 简单值的全部比较
+func MapCmpFullSimpleKey[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V) MapCompareResult {
 	for ka, va := range a {
 		if vb, ok := b[ka]; !ok || vb != va {
 			return NotEqual
@@ -109,8 +117,8 @@ func MapNativeFullCompare[T comparable, V ttypes.Ordered](a map[T]V, b map[T]V) 
 	return Equal
 }
 
-// MapComplexFullCompare 复杂值的全部比较
-func MapComplexFullCompare[T comparable, V any](a map[T]V, b map[T]V) MapCompareResult {
+// MapCmpFullComplexKey 复杂值的全部比较
+func MapCmpFullComplexKey[T comparable, V any](a map[T]V, b map[T]V) MapCompareResult {
 	for ka := range a {
 		if _, ok := b[ka]; !ok {
 			return NotEqual
@@ -129,8 +137,14 @@ func MapComplexFullCompare[T comparable, V any](a map[T]V, b map[T]V) MapCompare
 	return NotEqual
 }
 
-// MapValueToSlice 提取map的值
-func MapValueToSlice[T comparable, V any](a map[T]V) []V {
+/* Map转换
+MapConvertValueToSlice 提取map的值
+MapConvertKeyToSlice 提取map的key
+MapConvertZipSliceToMap 两个slice，一个key，一个value转换为map
+*/
+
+// MapConvertValueToSlice 提取map的值
+func MapConvertValueToSlice[T comparable, V any](a map[T]V) []V {
 	data := make([]V, 0, len(a))
 	for _, v := range a {
 		data = append(data, v)
@@ -138,8 +152,8 @@ func MapValueToSlice[T comparable, V any](a map[T]V) []V {
 	return data
 }
 
-// MapKeyToSlice 提取map的key
-func MapKeyToSlice[T comparable, V any](a map[T]V) []T {
+// MapConvertKeyToSlice 提取map的key
+func MapConvertKeyToSlice[T comparable, V any](a map[T]V) []T {
 	data := make([]T, 0, len(a))
 	for k := range a {
 		data = append(data, k)
@@ -147,8 +161,8 @@ func MapKeyToSlice[T comparable, V any](a map[T]V) []T {
 	return data
 }
 
-// MapZipSliceToMap 两个slice，一个key，一个value转换为map
-func MapZipSliceToMap[T comparable, V any](a []T, b []V) (map[T]V, error) {
+// MapConvertZipSliceToMap 两个slice，一个key，一个value转换为map
+func MapConvertZipSliceToMap[T comparable, V any](a []T, b []V) (map[T]V, error) {
 	result := make(map[T]V, len(a))
 	if len(a) != len(b) {
 		return result, ttypes.ErrorSliceNotEqualLength

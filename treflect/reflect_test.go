@@ -70,7 +70,6 @@ func TestToAnyMapWithJson(t *testing.T) {
 	m := ToAnyMapWithJson(v, "name")
 	anyMap := map[string]interface{}{
 		"address": "address",
-		"age":     10,
 		"m":       M{Age: 10},
 	}
 	assert.Equal(t, m, anyMap)

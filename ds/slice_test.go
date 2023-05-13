@@ -8,9 +8,9 @@ import (
 
 func TestSliceIndex(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
-	i := SliceIndex(m, 4)
+	i := SliceIncludeIndex(m, 4)
 	assert.Equal(t, i, 3)
-	i = SliceIndex(m, 8)
+	i = SliceIncludeIndex(m, 8)
 	assert.Equal(t, i, -1)
 }
 
@@ -32,7 +32,7 @@ func TestSliceExclude(t *testing.T) {
 
 func TestSliceFilter(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
-	v := SliceFilter(m, func(i int) bool {
+	v := SliceGetFilter(m, func(i int) bool {
 		return m[i] > 4
 	})
 	assert.Equal(t, v, []int{5, 6})
@@ -42,9 +42,9 @@ func TestSliceAbsoluteEqual(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	n := []int{1, 3, 4, 2, 5, 6}
 	h := []int{1, 2, 3, 4, 5, 6}
-	ok := SliceAbsoluteEqual(m, n)
+	ok := SliceCmpAbsEqual(m, n)
 	assert.Equal(t, ok, false)
-	ok = SliceAbsoluteEqual(m, h)
+	ok = SliceCmpAbsEqual(m, h)
 	assert.Equal(t, ok, true)
 }
 
@@ -52,16 +52,16 @@ func TestSliceLogicalEqual(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	n := []int{1, 3, 4, 2, 5, 6}
 	h := []int{1, 2, 3, 4, 5, 7}
-	ok := SliceLogicalEqual(m, n)
+	ok := SliceCmpLogicEqual(m, n)
 	assert.Equal(t, ok, true)
-	ok = SliceLogicalEqual(m, h)
+	ok = SliceCmpLogicEqual(m, h)
 	assert.Equal(t, ok, false)
 }
 
 func TestSliceReverseCopy(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	k := []int{6, 5, 4, 3, 2, 1}
-	n := SliceReverseCopy(m)
+	n := SliceOpReverseCopy(m)
 	assert.Equal(t, n, k)
 	n[0] = 9
 	assert.Equal(t, m[0], 1)
@@ -70,27 +70,27 @@ func TestSliceReverseCopy(t *testing.T) {
 func TestSliceRemove(t *testing.T) {
 	m := []int{1, 2, 3, 3, 2, 1, 2, 3, 4, 2}
 	k := []int{1, 3, 3, 1, 3, 4}
-	SliceRemove(&m, 2)
+	SliceOpRemove(&m, 2)
 	assert.Equal(t, k, m)
 }
 
 func TestSliceRemoveMany(t *testing.T) {
 	m := []int{1, 2, 3, 3, 5, 6, 2, 1, 2, 3, 4, 2}
 	k := []int{1, 3, 2, 3, 1, 3, 4}
-	SliceRemoveMany(&m, k)
+	SliceOpRemoveMany(&m, k)
 	assert.Equal(t, m, []int{5, 6})
 }
 
 func TestSliceReplace(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	n := []int{1, 2, 9, 4, 5, 6}
-	SliceReplace(m, 3, 9)
+	SliceOpReplace(m, 3, 9)
 	assert.Equal(t, n, m)
 }
 
 func TestReverseSlice(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
-	SliceReverse(m)
+	SliceOpReverse(m)
 	expected := []int{6, 5, 4, 3, 2, 1}
 	unexpected := []int{6, 4, 5, 3, 2, 1}
 	assert.Equal(t, m, expected)
@@ -99,7 +99,7 @@ func TestReverseSlice(t *testing.T) {
 
 func TestUniqueSlice(t *testing.T) {
 	m := []int{1, 1, 3, 3, 5, 6}
-	n := SliceUnique(m)
+	n := SliceOpUnique(m)
 	expected := []int{1, 3, 5, 6}
 	unexpected := []int{1, 1, 3, 5, 6}
 	assert.Equal(t, n, expected)
@@ -108,19 +108,19 @@ func TestUniqueSlice(t *testing.T) {
 
 func TestCopySlice(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
-	n := SliceCopy(m)
+	n := SliceGetCopy(m)
 	assert.Equal(t, m, n)
 }
 
 func TestBinarySearch(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
-	idx := SliceBinarySearch(m, 4)
+	idx := SliceIncludeBinarySearch(m, 4)
 	assert.Equal(t, idx, 3)
 
 	m = []int{1, 2, 2, 2, 4, 4, 4, 5, 9}
-	idx = SliceBinarySearch(m, 4)
+	idx = SliceIncludeBinarySearch(m, 4)
 	assert.Equal(t, idx, 4)
-	idx = SliceBinarySearch(m, 3)
+	idx = SliceIncludeBinarySearch(m, 3)
 	assert.Equal(t, idx, -1)
 }
 
@@ -137,12 +137,12 @@ func TestSliceMin(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	m := SliceUnpackMax(1, 2, 10, 18, 99, 10, 12)
+	m := SliceMaxUnpack(1, 2, 10, 18, 99, 10, 12)
 	assert.Equal(t, m, 99)
 }
 
 func TestMin(t *testing.T) {
-	m := SliceUnpackMin(1, 2, 10, 18, 99, 10, 12)
+	m := SliceMinUnpack(1, 2, 10, 18, 99, 10, 12)
 	assert.Equal(t, m, 1)
 }
 
@@ -210,23 +210,23 @@ func TestSliceConvertToString(t *testing.T) {
 
 func TestSliceInsert(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5}
-	SliceInsert(&data, 1, 8, 9)
+	SliceOpInsert(&data, 1, 8, 9)
 	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 5}, data)
 
-	SliceInsert(&data, 17, 10)
+	SliceOpInsert(&data, 17, 10)
 	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 5, 10}, data)
 
-	SliceInsert(&data, -2, 11)
+	SliceOpInsert(&data, -2, 11)
 	assert.Equal(t, []int{1, 8, 9, 2, 3, 4, 11, 5, 10}, data)
 }
 
 func TestSliceTail(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	v := SliceTail(data)
+	v := SliceGetTail(data)
 	assert.Equal(t, v, 6)
 
 	var ok bool
-	v, ok = SlicePopBack(&data)
+	v, ok = SliceOpPopBack(&data)
 
 	assert.True(t, ok, true)
 	assert.Equal(t, v, 6)
@@ -235,30 +235,30 @@ func TestSliceTail(t *testing.T) {
 
 func TestSliceRemoveIndex(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	SliceRemoveIndex(&data, 3)
+	SliceOpRemoveIndex(&data, 3)
 	assert.Equal(t, data, []int{1, 2, 3, 5, 6})
 
 }
 
 func TestSliceRemoveRange(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	SliceRemoveRange(&data, 3, 5)
+	SliceOpRemoveRange(&data, 3, 5)
 	assert.Equal(t, data, []int{1, 2, 3, 6})
 }
 
 func TestInclude(t *testing.T) {
-	ok := SliceUnpackInclude(1, 2, 3, 1)
+	ok := SliceIncludeUnpack(1, 2, 3, 1)
 	assert.True(t, ok)
-	ok = SliceUnpackInclude(4, 2, 3, 1)
+	ok = SliceIncludeUnpack(4, 2, 3, 1)
 	assert.False(t, ok)
 }
 
 func TestDiffTwoSlice(t *testing.T) {
 	a := []int{1, 2, 3, 4, 5, 6, 7}
 	b := []int{6, 7, 8, 9, 10}
-	sa, sb := SliceTwoDiff(a, b)
-	assert.True(t, SliceLogicalEqual(sa, []int{1, 2, 3, 4, 5}))
-	assert.True(t, SliceLogicalEqual(sb, []int{8, 9, 10}))
+	sa, sb := SliceCmpTwoDiff(a, b)
+	assert.True(t, SliceCmpLogicEqual(sa, []int{1, 2, 3, 4, 5}))
+	assert.True(t, SliceCmpLogicEqual(sb, []int{8, 9, 10}))
 }
 
 func TestSliceGroupByHandler(t *testing.T) {
@@ -273,7 +273,7 @@ func TestSliceGroupByHandler(t *testing.T) {
 
 func TestSliceGroupByCounter(t *testing.T) {
 	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
-	b := SliceGroupByCounter(a)
+	b := SliceGroupToCounter(a)
 
 	assert.Equal(t, b[1], 2)
 	assert.Equal(t, b[33], 1)
@@ -281,7 +281,7 @@ func TestSliceGroupByCounter(t *testing.T) {
 
 func TestSliceGroupIntoSlice(t *testing.T) {
 	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
-	b := SliceGroupIntoSlice(a)
+	b := SliceGroupToSlices(a)
 
 	assert.Equal(t, b[0], []int{1, 1})
 	assert.Equal(t, b[1], []int{2, 2})
@@ -290,8 +290,23 @@ func TestSliceGroupIntoSlice(t *testing.T) {
 
 func TestSliceGroupByValue(t *testing.T) {
 	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
-	b := SliceGroupByValue(a)
+	b := SliceGroupToMap(a)
 
 	assert.Equal(t, b[1], []int{1, 1})
 	assert.Equal(t, b[2], []int{2, 2})
+}
+
+func TestSliceCmpLogicSub(t *testing.T) {
+	a := []int{1, 2, 3, 3, 4, 5}
+	b := []int{1, 3, 2, 3}
+	assert.True(t, SliceCmpLogicSub(a, b))
+}
+
+func TestSliceCmpAbsSub(t *testing.T) {
+	a := []int{1, 2, 3, 3, 4, 5}
+	b := []int{2, 3, 3}
+	assert.Equal(t, SliceCmpAbsSub(a, b), 1)
+	a = []int{1, 2, 3, 3, 4, 5}
+	b = []int{4, 5, 6}
+	assert.Equal(t, SliceCmpAbsSub(a, b), -1)
 }

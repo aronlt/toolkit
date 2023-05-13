@@ -35,7 +35,7 @@ func StrSplitNth(str string, sep string, total int, nth int) string {
 	values := strings.Split(str, sep)
 	if len(values) == total || total == -1 {
 		if nth == -1 {
-			return SliceTail(values, "")
+			return SliceGetTail(values, "")
 		}
 		if len(values) < nth {
 			return ""

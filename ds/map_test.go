@@ -17,11 +17,11 @@ func TestMapNativeKeyCompare(t *testing.T) {
 	m2["a"] = "a2"
 	m2["b"] = "b"
 
-	assert.Equal(t, MapNativeCompareWithKey(m1, m2, "a"), LeftLessThanRight)
-	assert.Equal(t, MapNativeCompareWithKey(m1, m2, "b"), Equal)
-	assert.Equal(t, MapNativeCompareWithKey(m1, m2, "c"), LeftKeyMiss)
-	assert.Equal(t, MapNativeCompareWithKey(m1, m2, "d"), RightKeyMiss)
-	assert.Equal(t, MapNativeCompareWithKey(m1, m2, "e"), AllKeyMiss)
+	assert.Equal(t, MapCmpWithSimpleKey(m1, m2, "a"), LeftLessThanRight)
+	assert.Equal(t, MapCmpWithSimpleKey(m1, m2, "b"), Equal)
+	assert.Equal(t, MapCmpWithSimpleKey(m1, m2, "c"), LeftKeyMiss)
+	assert.Equal(t, MapCmpWithSimpleKey(m1, m2, "d"), RightKeyMiss)
+	assert.Equal(t, MapCmpWithSimpleKey(m1, m2, "e"), AllKeyMiss)
 }
 
 func TestMapNativeKeyFullCompare(t *testing.T) {
@@ -35,11 +35,11 @@ func TestMapNativeKeyFullCompare(t *testing.T) {
 	m2["a"] = "a2"
 	m2["b"] = "b"
 
-	assert.Equal(t, MapNativeFullCompare(m1, m2), NotEqual)
+	assert.Equal(t, MapCmpFullSimpleKey(m1, m2), NotEqual)
 
 	m3 := map[string]string{"a": "a", "b": "b"}
 	m4 := map[string]string{"a": "a", "b": "b"}
-	assert.Equal(t, MapNativeFullCompare(m3, m4), Equal)
+	assert.Equal(t, MapCmpFullSimpleKey(m3, m4), Equal)
 }
 
 func TestMapComplexKeyCompare(t *testing.T) {
@@ -56,7 +56,7 @@ func TestMapComplexKeyCompare(t *testing.T) {
 			A: 3,
 		},
 	}
-	assert.Equal(t, MapComplexCompareWithKey(m1, m2, "a"), NotEqual)
+	assert.Equal(t, MapCmpWithComplexKey(m1, m2, "a"), NotEqual)
 
 	m3 := map[string]T{
 		"a": {
@@ -68,7 +68,7 @@ func TestMapComplexKeyCompare(t *testing.T) {
 			A: 1,
 		},
 	}
-	assert.Equal(t, MapComplexCompareWithKey(m3, m4, "a"), Equal)
+	assert.Equal(t, MapCmpWithComplexKey(m3, m4, "a"), Equal)
 }
 
 func TestMapComplexKeyFullCompare(t *testing.T) {
@@ -85,7 +85,7 @@ func TestMapComplexKeyFullCompare(t *testing.T) {
 			A: 3,
 		},
 	}
-	assert.Equal(t, MapComplexFullCompare(m1, m2), NotEqual)
+	assert.Equal(t, MapCmpFullComplexKey(m1, m2), NotEqual)
 
 	m3 := map[string]T{
 		"a": {
@@ -97,7 +97,7 @@ func TestMapComplexKeyFullCompare(t *testing.T) {
 			A: 1,
 		},
 	}
-	assert.Equal(t, MapComplexFullCompare(m3, m4), Equal)
+	assert.Equal(t, MapCmpFullComplexKey(m3, m4), Equal)
 }
 
 func TestSortedMap(t *testing.T) {
@@ -123,9 +123,27 @@ func TestSortedMap(t *testing.T) {
 func TestMergeMap(t *testing.T) {
 	m1 := map[int]int{1: 1, 2: 2, 3: 3}
 	m2 := map[int]int{1: 2, 4: 4, 5: 5}
-	m3 := MapMerge(m1, m2)
-	assert.Equal(t, MapComplexFullCompare(m3, map[int]int{
+	m3 := MapOpMerge(m1, m2)
+	assert.Equal(t, MapCmpFullComplexKey(m3, map[int]int{
 		1: 2, 2: 2, 3: 3, 4: 4, 5: 5,
 	}), Equal)
 
+}
+
+func TestMapConvert(t *testing.T) {
+	v := map[int]string{1: "1", 2: "2", 3: "3"}
+	s1 := MapConvertValueToSlice(v)
+	assert.True(t, SliceCmpLogicEqual(s1, []string{"1", "2", "3"}))
+	s2 := MapConvertKeyToSlice(v)
+	assert.True(t, SliceCmpLogicEqual(s2, []int{1, 2, 3}))
+	v2, err := MapConvertZipSliceToMap([]int{1, 2, 3}, []string{"1", "2", "3"})
+	assert.Nil(t, err)
+	assert.Equal(t, v2, v)
+
+}
+
+func TestMapOp(t *testing.T) {
+	v := map[int]string{1: "", 2: "2", 3: "3"}
+	v2 := MapOpRemoveEmptyString(v)
+	assert.Equal(t, MapCmpFullSimpleKey(map[int]string{2: "2", 3: "3"}, v2), Equal)
 }

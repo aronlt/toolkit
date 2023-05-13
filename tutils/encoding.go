@@ -2,9 +2,10 @@ package tutils
 
 import (
 	"bytes"
-	"github.com/aronlt/toolkit/ds"
 	"io"
 	"sort"
+
+	"github.com/aronlt/toolkit/ds"
 
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/transform"
@@ -52,7 +53,7 @@ func SortFieldsWithGbk[K any](units []EUnit[K], offset int, limit int, desc bool
 	}
 	sortBytes(gbkUnits)
 	if desc {
-		ds.SliceReverse(gbkUnits)
+		ds.SliceOpReverse(gbkUnits)
 	}
 	if offset >= len(gbkUnits) {
 		return gbkUnits, nil
