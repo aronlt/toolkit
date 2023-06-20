@@ -1,8 +1,9 @@
 package ds
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_MakeBuiltinSet(t *testing.T) {
@@ -174,4 +175,18 @@ func Test_BuiltinSet_IsSupersetOf(t *testing.T) {
 	assert.True(t, SetOf(1, 2, 3).IsSupersetOf(SetOf(1, 2)))
 	assert.False(t, SetOf(1, 2).IsSupersetOf(SetOf(1, 2, 3)))
 	assert.False(t, SetOf(1, 2).IsSupersetOf(SetOf(2, 3)))
+}
+
+func Test_BuiltinSet_Equal(t *testing.T) {
+	v1 := SetOf[int](1, 2, 3, 4, 5)
+	v2 := SetOf[int](1, 2, 3, 4, 6)
+	assert.False(t, v1.Equal(v2))
+
+	v3 := SetOf[int](1, 2, 3, 4, 5)
+	assert.True(t, v1.Equal(v3))
+
+	v4 := SetOf[int](1, 2, 3, 4)
+	assert.False(t, v1.Equal(v4))
+	assert.False(t, v4.Equal(v1))
+
 }

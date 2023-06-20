@@ -1,6 +1,7 @@
 package treflect
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -152,4 +153,40 @@ func TestToAnyMap(t *testing.T) {
 	}
 	m5 := ToAnyMapDeep(v5)
 	t.Logf("%+v", m5)
+}
+
+func TestDeepCopySlice(t *testing.T) {
+	type V struct {
+		Name    string
+		Address *string
+	}
+	addr1 := "addr1"
+	addr2 := "addr2"
+	v := []V{
+		{Name: "v1", Address: &addr1},
+		{Name: "v2", Address: &addr2},
+	}
+
+	v2 := DeepCopySlice(v)
+	assert.True(t, reflect.DeepEqual(v, v2))
+	if v[0].Address != v2[0].Address {
+		assert.True(t, true)
+	} else {
+		assert.True(t, false)
+	}
+}
+
+func TestContainTag(t *testing.T) {
+	type V struct {
+		Name    string  `json:"name"`
+		Address *string `json:"address"`
+	}
+	addr := "addr"
+	v := V{
+		Name:    "name",
+		Address: &addr,
+	}
+	assert.True(t, ContainTag(v, "name"))
+	assert.False(t, ContainTag(v, "addr"))
+	assert.True(t, ContainTag(v, "address"))
 }

@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/aronlt/toolkit/ds"
+	"github.com/aronlt/toolkit/treflect"
 )
 
 var KeyNotFoundErr = errors.New("not found key")
@@ -414,4 +418,30 @@ func Marshal(v any) (string, error) {
 		return "", err
 	}
 	return string(value), nil
+}
+
+func GetDiff[T any](v1 *T, v2 *T) ds.BuiltinSet[string] {
+	result := ds.NewSet[string]()
+	if reflect.DeepEqual(v1, v2) {
+		return result
+	}
+	map1 := treflect.ToAnyMap(v1)
+	map2 := treflect.ToAnyMap(v2)
+	diff := func(map1 map[string]interface{}, map2 map[string]interface{}) {
+		for key, val1 := range map1 {
+			val2, ok := map2[key]
+			if !ok {
+				result.Insert(key)
+				continue
+			}
+			if !reflect.DeepEqual(val1, val2) {
+				result.Insert(key)
+				continue
+			}
+		}
+	}
+
+	diff(map1, map2)
+	diff(map2, map1)
+	return result
 }

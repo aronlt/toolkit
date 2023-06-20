@@ -195,3 +195,10 @@ func (s BuiltinSet[K]) IsSubsetOf(other BuiltinSet[K]) bool {
 func (s BuiltinSet[K]) IsSupersetOf(other BuiltinSet[K]) bool {
 	return other.IsSubsetOf(s)
 }
+
+func (s BuiltinSet[K]) Equal(other BuiltinSet[K]) bool {
+	if s.Len() != other.Len() {
+		return false
+	}
+	return s.IsSubsetOf(other) && other.IsSubsetOf(s)
+}

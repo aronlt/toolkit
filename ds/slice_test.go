@@ -310,3 +310,10 @@ func TestSliceCmpAbsSub(t *testing.T) {
 	b = []int{4, 5, 6}
 	assert.Equal(t, SliceCmpAbsSub(a, b), -1)
 }
+
+func TestSliceGroupToSet(t *testing.T) {
+	a := []int{1, 1, 2, 3, 3, 4, 5}
+	set := SliceGroupToSet(a)
+	set2 := SetFromSlice(a)
+	assert.Equal(t, set, set2)
+}

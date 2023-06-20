@@ -103,3 +103,24 @@ func TestGetEvery(t *testing.T) {
 	}
 	assert.Equal(t, all, []string{"a", "b"})
 }
+
+func TestGetDiff(t *testing.T) {
+	type V struct {
+		Name    string  `json:"name"`
+		Address *string `json:"address"`
+		Age     int     `json:"age"`
+	}
+	addr1 := "addr1"
+	v1 := V{
+		Name:    "name",
+		Address: &addr1,
+		Age:     10,
+	}
+	v2 := V{
+		Name:    "name",
+		Address: &addr1,
+		Age:     19,
+	}
+	result := GetDiff(&v1, &v2)
+	assert.True(t, result.Has("Age"))
+}
