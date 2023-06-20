@@ -399,3 +399,19 @@ func GetRawMessage(content []byte, key string) (json.RawMessage, error) {
 		return val.(json.RawMessage), nil
 	}
 }
+
+func MarshalIndent(v any, prefix, indent string) (string, error) {
+	value, err := json.MarshalIndent(v, prefix, indent)
+	if err != nil {
+		return "", err
+	}
+	return string(value), nil
+}
+
+func Marshal(v any) (string, error) {
+	value, err := json.Marshal(v)
+	if err != nil {
+		return "", err
+	}
+	return string(value), nil
+}

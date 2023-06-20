@@ -140,6 +140,7 @@ func MapCmpFullComplexKey[T comparable, V any](a map[T]V, b map[T]V) MapCompareR
 /* Map转换
 MapConvertValueToSlice 提取map的值
 MapConvertKeyToSlice 提取map的key
+MapConvertKeyToSet 提取map的key转换为Set
 MapConvertZipSliceToMap 两个slice，一个key，一个value转换为map
 */
 
@@ -159,6 +160,15 @@ func MapConvertKeyToSlice[T comparable, V any](a map[T]V) []T {
 		data = append(data, k)
 	}
 	return data
+}
+
+// MapConvertKeyToSet 提取map的key，转成Set
+func MapConvertKeyToSet[T comparable, V any](a map[T]V) BuiltinSet[T] {
+	set := NewSet[T](len(a))
+	for k := range a {
+		set.Insert(k)
+	}
+	return set
 }
 
 // MapConvertZipSliceToMap 两个slice，一个key，一个value转换为map
