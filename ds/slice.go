@@ -26,6 +26,14 @@ SliceOpRemoveMany 从Slice集合中移除另外一个Slice中的元素
 SliceOpUnique 去重切片
 */
 
+// SliceOpMerge 合并两个切片
+func SliceOpMerge[T any](first []T, second []T) []T {
+	result := make([]T, 0, len(first)+len(second))
+	result = append(result, first...)
+	result = append(result, second...)
+	return result
+}
+
 // SliceOpReverse 转置切片
 func SliceOpReverse[T any](data []T) {
 	for i, j := 0, len(data)-1; i < j; i, j = i+1, j-1 {
@@ -155,16 +163,18 @@ func SliceOpRemoveMany[T comparable](data *[]T, values []T) {
 
 // SliceOpUnique 去重切片
 func SliceOpUnique[T comparable](data []T) []T {
-	record := make(map[T]struct{}, len(data))
+	record := NewSet[T](len(data))
 	result := make([]T, 0, len(data))
 	for i := 0; i < len(data); i++ {
-		if _, ok := record[data[i]]; !ok {
-			record[data[i]] = struct{}{}
+		if !record.Has(data[i]) {
+			record.Insert(data[i])
 			result = append(result, data[i])
 		}
 	}
 	if len(data) > 2*len(result) {
-		result = result[:]
+		squeeze := make([]T, len(result))
+		copy(squeeze, result)
+		return squeeze
 	}
 	return result
 }

@@ -98,7 +98,7 @@ func TestReverseSlice(t *testing.T) {
 }
 
 func TestUniqueSlice(t *testing.T) {
-	m := []int{1, 1, 3, 3, 5, 6}
+	m := []int{1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 6}
 	n := SliceOpUnique(m)
 	expected := []int{1, 3, 5, 6}
 	unexpected := []int{1, 1, 3, 5, 6}
@@ -316,4 +316,11 @@ func TestSliceGroupToSet(t *testing.T) {
 	set := SliceGroupToSet(a)
 	set2 := SetFromSlice(a)
 	assert.Equal(t, set, set2)
+}
+
+func TestSliceOpMerge(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5}
+	b := []int{6, 7, 8, 9, 10}
+	c := SliceOpMerge(a, b)
+	assert.Equal(t, c, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 }
