@@ -271,12 +271,14 @@ func TestSliceGroupByHandler(t *testing.T) {
 	assert.Equal(t, b[33], []int{33})
 }
 
-func TestSliceGroupByCounter(t *testing.T) {
-	a := []int{1, 2, 3, 4, 4, 3, 2, 1, 33}
-	b := SliceGroupToCounter(a)
+func TestSliceGroupByHandlerUnique(t *testing.T) {
+	a := []int{1, 2, 3, 4}
+	b := SliceGroupByHandlerUnique(a, func(i int) int {
+		return a[i]
+	})
 
-	assert.Equal(t, b[1], 2)
-	assert.Equal(t, b[33], 1)
+	assert.Equal(t, b[1], 1)
+	assert.Equal(t, b[3], 3)
 }
 
 func TestSliceGroupIntoSlice(t *testing.T) {

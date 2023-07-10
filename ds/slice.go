@@ -793,9 +793,8 @@ func SliceMinN[T ttypes.Ordered](data []T, n int) []T {
 // SliceGroupByHandler 对切片进行分类
 func SliceGroupByHandler[K comparable, V any](data []V, getKeyHandler func(int) K) map[K][]V {
 	group := make(map[K][]V, len(data))
-	var key K
 	for i := 0; i < len(data); i++ {
-		key = getKeyHandler(i)
+		key := getKeyHandler(i)
 		group[key] = append(group[key], data[i])
 	}
 	return group
@@ -806,6 +805,16 @@ func SliceGroupToMap[V comparable](data []V) map[V][]V {
 	group := make(map[V][]V, len(data))
 	for i := 0; i < len(data); i++ {
 		group[data[i]] = append(group[data[i]], data[i])
+	}
+	return group
+}
+
+// SliceGroupByHandlerUnique 对切片按照元素进行分类, 结果以map形式返回
+func SliceGroupByHandlerUnique[K comparable, V any](data []V, getKeyHandler func(int) K) map[K]V {
+	group := make(map[K]V, len(data))
+	for i := 0; i < len(data); i++ {
+		key := getKeyHandler(i)
+		group[key] = data[i]
 	}
 	return group
 }
