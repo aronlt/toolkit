@@ -454,6 +454,7 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 }
 
 /* Slice 包含判断
+	SliceIncludeWithFn 根据用户自定义函数判断是否包含
 	SliceInclude 判断元素是否在切片中
 	SliceIncludeUnpack 判断元素是否在切片中, 参数解耦
 	SliceIncludeIndex 判断元素是否在切片中，返回下标
@@ -461,6 +462,15 @@ func SliceConvertToString(data interface{}) ([]string, error) {
     SliceIncludeBinarySearch 以二分搜索方式判断判断元素是否在切片中
 	SliceExclude 判断元素是否不在切片中
 */
+
+func SliceIncludeWithFn[T comparable](a []T, fn func([]T, int) bool) bool {
+	for i := 0; i < len(a); i++ {
+		if fn(a, i) {
+			return true
+		}
+	}
+	return false
+}
 
 // SliceInclude 判断元素是否在slice中
 func SliceInclude[T comparable](a []T, b T) bool {
