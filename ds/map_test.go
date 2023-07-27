@@ -6,6 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMapOpAppendValue(t *testing.T) {
+	m := make(map[string][]int, 0)
+	MapOpAppendValue(m, "a", 1)
+	MapOpAppendValue(m, "a", 2)
+	MapOpAppendValue(m, "b", 3)
+	assert.Equal(t, m["a"], []int{1, 2})
+	assert.Equal(t, m["b"], []int{3})
+
+}
+
 func TestMapNativeKeyCompare(t *testing.T) {
 	m1 := make(map[string]string, 0)
 	m2 := make(map[string]string, 0)
