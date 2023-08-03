@@ -310,6 +310,47 @@ func TestSliceGroupByValue(t *testing.T) {
 	assert.Equal(t, b[2], []int{2, 2})
 }
 
+func TestSliceGroupToTwoMap(t *testing.T) {
+	type V struct {
+		A int
+		B int
+	}
+	a := []V{
+		{
+			A: 1,
+			B: 2,
+		},
+		{
+			A: 2,
+			B: 3,
+		},
+		{
+			A: 1,
+			B: 2,
+		},
+		{
+			A: 2,
+			B: 1,
+		},
+	}
+	result := SliceGroupToTwoMap[int, int, V](a, func(v *V) int {
+		return v.A
+	}, func(v *V) int {
+		return v.B
+	})
+	assert.Equal(t, result[1][2], []V{{
+		A: 1,
+		B: 2,
+	}, {
+		A: 1,
+		B: 2,
+	}})
+	assert.Equal(t, result[2][3], []V{{
+		A: 2,
+		B: 3,
+	}})
+}
+
 func TestSliceCmpLogicSub(t *testing.T) {
 	a := []int{1, 2, 3, 3, 4, 5}
 	b := []int{1, 3, 2, 3}
