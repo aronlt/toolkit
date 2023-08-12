@@ -45,3 +45,13 @@ func StrSplitNth(str string, sep string, total int, nth int) string {
 	}
 	return ""
 }
+
+// StrReverse 转置字符串
+func StrReverse(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+	r := []rune(s)
+	SliceOpReverse(r)
+	return string(r)
+}
