@@ -379,3 +379,10 @@ func TestSliceOpMerge(t *testing.T) {
 	c := SliceOpMerge(a, b)
 	assert.Equal(t, c, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 }
+
+func TestSliceOpJoin(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5}
+	v, err := SliceOpJoin(a)
+	assert.Nil(t, err)
+	assert.Equal(t, v, "1,2,3,4,5")
+}

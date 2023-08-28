@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/aronlt/toolkit/tsort"
 
@@ -39,6 +40,19 @@ func SliceOpReverse[T any](data []T) {
 	for i, j := 0, len(data)-1; i < j; i, j = i+1, j-1 {
 		data[i], data[j] = data[j], data[i]
 	}
+}
+
+// SliceOpJoin 合并切片
+func SliceOpJoin[T any](data []T, seps ...string) (string, error) {
+	strs, err := SliceConvertToString(data)
+	if err != nil {
+		return "", err
+	}
+	sep := ","
+	if len(seps) != 0 {
+		sep = seps[0]
+	}
+	return strings.Join(strs, sep), nil
 }
 
 // SliceOpReverseCopy 转置切片并复制
