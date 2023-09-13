@@ -9,11 +9,19 @@ import (
 func TestStrHasSuffixInsensitive(t *testing.T) {
 	a := "abceEfg"
 	assert.True(t, StrHasSuffixInsensitive(a, "efg"))
+	assert.True(t, StrHasSuffixInsensitive(a, "efG"))
 }
 
 func TestStrHasPrefixInsensitive(t *testing.T) {
 	a := "AbceEfg"
 	assert.True(t, StrHasPrefixInsensitive(a, "abc"))
+	assert.True(t, StrHasPrefixInsensitive(a, "aBc"))
+}
+
+func TestStrHasContainInsensitive(t *testing.T) {
+	a := "AbceEfg"
+	assert.True(t, StrHasContainInsensitive(a, "Cee"))
+	assert.True(t, StrHasContainInsensitive(a, "ef"))
 }
 
 func TestStrRemoveTail(t *testing.T) {

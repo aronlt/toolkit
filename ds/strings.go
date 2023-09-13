@@ -4,12 +4,17 @@ import "strings"
 
 // StrHasSuffixInsensitive 判断str是以subStr结尾, subStr不关注大小写
 func StrHasSuffixInsensitive(str string, subStr string) bool {
-	return len(str) >= len(subStr) && strings.ToLower(str[len(str)-len(subStr):]) == subStr
+	return len(str) >= len(subStr) && strings.ToLower(str[len(str)-len(subStr):]) == strings.ToLower(subStr)
 }
 
 // StrHasPrefixInsensitive 判断str是以subStr开始, subStr不关注大小写
 func StrHasPrefixInsensitive(str string, subStr string) bool {
-	return len(str) >= len(subStr) && strings.ToLower(str[0:len(subStr)]) == subStr
+	return len(str) >= len(subStr) && strings.ToLower(str[0:len(subStr)]) == strings.ToLower(subStr)
+}
+
+// StrHasContainInsensitive 大小写无关的包含判断
+func StrHasContainInsensitive(str string, subStr string) bool {
+	return len(str) >= len(subStr) && strings.Contains(strings.ToLower(str), strings.ToLower(subStr))
 }
 
 // StrRemoveTail 删除str末尾n个元素
