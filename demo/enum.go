@@ -10,35 +10,69 @@ const (
 )
 
 type Weekday int //自定义一个星期类型，作为枚举类型
+type WeekdayDesc string
 
 // 这里必须要+1，不然会导致有默认值错误
 const (
-	Sun Weekday = iota + 1
+	Unknown Weekday = iota
+	Sun
 	Mon
 	Tues
 	Wed
 	Thur
 	Fri
 	Sat
+	SunDesc  WeekdayDesc = "sun"
+	MonDesc  WeekdayDesc = "mon"
+	TuesDesc WeekdayDesc = "Tues"
+	WedDesc  WeekdayDesc = "Wed"
+	ThurDesc WeekdayDesc = "Thur"
+	FriDesc  WeekdayDesc = "Fri"
+	SatDesc  WeekdayDesc = "Sat"
 )
 
+func NewWeekday(value string) Weekday {
+	desc := WeekdayDesc(value)
+	switch desc {
+	case SunDesc:
+		return Sun
+	case MonDesc:
+		return Mon
+	case TuesDesc:
+		return Tues
+	case WedDesc:
+		return Wed
+	case ThurDesc:
+		return Thur
+	case FriDesc:
+		return Fri
+	case SatDesc:
+		return Sat
+	default:
+		return Unknown
+	}
+}
+
 func (w Weekday) String() string {
+	var value WeekdayDesc
 	switch w {
 	case Sun:
-		return "Sun"
+		value = SunDesc
 	case Mon:
-		return "Mon"
+		value = MonDesc
 	case Tues:
-		return "Tues"
+		value = TuesDesc
 	case Wed:
-		return "Wed"
+		value = WedDesc
 	case Thur:
-		return "Thur"
+		value = ThurDesc
 	case Fri:
-		return "Fri"
+		value = FriDesc
 	case Sat:
-		return "Sat"
+		value = SatDesc
+	default:
+		//不存在的枚举类型就返回"N/A"
+		return "N/A"
 	}
-	//不存在的枚举类型就返回"N/A"
-	return "N/A"
+	return string(value)
 }

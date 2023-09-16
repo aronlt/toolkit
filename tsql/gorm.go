@@ -11,6 +11,77 @@ import (
 	"gorm.io/gorm"
 )
 
+func setDB[T any](db *gorm.DB, table string, condition map[string]interface{}) *gorm.DB {
+	var empty T
+	db = db.Table(table).Model(&empty)
+	for k, v := range condition {
+		db = db.Where(fmt.Sprintf("%s = ?", k), v)
+	}
+	return db
+}
+
+func Delete[T any](db *gorm.DB, table string, condition map[string]interface{}) (int64, error) {
+	db = setDB[T](db, table, condition)
+	var empty T
+	result := db.Delete(&empty)
+	return result.RowsAffected, result.Error
+}
+
+func ExecuteRaw(db *gorm.DB, raw string, values ...interface{}) error {
+	err := db.Exec(raw, values).Error
+	return err
+}
+
+func Update[T any](db *gorm.DB, table string, condition map[string]interface{}, values map[string]interface{}) (int64, error) {
+	db = setDB[T](db, table, condition)
+	result := db.Updates(values)
+	return result.RowsAffected, result.Error
+}
+
+func SelectRaw[T any](db *gorm.DB, raw string, values ...interface{}) ([]T, error) {
+	var result []T
+	err := db.Raw(raw, values).Scan(&result).Error
+	return result, err
+}
+
+func SelectPluck[T any, K any](db *gorm.DB, table string, condition map[string]interface{}, column string) ([]K, error) {
+	db = setDB[T](db, table, condition)
+	var result []K
+	err := db.Pluck(column, &result).Error
+	return result, err
+}
+
+func SelectById[T any](db *gorm.DB, table string, id int64, columns ...string) (T, error) {
+	var empty T
+	var result T
+	column := "id"
+	if len(columns) != 0 {
+		column = columns[0]
+	}
+	err := db.Table(table).Model(&empty).Where(fmt.Sprintf("%s = ?", column), id).First(&result).Error
+	return result, err
+}
+
+func Select[T any](db *gorm.DB, table string, condition map[string]interface{}) ([]T, error) {
+	var result []T
+	db = setDB[T](db, table, condition)
+	err := db.Find(&result).Error
+	return result, err
+}
+
+func Insert[T any](db *gorm.DB, table string, value *T) (int64, error) {
+	var empty T
+	result := db.Table(table).Model(&empty).Create(value)
+	return result.RowsAffected, result.Error
+}
+
+func BatchInsert[T any](db *gorm.DB, table string, values []*T) (int64, error) {
+	var empty T
+	result := db.Table(table).Model(&empty).Create(values)
+	return result.RowsAffected, result.Error
+}
+
+// SelectAll 生成select a, b, c, d 前缀
 func SelectAll[T any](data T, prefix ...string) string {
 	parts := make([]string, 0)
 	t := reflect.TypeOf(data)

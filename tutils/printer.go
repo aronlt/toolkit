@@ -1,3 +1,8 @@
 package tutils
 
-// todo打印指针对象
+import "encoding/json"
+
+func MustMarshal[T any](value T) string {
+	content, _ := json.MarshalIndent(value, "", " ")
+	return string(content)
+}
