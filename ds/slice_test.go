@@ -225,6 +225,21 @@ func TestSliceTail(t *testing.T) {
 	v := SliceGetTail(data)
 	assert.Equal(t, v, 6)
 
+	v = SliceGetNthTail(data, 2)
+	assert.Equal(t, v, 5)
+
+	v = SliceGetNthTail(data, 12, -1)
+	assert.Equal(t, v, -1)
+
+	v = SliceGetNthTail(data, -12, -1)
+	assert.Equal(t, v, -1)
+
+	v = SliceGetNthTail(data, 0, -1)
+	assert.Equal(t, v, -1)
+
+	v = SliceGetNthTail(data, len(data), -1)
+	assert.Equal(t, v, 1)
+
 	var ok bool
 	v, ok = SliceOpPopBack(&data)
 

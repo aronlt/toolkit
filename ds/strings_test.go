@@ -37,6 +37,12 @@ func TestStrRemoveHead(t *testing.T) {
 func TestStrSplitNth(t *testing.T) {
 	a := "a,b,c,d"
 	assert.Equal(t, StrSplitNth(a, ",", -1, 2), "c")
+	assert.Equal(t, StrSplitNth(a, ",", 3, 2), "")
+	assert.Equal(t, StrSplitNth(a, ",", 4, -3), "b")
+	assert.Equal(t, StrSplitNth(a, ",", 4, -12), "")
+	assert.Equal(t, StrSplitNth(a, ",", 5, 2), "")
+	assert.Equal(t, StrSplitNth(a, ",", 4, 12), "")
+	assert.Equal(t, StrSplitNth(a, ",", 4, -4), "a")
 }
 
 func TestStrReverse(t *testing.T) {

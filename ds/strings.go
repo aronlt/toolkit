@@ -19,36 +19,43 @@ func StrHasContainInsensitive(str string, subStr string) bool {
 
 // StrRemoveTail 删除str末尾n个元素
 func StrRemoveTail(s string, n int) string {
-	if len(s) < n {
+	if len(s) < n || n <= 0 {
 		return ""
 	}
-	return s[:len(s)-n]
+	return string([]byte(s)[:len(s)-n])
 }
 
 // StrRemoveHead 删除str起始n个元素
 func StrRemoveHead(s string, n int) string {
-	if len(s) < n {
+	if len(s) <= n || n < 0 {
 		return ""
 	}
-	return s[n:]
+	return string([]byte(s)[n:])
 }
 
 // StrSplitNth 字符串分割按照sep分割，约定total个，返回第nth个元素
 // total == -1表示不关注total元素个数
-// nth == -1表示返回最后一个元素
+// nth <0 表示返回倒数第N个元素
 func StrSplitNth(str string, sep string, total int, nth int) string {
-	values := strings.Split(str, sep)
-	if len(values) == total || total == -1 {
-		if nth == -1 {
-			return SliceGetTail(values, "")
-		}
-		if len(values) < nth {
+	// fast fail
+	if total >= 0 {
+		count := strings.Count(str, sep)
+		if total >= 0 && total != count+1 {
 			return ""
-		} else {
-			return values[nth]
+		}
+		if nth < 0 {
+			nth = nth + count + 1
+			if nth < 0 || nth >= count+1 {
+				return ""
+			}
+		}
+		if nth >= count+1 {
+			return ""
 		}
 	}
-	return ""
+
+	values := strings.Split(str, sep)
+	return values[nth]
 }
 
 // StrReverse 转置字符串

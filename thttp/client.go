@@ -5,11 +5,12 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type Option struct {
@@ -124,6 +125,14 @@ func PostForm(u string, form url.Values, options ...Option) ([]byte, error) {
 	return bs, nil
 }
 
+func PostJSONFromStruct(u string, obj interface{}, options ...Option) ([]byte, error) {
+	content, err := json.Marshal(obj)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
+	}
+	return PostJSON(u, content, options...)
+}
+
 // PostJSON 以json格式请求
 func PostJSON(u string, jsonByte []byte, options ...Option) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodPost, u, bytes.NewBuffer(jsonByte))
@@ -156,9 +165,17 @@ func PostJSON(u string, jsonByte []byte, options ...Option) ([]byte, error) {
 	return b, nil
 }
 
-func PostToMap(u string, jsonByte []byte, option ...Option) (map[string]interface{}, error) {
+func PostToMapFromStruct(u string, obj interface{}, options ...Option) (map[string]interface{}, error) {
+	content, err := json.Marshal(obj)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
+	}
+	return PostToMap(u, content, options...)
+}
+
+func PostToMap(u string, jsonByte []byte, options ...Option) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := PostJSON(u, jsonByte, option...)
+	bs, err := PostJSON(u, jsonByte, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -169,9 +186,18 @@ func PostToMap(u string, jsonByte []byte, option ...Option) (map[string]interfac
 	return data, nil
 }
 
-func PostToStruct[T any](u string, jsonByte []byte, option ...Option) (T, error) {
+func PostToStructFromStruct[T any](u string, obj interface{}, options ...Option) (T, error) {
+	content, err := json.Marshal(obj)
+	if err != nil {
+		var data T
+		return data, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
+	}
+	return PostToStruct[T](u, content, options...)
+}
+
+func PostToStruct[T any](u string, jsonByte []byte, options ...Option) (T, error) {
 	var data T
-	bs, err := PostJSON(u, jsonByte, option...)
+	bs, err := PostJSON(u, jsonByte, options...)
 	if err != nil {
 		return data, err
 	}
