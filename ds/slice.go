@@ -840,6 +840,16 @@ func SliceGroupByHandler[K comparable, V any](data []V, getKeyHandler func(int) 
 	return group
 }
 
+// SliceGroupUniqueByHandler 对切片进行分类
+func SliceGroupUniqueByHandler[K comparable, V any](data []V, getKeyHandler func(int) K) map[K]V {
+	group := make(map[K]V, len(data))
+	for i := 0; i < len(data); i++ {
+		key := getKeyHandler(i)
+		group[key] = data[i]
+	}
+	return group
+}
+
 func SliceGroupToTwoMap[T comparable, K comparable, V any](data []V, groupT func(*V) T, groupK func(*V) K) map[T]map[K][]V {
 	result := make(map[T]map[K][]V, len(data))
 	for i := 0; i < len(data); i++ {

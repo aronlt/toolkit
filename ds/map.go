@@ -26,19 +26,34 @@ MapOpMerge 合并两个map，如果key重复则以第二个元素中的key为主
 */
 
 func MapOpAppendValue[K comparable, V any](m map[K][]V, k K, v V) map[K][]V {
+	if m == nil {
+		m = make(map[K][]V)
+	}
 	m[k] = append(m[k], v)
 	return m
 }
 
-// MapOpRemoveEmptyString 删除空字符串的
-func MapOpRemoveEmptyString[K comparable](m map[K]string) map[K]string {
-	nm := make(map[K]string, len(m))
+// MapOpRemoveValue 删除符合条件的值
+func MapOpRemoveValue[K comparable, V comparable](m map[K]V, dv V) map[K]V {
 	for k, v := range m {
-		if v != "" {
-			nm[k] = v
+		if v == dv {
+			delete(m, k)
 		}
 	}
-	return nm
+	return m
+}
+
+// MapOpRemoveValueInSlice 删除符合条件的值
+func MapOpRemoveValueInSlice[K comparable, V comparable](m map[K][]V, dv V, del bool) map[K][]V {
+	for k, v := range m {
+		SliceOpRemove[V](&v, dv)
+		if len(v) == 0 && del {
+			delete(m, k)
+		} else {
+			m[k] = v
+		}
+	}
+	return m
 }
 
 // MapOpMerge 合并两个map，如果key重复则以第二个元素中的key为主

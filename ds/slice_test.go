@@ -296,6 +296,11 @@ func TestSliceGroupByHandler(t *testing.T) {
 
 	assert.Equal(t, b[1], []int{1, 1})
 	assert.Equal(t, b[33], []int{33})
+
+	c := SliceGroupUniqueByHandler(a, func(i int) int {
+		return a[i]
+	})
+	assert.Equal(t, c, map[int]int{1: 1, 2: 2, 3: 3, 4: 4, 33: 33})
 }
 
 func TestSliceGroupByHandlerUnique(t *testing.T) {

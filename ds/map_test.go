@@ -153,13 +153,23 @@ func TestMapConvert(t *testing.T) {
 }
 
 func TestMapOp(t *testing.T) {
-	v := map[int]string{1: "", 2: "2", 3: "3"}
-	v2 := MapOpRemoveEmptyString(v)
-	assert.Equal(t, MapCmpFullSimpleKey(map[int]string{2: "2", 3: "3"}, v2), Equal)
+	v3 := map[int]int{1: 1, 2: 2, 3: 3}
+	v4 := MapOpRemoveValue(v3, 3)
+	assert.Equal(t, MapCmpFullSimpleKey(map[int]int{1: 1, 2: 2}, v4), Equal)
 }
 
 func TestMapConvertKeyToSet(t *testing.T) {
 	v := map[int]string{1: "", 2: "2", 3: "3"}
 	v2 := MapConvertKeyToSet(v)
 	assert.True(t, SliceCmpLogicEqual(SetToSlice(v2), []int{1, 2, 3}))
+}
+
+func TestMapOpRemoveValueInSlice(t *testing.T) {
+	v := map[int][]string{1: {"1", "2"}, 2: {"2"}, 3: {"3"}}
+	v = MapOpRemoveValueInSlice(v, "2", true)
+	assert.Equal(t, v, map[int][]string{1: {"1"}, 3: {"3"}})
+
+	v = map[int][]string{1: {"1", "2"}, 2: {"2"}, 3: {"3"}}
+	v = MapOpRemoveValueInSlice(v, "2", false)
+	assert.Equal(t, v, map[int][]string{1: {"1"}, 2: {}, 3: {"3"}})
 }
