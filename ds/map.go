@@ -56,6 +56,24 @@ func MapOpRemoveValueInSlice[K comparable, V comparable](m map[K][]V, dv V, del 
 	return m
 }
 
+// MapOpDeepCopy 深度拷贝一个Map
+func MapOpDeepCopy[K comparable, V any](m map[K]V) map[K]V {
+	nm := make(map[K]V, len(m))
+	for k, v := range m {
+		nm[k] = deepCopy(interface{}(v)).(V)
+	}
+	return nm
+}
+
+// MapOpCopy 快速拷贝一个Map
+func MapOpCopy[K comparable, V any](m map[K]V) map[K]V {
+	nm := make(map[K]V, len(m))
+	for k, v := range m {
+		nm[k] = v
+	}
+	return nm
+}
+
 // MapOpMerge 合并两个map，如果key重复则以第二个元素中的key为主
 func MapOpMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	len1 := len(m1)
@@ -68,6 +86,15 @@ func MapOpMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 		m3[k] = v
 	}
 	return m3
+}
+
+// MapOpPop 弹出Map中的元素
+func MapOpPop[K comparable, V any](m map[K]V, k K) (V, bool) {
+	v, ok := m[k]
+	if ok {
+		delete(m, k)
+	}
+	return v, ok
 }
 
 /* Map比较
@@ -164,7 +191,7 @@ MapConvertKeyToSet 提取map的key转换为Set
 MapConvertZipSliceToMap 两个slice，一个key，一个value转换为map
 */
 
-// MapConvertValueToSlice 提取map的值
+// MapConvertValueToSlice 提取map的Value转成slice
 func MapConvertValueToSlice[T comparable, V any](a map[T]V) []V {
 	data := make([]V, 0, len(a))
 	for _, v := range a {
@@ -173,7 +200,7 @@ func MapConvertValueToSlice[T comparable, V any](a map[T]V) []V {
 	return data
 }
 
-// MapConvertKeyToSlice 提取map的key
+// MapConvertKeyToSlice 提取map的key, 转成slice
 func MapConvertKeyToSlice[T comparable, V any](a map[T]V) []T {
 	data := make([]T, 0, len(a))
 	for k := range a {
@@ -187,6 +214,15 @@ func MapConvertKeyToSet[T comparable, V any](a map[T]V) BuiltinSet[T] {
 	set := NewSet[T](len(a))
 	for k := range a {
 		set.Insert(k)
+	}
+	return set
+}
+
+// MapConvertValueToSet 提取map的value转成Set
+func MapConvertValueToSet[T comparable, V comparable](a map[T]V) BuiltinSet[V] {
+	set := NewSet[V](len(a))
+	for _, v := range a {
+		set.Insert(v)
 	}
 	return set
 }

@@ -1,4 +1,4 @@
-package treflect
+package ds
 
 // This package is maintained from: https://github.com/mohae/deepcopy
 
@@ -16,7 +16,7 @@ type Interface interface {
 // in an interface{}.  The returned value will need to be asserted to the
 // correct type.
 // note: can't copy unexported field: https://stackoverflow.com/questions/38369350/how-to-clone-a-structure-with-unexported-field
-func Copy(src interface{}) interface{} {
+func deepCopy(src interface{}) interface{} {
 	if src == nil {
 		return nil
 	}
@@ -120,7 +120,7 @@ func copyRecursive(original, cpy reflect.Value) {
 			originalValue := original.MapIndex(key)
 			copyValue := reflect.New(originalValue.Type()).Elem()
 			copyRecursive(originalValue, copyValue)
-			copyKey := Copy(key.Interface())
+			copyKey := deepCopy(key.Interface())
 			cpy.SetMapIndex(reflect.ValueOf(copyKey), copyValue)
 		}
 

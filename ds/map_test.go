@@ -164,6 +164,12 @@ func TestMapConvertKeyToSet(t *testing.T) {
 	assert.True(t, SliceCmpLogicEqual(SetToSlice(v2), []int{1, 2, 3}))
 }
 
+func TestMapConvertValueToSet(t *testing.T) {
+	v := map[int]string{1: "2", 2: "2", 3: "3"}
+	v2 := MapConvertValueToSet(v)
+	assert.True(t, SliceCmpLogicEqual(SetToSlice(v2), []string{"2", "3"}))
+}
+
 func TestMapOpRemoveValueInSlice(t *testing.T) {
 	v := map[int][]string{1: {"1", "2"}, 2: {"2"}, 3: {"3"}}
 	v = MapOpRemoveValueInSlice(v, "2", true)
@@ -172,4 +178,32 @@ func TestMapOpRemoveValueInSlice(t *testing.T) {
 	v = map[int][]string{1: {"1", "2"}, 2: {"2"}, 3: {"3"}}
 	v = MapOpRemoveValueInSlice(v, "2", false)
 	assert.Equal(t, v, map[int][]string{1: {"1"}, 2: {}, 3: {"3"}})
+}
+
+func TestMapOpDeepCopy(t *testing.T) {
+	a := 1
+	b := 2
+	m := map[int]*int{1: &a, 2: &b}
+	nm := MapOpDeepCopy(m)
+	assert.Equal(t, nm, m)
+	*nm[1] = 10
+	assert.Equal(t, 1, *m[1])
+
+	m2 := map[int]int{1: 1, 2: 2}
+	m3 := MapOpCopy(m2)
+	assert.Equal(t, m2, m3)
+}
+
+func TestMapOpPop(t *testing.T) {
+	m := map[string]int{"1": 1, "2": 2}
+	v, ok := MapOpPop(m, "1")
+	assert.Equal(t, ok, true)
+	assert.Equal(t, 1, v)
+	assert.Equal(t, m, map[string]int{"2": 2})
+
+	m = map[string]int{"1": 1, "2": 2}
+	v, ok = MapOpPop(m, "3")
+	assert.Equal(t, ok, false)
+	assert.Equal(t, 0, v)
+	assert.Equal(t, m, map[string]int{"1": 1, "2": 2})
 }
