@@ -190,3 +190,122 @@ func TestContainTag(t *testing.T) {
 	assert.False(t, ContainTag(v, "addr"))
 	assert.True(t, ContainTag(v, "address"))
 }
+
+func TestGetFieldValueToFloat(t *testing.T) {
+	type M struct {
+		A float32
+		B float64
+	}
+
+	m := &M{
+		A: 10,
+		B: 11.1,
+	}
+	v1, err1 := GetFieldValueToFloat(m, "A")
+	assert.Nil(t, err1)
+	assert.Equal(t, v1, float64(10))
+
+	v2, err2 := GetFieldValueToFloat(m, "B")
+	assert.Nil(t, err2)
+	assert.Equal(t, v2, float64(11.1))
+}
+
+func TestGetFieldValueToInt(t *testing.T) {
+	type M struct {
+		A int
+		B int16
+	}
+
+	m := &M{
+		A: 10,
+		B: 11,
+	}
+	v1, err1 := GetFieldValueToInt(m, "A")
+	assert.Nil(t, err1)
+	assert.Equal(t, v1, int64(10))
+
+	v2, err2 := GetFieldValueToInt(m, "B")
+	assert.Nil(t, err2)
+	assert.Equal(t, v2, int64(11))
+}
+
+func TestGetFieldSpecificValue(t *testing.T) {
+	type M struct {
+		A float32 `json:"a"`
+	}
+	type V struct {
+		M
+		Age     int
+		Name    string  `json:"name"`
+		Address *string `json:"address"`
+		M2      M
+	}
+	address := "address"
+	v := &V{
+		Age:     10,
+		Name:    "name",
+		Address: &address,
+		M: M{
+			A: 0.1,
+		},
+		M2: M{
+			A: 1.0,
+		},
+	}
+	value1, type1, err1 := GetFieldSpecificValue[string](v, "Name")
+	assert.Nil(t, err1)
+	assert.Equal(t, type1, reflect.String)
+	assert.Equal(t, value1, "name")
+
+	value2, type2, err2 := GetFieldSpecificValue[*string](v, "Address")
+	assert.Nil(t, err2)
+	assert.Equal(t, type2, reflect.Pointer)
+	assert.Equal(t, *value2, "address")
+
+	value3, type3, err3 := GetFieldSpecificValue[float32](v, "A")
+	assert.Nil(t, err3)
+	assert.Equal(t, type3, reflect.Float32)
+	assert.Equal(t, value3, float32(0.1))
+
+	value4, type4, err4 := GetFieldSpecificValue[M](v, "M2")
+	assert.Nil(t, err4)
+	assert.Equal(t, type4, reflect.Struct)
+	assert.Equal(t, value4, M{A: 1.0})
+
+	func() {
+		defer func() {
+			recover()
+		}()
+		_, _, err5 := GetFieldSpecificValue[int64](v, "Age")
+		assert.NotNil(t, err5)
+	}()
+}
+
+func TestGetAllFields(t *testing.T) {
+	type M struct {
+		A float32 `json:"a"`
+	}
+	type V struct {
+		M
+		Age     int
+		Name    string  `json:"name"`
+		Address *string `json:"address"`
+		M2      M
+	}
+	address := "address"
+	v := &V{
+		Age:     10,
+		Name:    "name",
+		Address: &address,
+		M: M{
+			A: 0.1,
+		},
+		M2: M{
+			A: 1.0,
+		},
+	}
+
+	allFields, err := GetAllFields(v)
+	assert.Nil(t, err)
+	assert.Equal(t, len(allFields), 5)
+}
