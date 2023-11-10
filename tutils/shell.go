@@ -59,7 +59,7 @@ type Result struct {
 	str string
 }
 
-// Err returns the error log.
+// Error returns the error log.
 func (r *Result) Error() error {
 	if r.err == nil {
 		return nil
