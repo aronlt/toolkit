@@ -84,7 +84,11 @@ func BatchInsert[T any](db *gorm.DB, table string, values []*T) (int64, error) {
 // SelectAll 生成select a, b, c, d 前缀
 func SelectAll[T any](data T, prefix ...string) string {
 	parts := make([]string, 0)
-	t := reflect.TypeOf(data)
+	value := reflect.Indirect(reflect.ValueOf(data))
+	if value.Kind() != reflect.Struct {
+		return "*"
+	}
+	t := value.Type()
 	count := t.NumField()
 	for i := 0; i < count; i++ {
 		tag := t.Field(i).Tag

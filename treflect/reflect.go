@@ -8,27 +8,33 @@ import (
 	"github.com/aronlt/toolkit/ds"
 )
 
+// SetField 修改结构体字段的值
 func SetField(item interface{}, fieldName string, value interface{}) error {
 	if reflect.TypeOf(item).Kind() != reflect.Pointer {
 		return fmt.Errorf("expected pointer type, but accept:%v", reflect.TypeOf(item).Kind())
 	}
-	elem := reflect.ValueOf(item).Elem()
-	if elem.Kind() != reflect.Struct {
+	data := reflect.ValueOf(item).Elem()
+	if data.Kind() != reflect.Struct {
 		return fmt.Errorf("invalid elem type")
 	}
-	v := elem.FieldByName(fieldName)
-	if !v.IsValid() {
+	field := data.FieldByName(fieldName)
+	if !field.IsValid() {
 		return fmt.Errorf("can't find field")
 	}
-	if !v.CanSet() {
-		return fmt.Errorf("field name %v is not exported in struct %v", fieldName, elem.Type().String())
+	if !field.CanSet() {
+		return fmt.Errorf("field name %v is not exported in struct %v", fieldName, data.Type().String())
 	}
-	if v.Kind() == reflect.Pointer {
-		m := v.Elem()
-		m.Set(reflect.ValueOf(value))
-	} else {
-		v.Set(reflect.ValueOf(value))
+	if field.Kind() == reflect.Pointer {
+		field = field.Elem()
 	}
+	fType := field.Type()
+	vValue := reflect.ValueOf(value)
+	if vValue.Type().AssignableTo(fType) {
+		field.Set(vValue)
+	} else if vValue.CanConvert(fType) {
+		field.Set(vValue.Convert(fType))
+	}
+
 	return nil
 }
 
