@@ -16,6 +16,11 @@ func TestError(t *testing.T) {
 	fmt.Printf("%+v", err)
 }
 
+func TestErrorf(t *testing.T) {
+	err := Wrapf(test(errors.New("1111")), "test wrapf, num:%d", 1)
+	fmt.Printf("%+v", err)
+}
+
 func Foo(v int) (int, error) {
 	if v < 0 {
 		return -1, fmt.Errorf("invalid args")

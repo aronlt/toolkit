@@ -23,6 +23,12 @@ func Wrap(err error, messages ...string) error {
 	return errors.WithMessage(err, info)
 }
 
+// Wrapf 封装错误信息，获取错误的堆栈数据
+func Wrapf(err error, format string, a ...any) error {
+	message := fmt.Sprintf(format, a...)
+	return Wrap(err, message)
+}
+
 // ProcessChain 链式处理器,简化对错误处理，增加panic的recover机制
 type ProcessChain[T any] struct {
 	value       T
