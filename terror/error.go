@@ -7,26 +7,32 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Wrap 封装错误信息，获取错误的堆栈数据
-func Wrap(err error, messages ...string) error {
-	pc, file, lineNo, ok := runtime.Caller(1)
+func wrap(err error, message string, skip int) error {
+	if skip < 0 {
+		return err
+	}
+	pc, file, lineNo, ok := runtime.Caller(skip)
 	if !ok {
 		return errors.WithMessage(err, "call runtime Caller fail")
 	}
 	funcName := runtime.FuncForPC(pc).Name()
-	info := fmt.Sprintf("file:%s:%d, function:%s", file, lineNo, funcName)
-	if len(messages) != 0 {
-		info += " ,message:" + messages[0] + "\n"
-	} else {
-		info += "\n"
-	}
+	info := fmt.Sprintf("file:%s:%d, function:%s, msg:%s\n", file, lineNo, funcName, message)
 	return errors.WithMessage(err, info)
+}
+
+// Wrap 封装错误信息，获取错误的堆栈数据
+func Wrap(err error, messages ...string) error {
+	var info string
+	if len(messages) != 0 {
+		info = messages[0]
+	}
+	return wrap(err, info, 2)
 }
 
 // Wrapf 封装错误信息，获取错误的堆栈数据
 func Wrapf(err error, format string, a ...any) error {
 	message := fmt.Sprintf(format, a...)
-	return Wrap(err, message)
+	return wrap(err, message, 2)
 }
 
 // ProcessChain 链式处理器,简化对错误处理，增加panic的recover机制

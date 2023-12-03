@@ -8,16 +8,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func test(err error) error {
-	return Wrap(err)
-}
 func TestError(t *testing.T) {
-	err := Wrap(test(errors.New("111")))
-	fmt.Printf("%+v", err)
+	err := Wrap(errors.New("111"))
+	t.Logf("%+v", err)
 }
 
 func TestErrorf(t *testing.T) {
-	err := Wrapf(test(errors.New("1111")), "test wrapf, num:%d", 1)
+	err := Wrapf(errors.New("1111"), "test wrapf, num:%d", 1)
 	fmt.Printf("%+v", err)
 }
 
