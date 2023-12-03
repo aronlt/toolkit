@@ -216,6 +216,14 @@ func SliceGetFilter[T any](a []T, filter func(i int) bool) []T {
 	return newSlice
 }
 
+// SliceSetTail 设置切片最后一个元素值
+func SliceSetTail[T any](data []T, d T) {
+	if len(data) == 0 {
+		return
+	}
+	data[len(data)-1] = d
+}
+
 // SliceGetTail 获取切片最后一个元素，如果没有则用默认值
 func SliceGetTail[T any](data []T, d ...T) T {
 	if len(data) == 0 {
@@ -228,20 +236,33 @@ func SliceGetTail[T any](data []T, d ...T) T {
 	return data[len(data)-1]
 }
 
+// SliceSetNthTail 设置切片倒数第N个元素
+func SliceSetNthTail[T any](data []T, nth int, d T) {
+	if nth < 0 {
+		return
+	}
+	if nth >= len(data) {
+		return
+	}
+
+	data[len(data)-nth-1] = d
+	return
+}
+
 // SliceGetNthTail 获取切片倒数第N个元素，如果没有则用默认值
 func SliceGetNthTail[T any](data []T, nth int, d ...T) T {
 	var t T
 	if len(d) > 0 {
 		t = d[0]
 	}
-	if nth <= 0 {
+	if nth < 0 {
 		return t
 	}
-	if nth > len(data) {
+	if nth >= len(data) {
 		return t
 	}
 
-	return data[len(data)-nth]
+	return data[len(data)-nth-1]
 }
 
 // SliceGetCopy 复制切片
