@@ -10,8 +10,8 @@ func TestSliceIter(t *testing.T) {
 	v := []int{1, 2, 3, 4}
 	m2 := func() []int {
 		m := make([]int, 0)
-		SliceIter(v, func(a []int, i int) {
-			m = append(m, a[i])
+		SliceIter(v, func(i int) {
+			m = append(m, v[i])
 		})
 		return m
 	}()

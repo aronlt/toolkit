@@ -287,12 +287,12 @@ func TestSliceRemoveRange(t *testing.T) {
 
 func TestSliceIncludeWithFn(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	ok := SliceIncludeWithFn(data, func(ints []int, i int) bool {
-		return ints[i] == 3
+	ok := SliceIncludeWithFn(data, func(i int) bool {
+		return data[i] == 3
 	})
 	assert.True(t, ok)
-	ok = SliceIncludeWithFn(data, func(ints []int, i int) bool {
-		return ints[i] == 9
+	ok = SliceIncludeWithFn(data, func(i int) bool {
+		return data[i] == 9
 	})
 	assert.False(t, ok)
 }

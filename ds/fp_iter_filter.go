@@ -1,18 +1,18 @@
 package ds
 
 // SliceIterFilter Looks through each value in the slice, returning a slice of all the values that pass a truth test (predicate).
-func SliceIterFilter[T any](a []T, iterate func(a []T, i int) bool) []T {
+func SliceIterFilter[T any](a []T, iterate func(i int) bool) []T {
 	return SliceGetFilter(a, func(i int) bool {
-		return iterate(a, i)
+		return iterate(i)
 	})
 }
 
 // MapIterFilter Looks through each value in the map, returning a map of all the values that pass a truth test (predicate).
-func MapIterFilter[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) bool) map[K]V {
+func MapIterFilter[K comparable, V any](a map[K]V, iterate func(k K, v V) bool) map[K]V {
 	b := make(map[K]V, len(a))
 	count := 0
 	for k, v := range a {
-		if iterate(a, k, v) {
+		if iterate(k, v) {
 			b[k] = v
 			count += 1
 		}
@@ -42,11 +42,11 @@ func ListIterFilter[T any](a DList[T], iterate func(a DList[T], node T) bool) DL
 }
 
 // SetIterFilter Looks through each value in the set, returning a set of all the values that pass a truth test (predicate).
-func SetIterFilter[T comparable](a BuiltinSet[T], iterate func(a BuiltinSet[T], node T) bool) BuiltinSet[T] {
+func SetIterFilter[T comparable](a BuiltinSet[T], iterate func(node T) bool) BuiltinSet[T] {
 	b := NewSet[T](a.Len())
 	count := 0
 	a.ForEach(func(v T) {
-		if iterate(a, v) {
+		if iterate(v) {
 			b.Insert(v)
 			count += 1
 		}

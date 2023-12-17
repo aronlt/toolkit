@@ -8,7 +8,7 @@ import (
 
 func TestSliceIterMap(t *testing.T) {
 	a := []int{1, 2, 3, 4, 5}
-	SliceIterMapInPlace(a, func(a []int, i int) int {
+	SliceIterMapInPlace(a, func(i int) int {
 		return a[i] + 1
 	})
 	assert.Equal(t, a, []int{2, 3, 4, 5, 6})
@@ -16,7 +16,7 @@ func TestSliceIterMap(t *testing.T) {
 
 func TestMapIterKV(t *testing.T) {
 	a := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
-	MapIterMapKVInPlace(a, func(a map[int]int, k int, v int) int {
+	MapIterMapKVInPlace(a, func(k int, v int) int {
 		return v + 1
 	})
 	assert.Equal(t, a, map[int]int{1: 2, 2: 3, 3: 4, 4: 5})
@@ -47,12 +47,12 @@ func TestFpEachSet(t *testing.T) {
 	a.Insert(3)
 	a.Insert(4)
 	a.Insert(5)
-	SetIterMapInPlace(a, func(a BuiltinSet[int], node int) int {
+	SetIterMapInPlace(a, func(node int) int {
 		return node + 1
 	})
 
 	b := []int{2, 3, 4, 5, 6}
-	SliceIterMapInPlace(b, func(b []int, i int) int {
+	SliceIterMapInPlace(b, func(i int) int {
 		assert.True(t, a.Has(b[i]))
 		return b[i]
 	})

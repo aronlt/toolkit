@@ -68,7 +68,7 @@ func TestToAnyMapWithJson(t *testing.T) {
 		Name:    "name",
 		Address: &address,
 	}
-	m := ToAnyMapWithJson(v, "name")
+	m := StructToAnyMapWithJson(v, "name")
 	anyMap := map[string]interface{}{
 		"address": "address",
 		"m":       M{Age: 10},
@@ -93,7 +93,7 @@ func TestToAnyMap(t *testing.T) {
 		Name:    "name",
 		Address: &address,
 	}
-	m := ToAnyMap(v, "Name")
+	m := StructToAnyMap(v, "Name")
 	anyMap := map[string]interface{}{
 		"Address": "address",
 		"M":       M{Age: 10},
@@ -121,7 +121,7 @@ func TestToAnyMap(t *testing.T) {
 		},
 	}
 
-	m2 := ToAnyMap(v2)
+	m2 := StructToAnyMap(v2)
 	t.Logf("%+v", m2)
 
 	type V3 struct {
@@ -135,7 +135,7 @@ func TestToAnyMap(t *testing.T) {
 		Name:    "a",
 		Address: nil,
 	}
-	m3 := ToAnyMap(v3)
+	m3 := StructToAnyMap(v3)
 	t.Logf("%+v", m3)
 
 	v4 := V3{
@@ -143,7 +143,7 @@ func TestToAnyMap(t *testing.T) {
 		Name:    "name",
 		Address: &address,
 	}
-	m4 := ToAnyMapDeep(v4)
+	m4 := StructToAnyMapDeep(v4)
 	t.Logf("%+v", m4)
 
 	v5 := V3{
@@ -151,7 +151,7 @@ func TestToAnyMap(t *testing.T) {
 		Name:    "name",
 		Address: &address,
 	}
-	m5 := ToAnyMapDeep(v5)
+	m5 := StructToAnyMapDeep(v5)
 	t.Logf("%+v", m5)
 }
 

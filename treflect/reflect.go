@@ -153,8 +153,8 @@ func GetAllFields(item interface{}) ([]*reflect.StructField, error) {
 	return result, nil
 }
 
-// ToAnyMapDeep 把任意数据递归转换为字符串形式的任意map
-func ToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
+// StructToAnyMapDeep 把任意结构体数据递归转换为字符串形式的任意map
+func StructToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
@@ -183,7 +183,7 @@ func ToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
 			continue
 		}
 		if value.Kind() == reflect.Struct {
-			subResult := ToAnyMapDeep(value.Interface(), skip...)
+			subResult := StructToAnyMapDeep(value.Interface(), skip...)
 			result[field.Name] = subResult
 			continue
 		}
@@ -192,7 +192,7 @@ func ToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
 				result[field.Name] = nil
 			} else {
 				if value.Elem().Kind() == reflect.Struct {
-					subResult := ToAnyMapDeep(value.Interface(), skip...)
+					subResult := StructToAnyMapDeep(value.Interface(), skip...)
 					result[field.Name] = subResult
 				} else {
 					result[field.Name] = value.Elem().Interface()
@@ -205,8 +205,8 @@ func ToAnyMapDeep(item interface{}, skip ...string) map[string]interface{} {
 	return result
 }
 
-// ToAnyMapWithJsonDeep 把任意数据递归转换为json字符串形式的任意map
-func ToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface{} {
+// StructToAnyMapWithJsonDeep 把任意结构体数据递归转换为json字符串形式的任意map
+func StructToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
@@ -243,7 +243,7 @@ func ToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface
 			continue
 		}
 		if value.Kind() == reflect.Struct {
-			subResult := ToAnyMapWithJsonDeep(value.Interface(), skip...)
+			subResult := StructToAnyMapWithJsonDeep(value.Interface(), skip...)
 			result[tag] = subResult
 			continue
 		}
@@ -252,7 +252,7 @@ func ToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface
 				result[tag] = nil
 			} else {
 				if value.Elem().Kind() == reflect.Struct {
-					subResult := ToAnyMapWithJsonDeep(value.Interface(), skip...)
+					subResult := StructToAnyMapWithJsonDeep(value.Interface(), skip...)
 					result[tag] = subResult
 				} else {
 					result[tag] = value.Elem().Interface()
@@ -265,8 +265,8 @@ func ToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface
 	return result
 }
 
-// ToAnyMap 把任意数据转换为字符串形式的任意map
-func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
+// StructToAnyMap 把任意结构体转换为字符串形式的任意map
+func StructToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)
@@ -307,8 +307,8 @@ func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 	return result
 }
 
-// ToAnyMapWithJson 把任意数据转换为json字符串形式的任意map
-func ToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
+// StructToAnyMapWithJson 把结构体转换为json字符串形式的任意map
+func StructToAnyMapWithJson(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)
 	result := make(map[string]interface{})
 	r := reflect.TypeOf(item)

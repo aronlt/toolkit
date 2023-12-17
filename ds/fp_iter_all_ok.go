@@ -1,9 +1,9 @@
 package ds
 
 // SliceIterAllOk Returns true if all of the values pass the predicate truth test
-func SliceIterAllOk[T any](a []T, iterate func(a []T, i int) bool) bool {
+func SliceIterAllOk[T any](a []T, iterate func(i int) bool) bool {
 	for i := 0; i < len(a); i++ {
-		if !iterate(a, i) {
+		if !iterate(i) {
 			return false
 		}
 	}
@@ -11,9 +11,9 @@ func SliceIterAllOk[T any](a []T, iterate func(a []T, i int) bool) bool {
 }
 
 // MapIterAllOk Returns true if all of the values pass the predicate truth test
-func MapIterAllOk[K comparable, V any](a map[K]V, iterate func(a map[K]V, k K, v V) bool) bool {
+func MapIterAllOk[K comparable, V any](a map[K]V, iterate func(k K, v V) bool) bool {
 	for k, v := range a {
-		if !iterate(a, k, v) {
+		if !iterate(k, v) {
 			return false
 		}
 	}
@@ -33,10 +33,10 @@ func ListIterAllOk[T any](a DList[T], iterate func(a DList[T], node T) bool) boo
 }
 
 // SetIterAllOk Returns true if all of the values pass the predicate truth test
-func SetIterAllOk[T comparable](a BuiltinSet[T], iterate func(a BuiltinSet[T], node T) bool) bool {
+func SetIterAllOk[T comparable](a BuiltinSet[T], iterate func(node T) bool) bool {
 	result := true
 	a.ForEachIf(func(k T) bool {
-		if !iterate(a, k) {
+		if !iterate(k) {
 			result = false
 			return false
 		}

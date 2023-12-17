@@ -27,6 +27,10 @@ SliceOpRemoveMany 从Slice集合中移除另外一个Slice中的元素
 SliceOpUnique 去重切片
 */
 
+func SliceOpCopy[T any](first []T, second []*T) {
+
+}
+
 // SliceOpMerge 合并两个切片
 func SliceOpMerge[T any](first []T, second []T) []T {
 	result := make([]T, 0, len(first)+len(second))
@@ -514,9 +518,9 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 	SliceExclude 判断元素是否不在切片中
 */
 
-func SliceIncludeWithFn[T comparable](a []T, fn func([]T, int) bool) bool {
+func SliceIncludeWithFn[T comparable](a []T, fn func(int) bool) bool {
 	for i := 0; i < len(a); i++ {
-		if fn(a, i) {
+		if fn(i) {
 			return true
 		}
 	}

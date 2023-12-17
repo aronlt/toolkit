@@ -425,8 +425,8 @@ func GetDiff[T any](v1 *T, v2 *T) ds.BuiltinSet[string] {
 	if reflect.DeepEqual(v1, v2) {
 		return result
 	}
-	map1 := treflect.ToAnyMap(v1)
-	map2 := treflect.ToAnyMap(v2)
+	map1 := treflect.StructToAnyMap(v1)
+	map2 := treflect.StructToAnyMap(v2)
 	diff := func(map1 map[string]interface{}, map2 map[string]interface{}) {
 		for key, val1 := range map1 {
 			val2, ok := map2[key]

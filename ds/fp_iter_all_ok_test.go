@@ -8,13 +8,13 @@ import (
 
 func TestFpEverySlice(t *testing.T) {
 	a := []int{2, 4, 6}
-	v := SliceIterAllOk(a, func(a []int, i int) bool {
+	v := SliceIterAllOk(a, func(i int) bool {
 		return a[i]%2 == 0
 	})
 	assert.True(t, v)
 
 	a = []int{1, 2, 4, 6}
-	v = SliceIterAllOk(a, func(a []int, i int) bool {
+	v = SliceIterAllOk(a, func(i int) bool {
 		return a[i]%2 == 0
 	})
 	assert.False(t, v)
@@ -22,13 +22,13 @@ func TestFpEverySlice(t *testing.T) {
 
 func TestFpEveryMap(t *testing.T) {
 	a := map[int]int{2: 2, 4: 4, 6: 6}
-	v := MapIterAllOk(a, func(a map[int]int, k int, v int) bool {
+	v := MapIterAllOk(a, func(k int, v int) bool {
 		return v%2 == 0 && k%2 == 0
 	})
 	assert.True(t, v)
 
 	a = map[int]int{2: 2, 4: 4, 6: 7}
-	v = MapIterAllOk(a, func(a map[int]int, k int, v int) bool {
+	v = MapIterAllOk(a, func(k int, v int) bool {
 		return v%2 == 0 && k%2 == 0
 	})
 	assert.False(t, v)
@@ -64,7 +64,7 @@ func TestFpEverySet(t *testing.T) {
 	a.Insert(2)
 	a.Insert(4)
 	a.Insert(6)
-	v := SetIterAllOk(a, func(a BuiltinSet[int], node int) bool {
+	v := SetIterAllOk(a, func(node int) bool {
 		return node%2 == 0
 	})
 	assert.True(t, v)
@@ -74,7 +74,7 @@ func TestFpEverySet(t *testing.T) {
 	a.Insert(4)
 	a.Insert(6)
 	a.Insert(7)
-	v = SetIterAllOk(a, func(a BuiltinSet[int], node int) bool {
+	v = SetIterAllOk(a, func(node int) bool {
 		return node%2 == 0
 	})
 	assert.False(t, v)
