@@ -40,6 +40,10 @@ func JSONScan(value, v interface{}) error {
 	if !ok {
 		return errors.New("invalid value types")
 	}
+	if len(data) == 0 {
+		v = make([]string, 0)
+		return nil
+	}
 	return json.Unmarshal(data, v)
 }
 
