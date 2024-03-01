@@ -430,3 +430,29 @@ func TestSliceOpJoin(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, v, "1,2,3,4,5")
 }
+
+func TestSliceGroupToSlice(t *testing.T) {
+	type V struct {
+		A int
+	}
+	a := []V{
+		{
+			A: 1,
+		},
+		{
+			A: 2,
+		},
+		{
+			A: 3,
+		},
+		{
+			A: 5,
+		},
+	}
+	b := SliceGroupToSlice(a, func(i int) (int, bool) {
+		return a[i].A, true
+	})
+	assert.Equal(t, []int{
+		1, 2, 3, 5,
+	}, b)
+}

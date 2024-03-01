@@ -909,6 +909,17 @@ func SliceGroupByHandlerUnique[K comparable, V any](data []V, getKeyHandler func
 	return group
 }
 
+// SliceGroupToSlice 切片转换为新的切片，一般用于提取其内部元素
+func SliceGroupToSlice[T any, V any](data []T, handler func(int) (V, bool)) []V {
+	group := make([]V, 0, len(data))
+	for i := 0; i < len(data); i++ {
+		if v, ok := handler(i); ok {
+			group = append(group, v)
+		}
+	}
+	return group
+}
+
 // SliceGroupToSlices 对切片按照元素进行分类，结果以二维数组形式返回
 func SliceGroupToSlices[V ttypes.Ordered](data []V) [][]V {
 	if !tsort.IsSorted(data) {
