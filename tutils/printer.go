@@ -1,8 +1,14 @@
 package tutils
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
-func MustMarshal[T any](value T) string {
-	content, _ := json.MarshalIndent(value, "", " ")
-	return string(content)
+func MustMarshal(value any) string {
+	str, err := json.MarshalIndent(value, "", " ")
+	if err != nil {
+		return fmt.Sprintf("%#v", value)
+	}
+	return string(str)
 }

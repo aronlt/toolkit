@@ -738,6 +738,73 @@ func SliceMaxNWithOrder[T ttypes.Ordered](data []T, n int) []T {
 	return result
 }
 
+func PartQuickSort[T ttypes.Ordered](data []T, k int, max bool) []T {
+	if len(data) == 0 || k <= 0 {
+		return []T{}
+	}
+	n := len(data)
+	if n <= k {
+		return data
+	}
+	if tsort.IsSorted(data) {
+		if max {
+			return data[n-k:]
+		}
+		return data[:k]
+	}
+	pivot := data[0]
+	i := 0
+	j := n - 1
+	for i < j {
+		for i < j && data[j] >= pivot {
+			j--
+		}
+		for i < j && data[i] <= pivot {
+			i++
+		}
+		if i != j {
+			data[i], data[j] = data[j], data[i]
+		}
+	}
+	if i != 0 {
+		data[i], data[0] = data[0], data[i]
+	}
+	if i == 0 {
+		if max {
+			return PartQuickSort(data[1:], k, max)
+		}
+		result := make([]T, 0, k)
+		result = append(result, data[0])
+		result = append(result, PartQuickSort(data[1:], k-1, max)...)
+		return result
+	} else if i == n-1 {
+		if max {
+			result := make([]T, 0, k)
+			result = append(result, data[i])
+			result = append(result, PartQuickSort(data[:i], k-1, max)...)
+			return result
+		}
+		return PartQuickSort(data[:i], k, max)
+	} else {
+		if max {
+			if n-i >= k {
+				return PartQuickSort(data[i:], k, max)
+			}
+			result := make([]T, 0, k)
+			result = append(result, data[i:]...)
+			result = append(result, PartQuickSort(data[:i], k-n+i, max)...)
+			return result
+		}
+		if i >= k {
+			return PartQuickSort(data[:i], k, max)
+		}
+		result := make([]T, 0, k)
+		result = append(result, data[:i]...)
+		result = append(result, PartQuickSort(data[i:], k-i, max)...)
+		return result
+	}
+}
+
 // SliceMaxN 返回切片中最大N个元素
 func SliceMaxN[T ttypes.Ordered](data []T, n int) []T {
 	if len(data) < n || n <= 0 {
@@ -748,45 +815,9 @@ func SliceMaxN[T ttypes.Ordered](data []T, n int) []T {
 	}
 	tmpData := SliceGetCopy(data)
 	if n == len(data) {
-		tsort.SortSlice(tmpData, true)
 		return tmpData
 	}
-
-	var fastSort func(left, right, k int)
-	fastSort = func(left, right, k int) {
-		l, r, tmp := left, right, tmpData[left]
-		for l < r {
-			for l < r && tmp >= tmpData[r] {
-				r--
-			}
-			if l < r {
-				tmpData[l] = tmpData[r]
-				l++
-			}
-			for l < r && tmp <= tmpData[l] {
-				l++
-			}
-			if l < r {
-				tmpData[r] = tmpData[l]
-				r--
-			}
-		}
-		tmpData[l] = tmp
-		if k == l-left+1 || k == l-left {
-			return
-		}
-		if k < l-left {
-			fastSort(left, l-1, k)
-			return
-		}
-		if k > l-left+1 {
-			fastSort(l+1, right, k-(l-left+1))
-			return
-		}
-		return
-	}
-	fastSort(0, len(tmpData)-1, n)
-	return SliceGetCopy(tmpData, n)
+	return PartQuickSort(tmpData, n, true)
 }
 
 // SliceMinNWithOrder 有序返回切片中最小的N个元素
@@ -806,45 +837,10 @@ func SliceMinN[T ttypes.Ordered](data []T, n int) []T {
 	}
 	tmpData := SliceGetCopy(data)
 	if n == len(data) {
-		tsort.SortSlice(tmpData)
 		return tmpData
 	}
 
-	var fastSort func(left, right, k int)
-	fastSort = func(left, right, k int) {
-		l, r, tmp := left, right, tmpData[left]
-		for l < r {
-			for l < r && tmp <= tmpData[r] {
-				r--
-			}
-			if l < r {
-				tmpData[l] = tmpData[r]
-				l++
-			}
-			for l < r && tmp >= tmpData[l] {
-				l++
-			}
-			if l < r {
-				tmpData[r] = tmpData[l]
-				r--
-			}
-		}
-		tmpData[l] = tmp
-		if k == l-left+1 || k == l-left {
-			return
-		}
-		if k < l-left {
-			fastSort(left, l-1, k)
-			return
-		}
-		if k > l-left+1 {
-			fastSort(l+1, right, k-(l-left+1))
-			return
-		}
-		return
-	}
-	fastSort(0, len(tmpData)-1, n)
-	return SliceGetCopy(tmpData, n)
+	return PartQuickSort(tmpData, n, false)
 }
 
 /* Slice分类函数划分
@@ -907,6 +903,19 @@ func SliceGroupByHandlerUnique[K comparable, V any](data []V, getKeyHandler func
 		group[key] = data[i]
 	}
 	return group
+}
+
+// SliceGroupToPartitions 按照指定步长切割Slice
+func SliceGroupToPartitions[T any](data []T, step int) [][]T {
+	if step <= 0 || step >= len(data) {
+		return [][]T{data}
+	}
+	length := len(data)
+	partitions := make([][]T, 0, length/step+1)
+	for i := 0; i < length; i += step {
+		partitions = append(partitions, data[i:SliceMinUnpack(i+step, length)])
+	}
+	return partitions
 }
 
 // SliceGroupToSlice 切片转换为新的切片，一般用于提取其内部元素

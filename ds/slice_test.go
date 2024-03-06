@@ -456,3 +456,40 @@ func TestSliceGroupToSlice(t *testing.T) {
 		1, 2, 3, 5,
 	}, b)
 }
+
+func TestSliceGroupToPartitions(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	p1 := SliceGroupToPartitions(a, 10)
+	assert.Equal(t, p1, [][]int{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}})
+	p2 := SliceGroupToPartitions(a, 12)
+	assert.Equal(t, p2, [][]int{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}})
+	p3 := SliceGroupToPartitions(a, 2)
+	assert.Equal(t, p3, [][]int{{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}})
+	p4 := SliceGroupToPartitions(a, 7)
+	assert.Equal(t, p4, [][]int{{1, 2, 3, 4, 5, 6, 7}, {8, 9, 10}})
+	p5 := SliceGroupToPartitions(a, 9)
+	assert.Equal(t, p5, [][]int{{1, 2, 3, 4, 5, 6, 7, 8, 9}, {10}})
+}
+
+func TestPartQuickSort(t *testing.T) {
+	datas := [][]int{
+		{8, 1, 6, 3, 7, 5, 4, 2},
+		{1, 2, 3, 4, 5, 6, 7, 8},
+		{8, 7, 6, 5, 4, 3, 2, 1},
+	}
+
+	order := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	for _, data := range datas {
+		for i := 0; i < 100; i++ {
+			if i > 0 {
+				SliceOpShuffle(data)
+			}
+			for j := 1; j <= 8; j++ {
+				a1 := PartQuickSort(SliceGetCopy(data), j, false)
+				a2 := PartQuickSort(SliceGetCopy(data), j, true)
+				assert.True(t, SliceCmpLogicEqual(order[:j], a1))
+				assert.True(t, SliceCmpLogicEqual(order[len(order)-j:], a2))
+			}
+		}
+	}
+}
