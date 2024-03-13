@@ -11,10 +11,10 @@ type PriorityChan[T any] struct {
 	lowPriority  chan T
 }
 
-func NewPriorityChan[T any](size int) *PriorityChan[T] {
+func NewPriorityChan[T any](hsize int, lsize int) *PriorityChan[T] {
 	return &PriorityChan[T]{
-		highPriority: make(chan T, size),
-		lowPriority:  make(chan T, size),
+		highPriority: make(chan T, hsize),
+		lowPriority:  make(chan T, lsize),
 	}
 }
 
@@ -51,6 +51,23 @@ func (p *PriorityChan[T]) TryPut(event T, t ttypes.PriorityType) error {
 }
 
 func (p *PriorityChan[T]) PutWithTimeout(event T, t ttypes.PriorityType, timeout time.Duration) error {
+	switch t {
+	case ttypes.HighPriorityType:
+		select {
+		case p.highPriority <- event:
+			return nil
+		default:
+		}
+	case ttypes.LowPriorityType:
+		select {
+		case p.lowPriority <- event:
+			return nil
+		default:
+		}
+	}
+	if timeout <= 0 {
+		timeout = 1 * time.Second
+	}
 	ticker := time.NewTicker(timeout)
 	defer ticker.Stop()
 	switch t {

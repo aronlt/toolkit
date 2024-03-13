@@ -30,4 +30,5 @@ type IFanOut[T any] interface {
 
 type PriorityHandler[T any] func(event T) error
 type ErrHandler func(err any)
-type WaitGroupHandler func() error
+type ErrorGroupHandler func() error
+type WaitGroupHandler func()

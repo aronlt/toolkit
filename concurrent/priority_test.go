@@ -1,13 +1,14 @@
 package concurrent
 
 import (
+	"testing"
+
 	"github.com/aronlt/toolkit/ttypes"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestPriority(t *testing.T) {
-	priority := NewPriorityChan[string](10)
+	priority := NewPriorityChan[string](2, 10)
 	highHandler := func(e string) error {
 		t.Logf("in high handler receive:%s", e)
 		return nil

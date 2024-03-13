@@ -46,8 +46,8 @@ func SliceOpReverse[T any](data []T) {
 	}
 }
 
-// SliceOpJoin 合并切片
-func SliceOpJoin[T any](data []T, seps ...string) (string, error) {
+// SliceOpJoinToString 切片合并成字符串
+func SliceOpJoinToString[T any](data []T, seps ...string) (string, error) {
 	strs, err := SliceConvertToString(data)
 	if err != nil {
 		return "", err

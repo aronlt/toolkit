@@ -426,7 +426,7 @@ func TestSliceOpMerge(t *testing.T) {
 
 func TestSliceOpJoin(t *testing.T) {
 	a := []int{1, 2, 3, 4, 5}
-	v, err := SliceOpJoin(a)
+	v, err := SliceOpJoinToString(a)
 	assert.Nil(t, err)
 	assert.Equal(t, v, "1,2,3,4,5")
 }
