@@ -5,7 +5,7 @@ func SliceIterPartition[T any](a []T, iterate func(a []T, i int) bool) ([]T, []T
 	pa := make([]T, 0, len(a))
 	pb := make([]T, 0, len(a))
 
-	SliceIter(a, func(i int) {
+	SliceIterV2(a, func(i int) {
 		if iterate(a, i) {
 			pa = append(pa, a[i])
 		} else {

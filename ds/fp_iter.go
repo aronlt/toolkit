@@ -1,7 +1,14 @@
 package ds
 
 // SliceIter 只是迭代元素
-func SliceIter[T any](a []T, iterate func(i int)) {
+func SliceIter[T any](a []T, iterate func(a []T, i int)) {
+	for i := 0; i < len(a); i++ {
+		iterate(a, i)
+	}
+}
+
+// SliceIterV2 只是迭代元素
+func SliceIterV2[T any](a []T, iterate func(i int)) {
 	for i := 0; i < len(a); i++ {
 		iterate(i)
 	}
