@@ -7,6 +7,38 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestVerifyField(t *testing.T) {
+	type M struct {
+		M1 string
+		M2 *int64
+	}
+	type V struct {
+		M
+		Name    string
+		Address *string
+	}
+	addr := "aa"
+	v := &V{
+		M: M{
+			M1: "111",
+			M2: nil,
+		},
+		Name:    "",
+		Address: &addr,
+	}
+	err := VerifyField(v, []string{"M1"})
+	assert.Nil(t, err)
+
+	err = VerifyField(v, []string{"Name"})
+	assert.NotNil(t, err)
+
+	err = VerifyField(v, []string{"M2"})
+	assert.NotNil(t, err)
+
+	err = VerifyField(v, []string{"Address"})
+	assert.Nil(t, err)
+
+}
 func TestGetFieldValue(t *testing.T) {
 	type V struct {
 		Name    string

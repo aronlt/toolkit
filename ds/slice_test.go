@@ -6,6 +6,35 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSliceGetOne(t *testing.T) {
+	m := []int{1, 2, 3, 4, 5, 6}
+	v, err := SliceGetOne(m)
+	assert.Equal(t, v, 1)
+	assert.Nil(t, err)
+
+	m = []int{}
+	v, err = SliceGetOne(m)
+	assert.Equal(t, v, 0)
+	assert.NotNil(t, err)
+}
+
+func TestSliceOnlyGetOne(t *testing.T) {
+	m := []int{1, 2, 3, 4, 5, 6}
+	v, err := SliceGetOnlyOne(m)
+	assert.Equal(t, v, 0)
+	assert.NotNil(t, err)
+
+	m = []int{}
+	v, err = SliceGetOne(m)
+	assert.Equal(t, v, 0)
+	assert.NotNil(t, err)
+
+	m = []int{1}
+	v, err = SliceGetOne(m)
+	assert.Equal(t, v, 1)
+	assert.Nil(t, err)
+}
+
 func TestSliceIndex(t *testing.T) {
 	m := []int{1, 2, 3, 4, 5, 6}
 	i := SliceIncludeIndex(m, 4)

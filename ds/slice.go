@@ -13,22 +13,22 @@ import (
 	"github.com/aronlt/toolkit/ttypes"
 )
 
-/* Slice操作
-SliceOpReverse 转置切片
-SliceOpReverseCopy 转置并复制切片
-SliceOpInsert 插入元素
-SliceOpPopBack 弹出切片最后一个元素
-SliceOpShuffle shuffle 切片
-SliceOpReplace 原地替换元素
-SliceOpRemove 原地删除元素
-SliceOpRemoveIndex 删除某个索引位置的切片
-SliceOpRemoveRange 删除某个范围内的切片
-SliceOpRemoveMany 从Slice集合中移除另外一个Slice中的元素
-SliceOpUnique 去重切片
-*/
+// SliceGetOne 从切片中取出第一个元素
+func SliceGetOne[T any](data []T) (T, error) {
+	if len(data) == 0 {
+		var empty T
+		return empty, fmt.Errorf("empty slice size")
+	}
+	return data[0], nil
+}
 
-func SliceOpCopy[T any](first []T, second []*T) {
-
+// SliceGetOnlyOne 切片只能有一个元素，并取出
+func SliceGetOnlyOne[T any](data []T) (T, error) {
+	if len(data) != 1 {
+		var empty T
+		return empty, fmt.Errorf("slice size must be one, actual is:%d", len(data))
+	}
+	return data[0], nil
 }
 
 // SliceOpMerge 合并两个切片

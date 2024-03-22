@@ -6,6 +6,79 @@ import (
 	"strings"
 )
 
+func VerifyField(item interface{}, fieldNames []string) error {
+	v := reflect.ValueOf(item)
+	v, err := checkStruct(v)
+	if err != nil {
+		return err
+	}
+
+	for _, fieldName := range fieldNames {
+		f := v.FieldByName(fieldName)
+		if !f.IsValid() {
+			return fmt.Errorf("can't find field name")
+		}
+
+		if f.Kind() == reflect.Pointer {
+			if f.IsNil() {
+				return fmt.Errorf("field is nil")
+			}
+			f = f.Elem()
+		}
+		switch f.Kind() {
+		case reflect.Int:
+			if result := f.Interface().(int); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Int8:
+			if result := f.Interface().(int8); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Int16:
+			if result := f.Interface().(int16); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Int32:
+			if result := f.Interface().(int32); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Int64:
+			if result := f.Interface().(int64); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Uint:
+			if result := f.Interface().(uint); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Uint8:
+			if result := f.Interface().(uint); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.Uint16:
+			if result := f.Interface().(uint); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+
+		case reflect.Uint32:
+			if result := f.Interface().(uint32); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+
+		case reflect.Uint64:
+			if result := f.Interface().(uint64); result <= 0 {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		case reflect.String:
+			if result := f.Interface().(string); result == "" {
+				return fmt.Errorf("invalid field:%s, value:%v", fieldName, result)
+			}
+		default:
+			return fmt.Errorf("not support check this kind")
+		}
+	}
+	return nil
+}
+
 // SetField 修改结构体字段的值
 func SetField(item interface{}, fieldName string, value interface{}) error {
 	if reflect.TypeOf(item).Kind() != reflect.Pointer {
@@ -119,8 +192,22 @@ func GetFieldSpecificValue[T any](item interface{}, fieldName string) (T, reflec
 	return result, value.Kind(), nil
 }
 
+func checkStruct(value reflect.Value) (reflect.Value, error) {
+	if value.Kind() == reflect.Pointer {
+		value = value.Elem()
+	}
+	if value.Kind() != reflect.Struct {
+		return value, fmt.Errorf("param must be struct")
+	}
+	return value, nil
+}
+
 func GetFieldValue(item interface{}, fieldName string) (reflect.Value, error) {
 	r := reflect.ValueOf(item)
+	r, err := checkStruct(r)
+	if err != nil {
+		return r, err
+	}
 	f := reflect.Indirect(r).FieldByName(fieldName)
 	if !f.IsValid() {
 		return f, fmt.Errorf("can't find field name")
@@ -131,11 +218,9 @@ func GetFieldValue(item interface{}, fieldName string) (reflect.Value, error) {
 // GetAllFields 取出全部Field字段
 func GetAllFields(item interface{}) ([]*reflect.StructField, error) {
 	v := reflect.ValueOf(item)
-	if v.Kind() == reflect.Pointer {
-		v = v.Elem()
-	}
-	if v.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("param must be struct")
+	v, err := checkStruct(v)
+	if err != nil {
+		return nil, err
 	}
 	r := reflect.TypeOf(item)
 	if r.Kind() == reflect.Pointer {
@@ -154,10 +239,8 @@ func GetAllFields(item interface{}) ([]*reflect.StructField, error) {
 // ContainTag 判断结构体是否含有特定的json内容
 func ContainTag(item interface{}, tag string) bool {
 	v := reflect.ValueOf(item)
-	if v.Kind() == reflect.Pointer {
-		v = v.Elem()
-	}
-	if v.Kind() != reflect.Struct {
+	v, err := checkStruct(v)
+	if err != nil {
 		return false
 	}
 	r := reflect.TypeOf(item)
