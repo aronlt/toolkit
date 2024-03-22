@@ -518,7 +518,16 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 	SliceExclude 判断元素是否不在切片中
 */
 
-func SliceIncludeWithFn[T comparable](a []T, fn func(int) bool) bool {
+func SliceIncludeWithFn[T comparable](a []T, fn func(a []T, i int) bool) bool {
+	for i := 0; i < len(a); i++ {
+		if fn(a, i) {
+			return true
+		}
+	}
+	return false
+}
+
+func SliceIncludeWithFnV2[T comparable](a []T, fn func(int) bool) bool {
 	for i := 0; i < len(a); i++ {
 		if fn(i) {
 			return true
