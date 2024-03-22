@@ -8,13 +8,13 @@ import (
 
 func TestFpEverySlice(t *testing.T) {
 	a := []int{2, 4, 6}
-	v := SliceIterAllOk(a, func(i int) bool {
+	v := SliceIterAllOkV2(a, func(i int) bool {
 		return a[i]%2 == 0
 	})
 	assert.True(t, v)
 
 	a = []int{1, 2, 4, 6}
-	v = SliceIterAllOk(a, func(i int) bool {
+	v = SliceIterAllOkV2(a, func(i int) bool {
 		return a[i]%2 == 0
 	})
 	assert.False(t, v)

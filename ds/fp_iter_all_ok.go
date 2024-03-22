@@ -1,7 +1,16 @@
 package ds
 
-// SliceIterAllOk Returns true if all of the values pass the predicate truth test
-func SliceIterAllOk[T any](a []T, iterate func(i int) bool) bool {
+func SliceIterAllOk[T any](a []T, iterate func(a []T, i int) bool) bool {
+	for i := 0; i < len(a); i++ {
+		if !iterate(a, i) {
+			return false
+		}
+	}
+	return true
+}
+
+// SliceIterAllOkV2 Returns true if all of the values pass the predicate truth test
+func SliceIterAllOkV2[T any](a []T, iterate func(i int) bool) bool {
 	for i := 0; i < len(a); i++ {
 		if !iterate(i) {
 			return false
