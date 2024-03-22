@@ -8,7 +8,7 @@ import (
 
 func TestFpFilterSlice(t *testing.T) {
 	a := []int{2, 4, 6, 7}
-	v := SliceIterFilter(a, func(i int) bool {
+	v := SliceIterFilterV2(a, func(i int) bool {
 		return a[i] == 7
 	})
 	assert.Equal(t, v, []int{7})

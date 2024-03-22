@@ -36,6 +36,10 @@ func ConvertAnyMapToStruct[T any](anyMap map[string]any) (*T, error) {
 	return &data, nil
 }
 
+func ToAnyMap(item interface{}, skip ...string) map[string]interface{} {
+	return StructToAnyMap(item, skip...)
+}
+
 // StructToAnyMap 把任意结构体转换为字符串形式的任意map
 func StructToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 	skipSet := ds.SetOf(skip...)

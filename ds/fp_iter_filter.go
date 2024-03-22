@@ -1,7 +1,14 @@
 package ds
 
 // SliceIterFilter Looks through each value in the slice, returning a slice of all the values that pass a truth test (predicate).
-func SliceIterFilter[T any](a []T, iterate func(i int) bool) []T {
+func SliceIterFilter[T any](a []T, iterate func(a []T, i int) bool) []T {
+	return SliceGetFilter(a, func(i int) bool {
+		return iterate(a, i)
+	})
+}
+
+// SliceIterFilterV2 Looks through each value in the slice, returning a slice of all the values that pass a truth test (predicate).
+func SliceIterFilterV2[T any](a []T, iterate func(i int) bool) []T {
 	return SliceGetFilter(a, func(i int) bool {
 		return iterate(i)
 	})
