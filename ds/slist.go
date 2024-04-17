@@ -14,8 +14,12 @@ type sListNode[T any] struct {
 	value T
 }
 
-// SListOf return a SList that contains values.
-func SListOf[T any](values ...T) SList[T] {
+func NewSList[T any]() SList[T] {
+	return SList[T]{}
+}
+
+// SListFromUnpack return a SList that contains values.
+func SListFromUnpack[T any](values ...T) SList[T] {
 	l := SList[T]{}
 	for i := range values {
 		l.PushBack(values[i])
@@ -113,10 +117,9 @@ func (l *SList[T]) Reverse() {
 
 // Values copies all elements in the container to a slice and return it.
 func (l *SList[T]) Values() []T {
-	s := make([]T, l.Len())
-	for node, i := l.head, 0; node != nil; node = node.next {
-		s[i] = node.value
-		i++
+	s := make([]T, 0, l.Len())
+	for node := l.head; node != nil; node = node.next {
+		s = append(s, node.value)
 	}
 	return s
 }

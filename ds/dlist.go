@@ -13,8 +13,12 @@ type dListNode[T any] struct {
 	value      T
 }
 
-// ListOf make a new DList from a serial of values.
-func ListOf[T any](vs ...T) DList[T] {
+func NewDList[T any]() DList[T] {
+	return DList[T]{}
+}
+
+// DListFromUnpack make a new DList from a serial of values.
+func DListFromUnpack[T any](vs ...T) DList[T] {
 	l := DList[T]{}
 	for _, v := range vs {
 		l.PushBack(v)
@@ -133,6 +137,14 @@ func (l *DList[T]) PopBack() T {
 		panic("DList.PopBack: empty list")
 	}
 	return r
+}
+
+func (l *DList[T]) Values() []T {
+	v := make([]T, 0, l.Len())
+	l.ForEach(func(val T) {
+		v = append(v, val)
+	})
+	return v
 }
 
 // TryPopFront tries to pop up an element from the front of the list.

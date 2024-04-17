@@ -13,21 +13,86 @@ func NewSet[K comparable](n ...int) BuiltinSet[K] {
 	return make(BuiltinSet[K])
 }
 
-// SetOf creates a new BuiltinSet object with the initial content from ks.
-func SetOf[K comparable](ks ...K) BuiltinSet[K] {
+// SetFromUnpack creates a new BuiltinSet object with the initial content from ks.
+func SetFromUnpack[K comparable](ks ...K) BuiltinSet[K] {
 	s := make(BuiltinSet[K], len(ks))
-	s.InsertN(ks...)
+	for _, k := range ks {
+		s[k] = struct{}{}
+	}
 	return s
 }
 
 // SetFromSlice create a new BuiltinSet object with the initial content from slice.
 func SetFromSlice[K comparable](ks []K) BuiltinSet[K] {
-	return SetOf(ks...)
+	return SetFromUnpack(ks...)
 }
 
-// SetToSlice convert from set to slice
+// SetFromMapKey 从map的key构造Set集合
+func SetFromMapKey[K comparable, V any](ks map[K]V) BuiltinSet[K] {
+	s := make(BuiltinSet[K], len(ks))
+	for k := range ks {
+		s[k] = struct{}{}
+	}
+	return s
+}
+
+// SetFromMapValue 从map的value构造Set集合
+func SetFromMapValue[K comparable, V comparable](ks map[K]V) BuiltinSet[V] {
+	s := make(BuiltinSet[V])
+	for _, v := range ks {
+		s[v] = struct{}{}
+	}
+	return s
+}
+
+// SetFromSList 从单向链表构造Set集合
+func SetFromSList[K comparable](list SList[K]) BuiltinSet[K] {
+	s := make(BuiltinSet[K], list.Len())
+	list.ForEach(func(k K) {
+		s[k] = struct{}{}
+	})
+	return s
+}
+
+// SetFromDList 从单向链表构造Set集合
+func SetFromDList[K comparable](list DList[K]) BuiltinSet[K] {
+	s := make(BuiltinSet[K], list.Len())
+	list.ForEach(func(k K) {
+		s[k] = struct{}{}
+	})
+	return s
+}
+
+// SetToSlice convert set to slice
 func SetToSlice[K comparable](u BuiltinSet[K]) []K {
 	return u.Keys()
+}
+
+// SetToSList SetToList convert set to list
+func SetToSList[K comparable](u BuiltinSet[K]) SList[K] {
+	list := NewSList[K]()
+	u.ForEach(func(k K) {
+		list.PushBack(k)
+	})
+	return list
+}
+
+// SetToDList SetToList convert set to list
+func SetToDList[K comparable](u BuiltinSet[K]) DList[K] {
+	list := NewDList[K]()
+	u.ForEach(func(k K) {
+		list.PushBack(k)
+	})
+	return list
+}
+
+// SetToMap convert set to map
+func SetToMap[K comparable, V any](u BuiltinSet[K], fn func(K) V) map[K]V {
+	m := make(map[K]V, u.Len())
+	u.ForEach(func(k K) {
+		m[k] = fn(k)
+	})
+	return m
 }
 
 // IsEmpty implements the Container interface.
@@ -72,7 +137,9 @@ func (s BuiltinSet[K]) InsertN(ks ...K) int {
 // Remove implements the Set interface.
 func (s BuiltinSet[K]) Remove(k K) bool {
 	_, ok := s[k]
-	delete(s, k)
+	if ok {
+		delete(s, k)
+	}
 	return ok
 }
 
@@ -89,6 +156,13 @@ func (s BuiltinSet[K]) RemoveN(ks ...K) int {
 		delete(s, k)
 	}
 	return oldLen - len(s)
+}
+
+// DeleteN delete elements from the set
+func (s BuiltinSet[K]) DeleteN(ks ...K) {
+	for _, k := range ks {
+		delete(s, k)
+	}
 }
 
 // Keys return a copy of all keys as a slice.
@@ -130,7 +204,8 @@ func (s BuiltinSet[K]) Update(other BuiltinSet[K]) {
 
 // Union returns a new set with elements from the set and other.
 func (s BuiltinSet[K]) Union(other BuiltinSet[K]) BuiltinSet[K] {
-	result := BuiltinSet[K]{}
+	_, large := orderSet(s, other)
+	result := make(BuiltinSet[K], large.Len())
 	result.Update(s)
 	result.Update(other)
 	return result

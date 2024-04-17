@@ -83,13 +83,13 @@ func Test_SList_PopFront(t *testing.T) {
 }
 
 func Test_SList_Reverse(t *testing.T) {
-	sl := SListOf(1, 2, 3, 4)
+	sl := SListFromUnpack(1, 2, 3, 4)
 	sl.Reverse()
 	assert.Equal(t, sl.Values(), []int{4, 3, 2, 1})
 }
 
 func Test_SList_ForEach(t *testing.T) {
-	sl := SListOf(1, 2, 3, 4)
+	sl := SListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEach(func(v int) {
 		i++
@@ -99,7 +99,7 @@ func Test_SList_ForEach(t *testing.T) {
 }
 
 func Test_SList_ForEachIf(t *testing.T) {
-	sl := SListOf(1, 2, 3, 4)
+	sl := SListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachIf(func(v int) bool {
 		i++
@@ -110,7 +110,7 @@ func Test_SList_ForEachIf(t *testing.T) {
 }
 
 func Test_SList_ForEachMutable(t *testing.T) {
-	sl := SListOf(1, 2, 3, 4)
+	sl := SListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutable(func(v *int) {
 		i++
@@ -124,7 +124,7 @@ func Test_SList_ForEachMutable(t *testing.T) {
 }
 
 func Test_SList_ForEachMutableIf(t *testing.T) {
-	sl := SListOf(1, 2, 3, 4)
+	sl := SListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutableIf(func(v *int) bool {
 		i++

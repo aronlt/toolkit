@@ -268,7 +268,7 @@ func MapNewSortedMap[K ttypes.Ordered, V any](data map[K]V, reverseOpts ...bool)
 
 	tuples := make([]ttypes.Tuple[K, V], len(keys))
 	for i := 0; i < len(keys); i++ {
-		tuples[i] = ttypes.Tuple[K, V]{keys[i], data[keys[i]]}
+		tuples[i] = ttypes.Tuple[K, V]{Key: keys[i], Value: data[keys[i]]}
 	}
 	return SortedMap[K, V]{
 		ReverseOpt: reverseOpt,

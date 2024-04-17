@@ -167,7 +167,7 @@ func SliceOpRemoveRange[T any](data *[]T, i int, j int) {
 
 // SliceOpRemoveMany 从Slice集合中移除另外一个Slice中的元素
 func SliceOpRemoveMany[T comparable](data *[]T, values []T) {
-	set := SetOf[T](values...)
+	set := SetFromUnpack[T](values...)
 	for i := len(*data) - 1; i >= 0; i-- {
 		if set.Has((*data)[i]) {
 			if i == len(*data)-1 {

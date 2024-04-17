@@ -42,7 +42,7 @@ func Test_List_PopFront(t *testing.T) {
 	assert.Panics(t, func() { sl.PopFront() })
 }
 func Test_List_ForEach(t *testing.T) {
-	sl := ListOf(1, 2, 3, 4)
+	sl := DListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEach(func(v int) {
 		i++
@@ -52,7 +52,7 @@ func Test_List_ForEach(t *testing.T) {
 }
 
 func Test_List_ForEachIf(t *testing.T) {
-	sl := ListOf(1, 2, 3, 4)
+	sl := DListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachIf(func(v int) bool {
 		i++
@@ -63,7 +63,7 @@ func Test_List_ForEachIf(t *testing.T) {
 }
 
 func Test_List_ForEachMutable(t *testing.T) {
-	sl := ListOf(1, 2, 3, 4)
+	sl := DListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutable(func(v *int) {
 		i++
@@ -77,7 +77,7 @@ func Test_List_ForEachMutable(t *testing.T) {
 }
 
 func Test_List_ForEachMutableIf(t *testing.T) {
-	sl := ListOf(1, 2, 3, 4)
+	sl := DListFromUnpack(1, 2, 3, 4)
 	i := 0
 	sl.ForEachMutableIf(func(v *int) bool {
 		i++
