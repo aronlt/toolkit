@@ -29,8 +29,20 @@ func MapIterAllOk[K comparable, V any](a map[K]V, iterate func(k K, v V) bool) b
 	return true
 }
 
-// ListIterAllOk Returns true if all of the values pass the predicate truth test
-func ListIterAllOk[T any](a DList[T], iterate func(a DList[T], node T) bool) bool {
+// DListIterAllOk Returns true if all of the values pass the predicate truth test
+func DListIterAllOk[T any](a DList[T], iterate func(a DList[T], node T) bool) bool {
+	iterator := a.Iterate()
+	for iterator.IsNotEnd() {
+		if !iterate(a, iterator.Value()) {
+			return false
+		}
+		iterator.MoveToNext()
+	}
+	return true
+}
+
+// SListIterAllOk Returns true if all of the values pass the predicate truth test
+func SListIterAllOk[T any](a SList[T], iterate func(a SList[T], node T) bool) bool {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		if !iterate(a, iterator.Value()) {

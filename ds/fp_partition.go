@@ -29,11 +29,26 @@ func MapIterPartition[K comparable, V any](a map[K]V, iterate func(a map[K]V, k 
 	return pa, pb
 }
 
-// ListPartition Split list into two lists: one whose elements all satisfy predicate and one whose elements all do not satisfy predicate
-func ListPartition[T any](a DList[T], iterate func(a DList[T], node T) bool) (DList[T], DList[T]) {
+// DListPartition Split list into two lists: one whose elements all satisfy predicate and one whose elements all do not satisfy predicate
+func DListPartition[T any](a DList[T], iterate func(a DList[T], node T) bool) (DList[T], DList[T]) {
 	pa := DList[T]{}
 	pb := DList[T]{}
-	ListIter(a, func(a DList[T], node T) {
+	DListIter(a, func(a DList[T], node T) {
+		if iterate(a, node) {
+			pa.PushBack(node)
+		} else {
+			pb.PushBack(node)
+		}
+	})
+
+	return pa, pb
+}
+
+// SListPartition Split list into two lists: one whose elements all satisfy predicate and one whose elements all do not satisfy predicate
+func SListPartition[T any](a SList[T], iterate func(a SList[T], node T) bool) (SList[T], SList[T]) {
+	pa := SList[T]{}
+	pb := SList[T]{}
+	SListIter(a, func(a SList[T], node T) {
 		if iterate(a, node) {
 			pa.PushBack(node)
 		} else {

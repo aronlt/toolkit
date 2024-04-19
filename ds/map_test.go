@@ -115,18 +115,18 @@ func TestSortedMap(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		m[i] = i
 	}
-	sortedMap := MapNewSortedMap(m)
+	tuples := BuildOrderTuples(m)
 	for i := 0; i < 10; i++ {
-		assert.Equal(t, sortedMap.Tuples[i].Key, i)
-		assert.Equal(t, sortedMap.Tuples[i].Value, i)
+		assert.Equal(t, tuples[i].Key, i)
+		assert.Equal(t, tuples[i].Value, i)
 	}
 	for i := 0; i < 10; i++ {
-		sortedMap.RawMap[i] = i + 1
+		m[i] = i + 1
 	}
-	sortedMap.Rebuild()
+	tuples = BuildOrderTuples(m)
 	for i := 0; i < 10; i++ {
-		assert.Equal(t, sortedMap.Tuples[i].Key, i)
-		assert.Equal(t, sortedMap.Tuples[i].Value, i+1)
+		assert.Equal(t, tuples[i].Key, i)
+		assert.Equal(t, tuples[i].Value, i+1)
 	}
 }
 

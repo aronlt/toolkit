@@ -13,7 +13,7 @@ func New(size uint64) *Bitmap {
 	size = (size + 7) / 8 * 8
 	bitmap := &Bitmap{
 		size: size,
-		data: make([]byte, size/8, size/8),
+		data: make([]byte, size/8),
 	}
 	return bitmap
 }

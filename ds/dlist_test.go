@@ -1,8 +1,12 @@
 package ds
 
 import (
+	"math/rand"
+	"sort"
 	"testing"
+	"time"
 
+	"github.com/aronlt/toolkit/ttypes"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -99,4 +103,36 @@ func Test_List_Iterate(t *testing.T) {
 		assert.Equal(t, *it.Pointer(), i)
 	}
 	assert.Equal(t, i, 3)
+}
+
+func Test_RemoveDLIstValue(t *testing.T) {
+	sl := DList[int]{}
+	m := []int{1, 2, 3, 4, 5}
+	for _, v := range m {
+		sl.PushBack(v)
+	}
+	for i, v := range m {
+		ok := sl.RemoveValue(v, ttypes.OrderedCompare[int])
+		assert.True(t, ok)
+		assert.Equal(t, sl.Values(), m[i+1:])
+		assert.Equal(t, sl.Len(), len(m)-i-1)
+	}
+}
+
+func Test_InsertLessBound(t *testing.T) {
+	rand.Seed(time.Now().UnixMilli())
+	for i := 0; i < 1000; i++ {
+		sl := DList[int]{}
+		m := make([]int, 0)
+		for j := 0; j < 1000; j++ {
+			v := rand.Int() % 97
+			m = append(m, v)
+		}
+		for j, v := range m {
+			sl.InsertLessBound(v, ttypes.LessEq[int])
+			m2 := SliceGetCopy(m[:j+1])
+			sort.Ints(m2)
+			assert.Equal(t, sl.Values(), m2)
+		}
+	}
 }

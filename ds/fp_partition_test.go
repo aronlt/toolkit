@@ -24,14 +24,36 @@ func TestFpPartitionMap(t *testing.T) {
 	assert.Equal(t, pb, map[int]int{7: 7})
 }
 
-func TestFpPartitionList(t *testing.T) {
+func TestFpPartitionDList(t *testing.T) {
 	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 	a.PushBack(7)
 
-	pa, pb := ListPartition(a, func(a DList[int], node int) bool {
+	pa, pb := DListPartition(a, func(a DList[int], node int) bool {
+		return node%2 == 0
+	})
+
+	counter := 2
+	pa.ForEach(func(val int) {
+		assert.Equal(t, val, counter)
+		counter += 2
+	})
+
+	pb.ForEach(func(val int) {
+		assert.Equal(t, val, 7)
+	})
+}
+
+func TestFpPartitionSList(t *testing.T) {
+	a := SList[int]{}
+	a.PushBack(2)
+	a.PushBack(4)
+	a.PushBack(6)
+	a.PushBack(7)
+
+	pa, pb := SListPartition(a, func(a SList[int], node int) bool {
 		return node%2 == 0
 	})
 

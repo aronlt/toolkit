@@ -5,6 +5,10 @@ type TupleName struct {
 	indexToName  map[int]string
 }
 
+func (tn *TupleName) Names() []string {
+	return MapConvertKeyToSlice(tn.namesToIndex)
+}
+
 func (tn *TupleName) Set(name string, index int) {
 	tn.namesToIndex[name] = index
 	tn.indexToName[index] = name

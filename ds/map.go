@@ -2,9 +2,9 @@ package ds
 
 import (
 	"reflect"
+	"sort"
 	"sync"
 
-	"github.com/aronlt/toolkit/tsort"
 	"github.com/aronlt/toolkit/ttypes"
 )
 
@@ -239,42 +239,15 @@ func MapConvertZipSliceToMap[T comparable, V any](a []T, b []V) (map[T]V, error)
 	return result, nil
 }
 
-// SortedMap 有序Map，底层维护了有序切片
-// 如果需要对map进行修改需要执行Rebuild来维护有序行，否则会导致不一致
-type SortedMap[K ttypes.Ordered, V any] struct {
-	ReverseOpt bool
-	Tuples     []ttypes.Tuple[K, V]
-	RawMap     map[K]V
-}
-
-// Rebuild 重新构建有序Map，一般用于map修改后再次维护tuples的有序行
-func (s *SortedMap[K, V]) Rebuild() {
-	*s = MapNewSortedMap(s.RawMap, s.ReverseOpt)
-}
-
-func MapNewSortedMap[K ttypes.Ordered, V any](data map[K]V, reverseOpts ...bool) SortedMap[K, V] {
-	keys := make([]K, 0, len(data))
-	for key := range data {
-		keys = append(keys, key)
+func BuildOrderTuples[K ttypes.Ordered, V any](m map[K]V) []*ttypes.OrderTuple[K, V] {
+	tuples := make([]*ttypes.OrderTuple[K, V], 0, len(m))
+	for k, v := range m {
+		tuples = append(tuples, &ttypes.OrderTuple[K, V]{Key: k, Value: v})
 	}
-
-	var reverseOpt bool
-	if len(reverseOpts) == 0 || !reverseOpts[0] {
-		reverseOpt = false
-	} else {
-		reverseOpt = true
-	}
-	tsort.SortSlice(keys, reverseOpt)
-
-	tuples := make([]ttypes.Tuple[K, V], len(keys))
-	for i := 0; i < len(keys); i++ {
-		tuples[i] = ttypes.Tuple[K, V]{Key: keys[i], Value: data[keys[i]]}
-	}
-	return SortedMap[K, V]{
-		ReverseOpt: reverseOpt,
-		Tuples:     tuples,
-		RawMap:     data,
-	}
+	sort.Slice(tuples, func(i, j int) bool {
+		return tuples[i].Key < tuples[j].Key
+	})
+	return tuples
 }
 
 // MapLocker 带锁的map，用于简单的并发读写场景

@@ -22,14 +22,32 @@ func TestMapIterKV(t *testing.T) {
 	assert.Equal(t, a, map[int]int{1: 2, 2: 3, 3: 4, 4: 5})
 }
 
-func TestFpEachList(t *testing.T) {
+func TestFpEachDList(t *testing.T) {
 	a := DList[int]{}
 	a.PushBack(1)
 	a.PushBack(2)
 	a.PushBack(3)
 	a.PushBack(4)
 
-	ListIterMapInPlace(a, func(a DList[int], node int) int {
+	DListIterMapInPlace(a, func(a DList[int], node int) int {
+		return node + 1
+	})
+
+	count := 2
+	a.ForEach(func(val int) {
+		assert.Equal(t, count, val)
+		count += 1
+	})
+}
+
+func TestFpEachSList(t *testing.T) {
+	a := SList[int]{}
+	a.PushBack(1)
+	a.PushBack(2)
+	a.PushBack(3)
+	a.PushBack(4)
+
+	SListIterMapInPlace(a, func(a SList[int], node int) int {
 		return node + 1
 	})
 
@@ -56,5 +74,4 @@ func TestFpEachSet(t *testing.T) {
 		assert.True(t, a.Has(b[i]))
 		return b[i]
 	})
-
 }

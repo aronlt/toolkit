@@ -1,5 +1,7 @@
 package ds
 
+import "github.com/aronlt/toolkit/ttypes"
+
 // copy from https://github.com/chen3feng/stl4go/blob/master/slist.go
 
 // SList is a singly linked list.
@@ -14,13 +16,13 @@ type sListNode[T any] struct {
 	value T
 }
 
-func NewSList[T any]() SList[T] {
-	return SList[T]{}
+func NewSList[T any]() *SList[T] {
+	return &SList[T]{}
 }
 
 // SListFromUnpack return a SList that contains values.
-func SListFromUnpack[T any](values ...T) SList[T] {
-	l := SList[T]{}
+func SListFromUnpack[T any](values ...T) *SList[T] {
+	l := &SList[T]{}
 	for i := range values {
 		l.PushBack(values[i])
 	}
@@ -60,6 +62,73 @@ func (l *SList[T]) Back() T {
 	return l.tail.value
 }
 
+func (l *SList[T]) RemoveValue(v T, fn ttypes.CompareFn[T]) bool {
+	var pre *sListNode[T]
+	found := false
+	for node := l.head; node != nil; node = node.next {
+		if fn(v, node.value) == 0 {
+			found = true
+			break
+		} else {
+			pre = node
+		}
+	}
+	if !found {
+		return false
+	}
+	if pre == nil {
+		if fn(l.head.value, v) == 0 {
+			l.PopFront()
+		} else if fn(l.tail.value, v) == 0 {
+			l.PopTail()
+		} else {
+			panic("should not be here")
+		}
+		return true
+	}
+	node := pre.next
+	if node == nil {
+		panic("node should not be nil")
+	}
+	pre.next = node.next
+	node.next = nil
+	l.length--
+	return true
+}
+
+func (l *SList[T]) InsertLessBound(v T, fn ttypes.LessEqFn[T]) {
+	if l.IsEmpty() {
+		l.PushBack(v)
+		return
+	}
+	var pre *sListNode[T]
+	for node := l.head; node != nil; node = node.next {
+		if fn(v, node.value) {
+			if node == l.head {
+				n := &sListNode[T]{nil, v}
+				n.next = l.head
+				l.head = n
+				l.length++
+				return
+			}
+			break
+		} else {
+			pre = node
+		}
+	}
+	if pre == nil {
+		panic("should not be here")
+	}
+
+	n := &sListNode[T]{nil, v}
+	n.next = pre.next
+	pre.next = n
+	if pre == l.tail {
+		l.tail = n
+	}
+	l.length++
+}
+
 // PushFront pushed an element to the front of the list.
 func (l *SList[T]) PushFront(v T) {
 	node := sListNode[T]{l.head, v}
@@ -97,6 +166,28 @@ func (l *SList[T]) PopFront() T {
 	}
 	l.length--
 	return node.value
+}
+
+// PopTail popups an element from the tail of the list.
+// The list must be non-empty!
+func (l *SList[T]) PopTail() T {
+	if l.IsEmpty() {
+		panic("!IsEmpty")
+	}
+
+	if l.head == l.tail {
+		return l.PopFront()
+	}
+
+	node := l.head
+	tail := l.tail
+	for node.next != l.tail {
+		node = node.next
+	}
+	node.next = l.tail.next
+	l.tail = node
+	l.length--
+	return tail.value
 }
 
 // Reverse reverses the order of all elements in the container.

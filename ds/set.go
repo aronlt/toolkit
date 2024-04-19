@@ -46,7 +46,7 @@ func SetFromMapValue[K comparable, V comparable](ks map[K]V) BuiltinSet[V] {
 }
 
 // SetFromSList 从单向链表构造Set集合
-func SetFromSList[K comparable](list SList[K]) BuiltinSet[K] {
+func SetFromSList[K comparable](list *SList[K]) BuiltinSet[K] {
 	s := make(BuiltinSet[K], list.Len())
 	list.ForEach(func(k K) {
 		s[k] = struct{}{}
@@ -55,7 +55,7 @@ func SetFromSList[K comparable](list SList[K]) BuiltinSet[K] {
 }
 
 // SetFromDList 从单向链表构造Set集合
-func SetFromDList[K comparable](list DList[K]) BuiltinSet[K] {
+func SetFromDList[K comparable](list *DList[K]) BuiltinSet[K] {
 	s := make(BuiltinSet[K], list.Len())
 	list.ForEach(func(k K) {
 		s[k] = struct{}{}
@@ -69,7 +69,7 @@ func SetToSlice[K comparable](u BuiltinSet[K]) []K {
 }
 
 // SetToSList SetToList convert set to list
-func SetToSList[K comparable](u BuiltinSet[K]) SList[K] {
+func SetToSList[K comparable](u BuiltinSet[K]) *SList[K] {
 	list := NewSList[K]()
 	u.ForEach(func(k K) {
 		list.PushBack(k)
@@ -78,7 +78,7 @@ func SetToSList[K comparable](u BuiltinSet[K]) SList[K] {
 }
 
 // SetToDList SetToList convert set to list
-func SetToDList[K comparable](u BuiltinSet[K]) DList[K] {
+func SetToDList[K comparable](u BuiltinSet[K]) *DList[K] {
 	list := NewDList[K]()
 	u.ForEach(func(k K) {
 		list.PushBack(k)

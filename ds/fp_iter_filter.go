@@ -34,10 +34,24 @@ func MapIterFilter[K comparable, V any](a map[K]V, iterate func(k K, v V) bool) 
 	return b
 }
 
-// ListIterFilter Looks through each value in the list, returning a list of all the values that pass a truth test (predicate).
-func ListIterFilter[T any](a DList[T], iterate func(a DList[T], node T) bool) DList[T] {
+// DListIterFilter Looks through each value in the list, returning a list of all the values that pass a truth test (predicate).
+func DListIterFilter[T any](a DList[T], iterate func(a DList[T], node T) bool) DList[T] {
 	iterator := a.Iterate()
 	b := DList[T]{}
+	for iterator.IsNotEnd() {
+		v := iterator.Value()
+		if iterate(a, iterator.Value()) {
+			b.PushBack(v)
+		}
+		iterator.MoveToNext()
+	}
+	return b
+}
+
+// SListIterFilter Looks through each value in the list, returning a list of all the values that pass a truth test (predicate).
+func SListIterFilter[T any](a SList[T], iterate func(a SList[T], node T) bool) SList[T] {
+	iterator := a.Iterate()
+	b := SList[T]{}
 	for iterator.IsNotEnd() {
 		v := iterator.Value()
 		if iterate(a, iterator.Value()) {

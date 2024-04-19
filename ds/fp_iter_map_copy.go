@@ -20,9 +20,20 @@ func MapIterMapKVCopy[K comparable, V any](a map[K]V, iterate func(k K, v V) (K,
 	return b
 }
 
-// ListIterMapCopy Produces a new list by mapping each value in list through a transformation function (iterate).
-func ListIterMapCopy[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
+// DListIterMapCopy Produces a new list by mapping each value in list through a transformation function (iterate).
+func DListIterMapCopy[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
 	b := DList[T]{}
+	iterator := a.Iterate()
+	for iterator.IsNotEnd() {
+		b.PushBack(iterate(a, iterator.Value()))
+		iterator.MoveToNext()
+	}
+	return b
+}
+
+// SListIterMapCopy Produces a new list by mapping each value in list through a transformation function (iterate).
+func SListIterMapCopy[T any](a SList[T], iterate func(a SList[T], node T) T) SList[T] {
+	b := SList[T]{}
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		b.PushBack(iterate(a, iterator.Value()))

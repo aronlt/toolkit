@@ -25,13 +25,30 @@ func TestMapMap(t *testing.T) {
 	assert.Equal(t, m2, map[int]int{1: 3, 2: 4, 3: 5})
 }
 
-func TestMapList(t *testing.T) {
+func TestMapDList(t *testing.T) {
 	a := DList[int]{}
 	a.PushBack(1)
 	a.PushBack(2)
 	a.PushBack(3)
 
-	b := ListIterMapCopy(a, func(a DList[int], node int) int {
+	b := DListIterMapCopy(a, func(a DList[int], node int) int {
+		return node + 1
+	})
+
+	count := 2
+	b.ForEach(func(val int) {
+		assert.Equal(t, val, count)
+		count += 1
+	})
+}
+
+func TestMapSList(t *testing.T) {
+	a := SList[int]{}
+	a.PushBack(1)
+	a.PushBack(2)
+	a.PushBack(3)
+
+	b := SListIterMapCopy(a, func(a SList[int], node int) int {
 		return node + 1
 	})
 

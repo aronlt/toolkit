@@ -22,13 +22,27 @@ func TestFpFilterMap(t *testing.T) {
 	assert.Equal(t, v, map[int]int{2: 2})
 }
 
-func TestFpFilterList(t *testing.T) {
+func TestFpFilterSList(t *testing.T) {
+	a := SList[int]{}
+	a.PushBack(2)
+	a.PushBack(4)
+	a.PushBack(6)
+
+	v := SListIterFilter(a, func(a SList[int], node int) bool {
+		return node == 2
+	})
+	v.ForEach(func(val int) {
+		assert.Equal(t, val, 2)
+	})
+}
+
+func TestFpFilterDList(t *testing.T) {
 	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 
-	v := ListIterFilter(a, func(a DList[int], node int) bool {
+	v := DListIterFilter(a, func(a DList[int], node int) bool {
 		return node == 2
 	})
 	v.ForEach(func(val int) {

@@ -1,5 +1,7 @@
 package ds
 
+import "github.com/aronlt/toolkit/ttypes"
+
 // copy from https://github.com/chen3feng/stl4go/blob/master/dlist.go
 
 // DList is a doubly linked list.
@@ -13,13 +15,13 @@ type dListNode[T any] struct {
 	value      T
 }
 
-func NewDList[T any]() DList[T] {
-	return DList[T]{}
+func NewDList[T any]() *DList[T] {
+	return &DList[T]{}
 }
 
 // DListFromUnpack make a new DList from a serial of values.
-func DListFromUnpack[T any](vs ...T) DList[T] {
-	l := DList[T]{}
+func DListFromUnpack[T any](vs ...T) *DList[T] {
+	l := &DList[T]{}
 	for _, v := range vs {
 		l.PushBack(v)
 	}
@@ -231,5 +233,45 @@ func (l *DList[T]) ensureHead() {
 		l.head = &dListNode[T]{}
 		l.head.prev = l.head
 		l.head.next = l.head
+	}
+}
+
+func (l *DList[T]) RemoveValue(v T, fn ttypes.CompareFn[T]) bool {
+	if l.IsEmpty() {
+		return false
+	}
+	for n := l.head.next; n != l.head; n = n.next {
+		if fn(v, n.value) == 0 {
+			n.prev.next = n.next
+			n.next.prev = n.prev
+			n.prev = nil
+			n.next = nil
+			l.length--
+			return true
+		}
+	}
+	return false
+}
+
+func (l *DList[T]) InsertLessBound(v T, fn ttypes.LessEqFn[T]) {
+	if l.IsEmpty() {
+		l.PushBack(v)
+		return
+	}
+	for node := l.head.next; node != l.head; node = node.next {
+		if fn(v, node.value) {
+			n := dListNode[T]{node.prev, node, v}
+			node.prev.next = &n
+			node.prev = &n
+			l.length++
+			return
+		}
+	}
+	if fn(l.head.prev.value, v) {
+		l.PushBack(v)
+	} else if fn(v, l.head.next.value) {
+		l.PushFront(v)
+	} else {
+		panic("should not be here")
 	}
 }

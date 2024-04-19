@@ -34,13 +34,38 @@ func TestFpEveryMap(t *testing.T) {
 	assert.False(t, v)
 }
 
-func TestFpEveryList(t *testing.T) {
+func TestFpEverySList(t *testing.T) {
+	a := SList[int]{}
+	a.PushBack(2)
+	a.PushBack(4)
+	a.PushBack(6)
+
+	v := SListIterAllOk(a, func(a SList[int], node int) bool {
+		return node%2 == 0
+	})
+
+	assert.True(t, v)
+
+	a = SList[int]{}
+	a.PushBack(2)
+	a.PushBack(4)
+	a.PushBack(6)
+	a.PushBack(7)
+
+	v = SListIterAllOk(a, func(a SList[int], node int) bool {
+		return node%2 == 0
+	})
+
+	assert.False(t, v)
+}
+
+func TestFpEveryDList(t *testing.T) {
 	a := DList[int]{}
 	a.PushBack(2)
 	a.PushBack(4)
 	a.PushBack(6)
 
-	v := ListIterAllOk(a, func(a DList[int], node int) bool {
+	v := DListIterAllOk(a, func(a DList[int], node int) bool {
 		return node%2 == 0
 	})
 
@@ -52,7 +77,7 @@ func TestFpEveryList(t *testing.T) {
 	a.PushBack(6)
 	a.PushBack(7)
 
-	v = ListIterAllOk(a, func(a DList[int], node int) bool {
+	v = DListIterAllOk(a, func(a DList[int], node int) bool {
 		return node%2 == 0
 	})
 

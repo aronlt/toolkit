@@ -17,8 +17,19 @@ func MapIterMapKVInPlace[K comparable, V any](a map[K]V, iterate func(k K, v V) 
 	return a
 }
 
-// ListIterMapInPlace Iterates over list, yielding each value in turn to an iterate function, Returns the list for chaining.
-func ListIterMapInPlace[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
+// DListIterMapInPlace Iterates over list, yielding each value in turn to an iterate function, Returns the list for chaining.
+func DListIterMapInPlace[T any](a DList[T], iterate func(a DList[T], node T) T) DList[T] {
+	iterator := a.Iterate()
+	for iterator.IsNotEnd() {
+		p := iterator.Pointer()
+		*p = iterate(a, iterator.Value())
+		iterator.MoveToNext()
+	}
+	return a
+}
+
+// SListIterMapInPlace Iterates over list, yielding each value in turn to an iterate function, Returns the list for chaining.
+func SListIterMapInPlace[T any](a SList[T], iterate func(a SList[T], node T) T) SList[T] {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		p := iterator.Pointer()

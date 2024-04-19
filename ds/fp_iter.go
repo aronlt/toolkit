@@ -21,8 +21,17 @@ func MapIter[K comparable, V any](a map[K]V, iterate func(k K, v V)) {
 	}
 }
 
-// ListIter 迭代元素
-func ListIter[T any](a DList[T], iterate func(a DList[T], node T)) {
+// DListIter 迭代单向链表元素
+func DListIter[T any](a DList[T], iterate func(a DList[T], node T)) {
+	iterator := a.Iterate()
+	for iterator.IsNotEnd() {
+		iterate(a, iterator.Value())
+		iterator.MoveToNext()
+	}
+}
+
+// SListIter 迭代单向链表元素
+func SListIter[T any](a SList[T], iterate func(a SList[T], node T)) {
 	iterator := a.Iterate()
 	for iterator.IsNotEnd() {
 		iterate(a, iterator.Value())

@@ -1,10 +1,26 @@
 package ds
 
 import (
+	"math/rand"
+	"sort"
 	"testing"
+	"time"
 
+	"github.com/aronlt/toolkit/ttypes"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixMilli())
+}
+
+func NewRandomSlice() *SList[int] {
+	sl := NewSList[int]()
+	for i := 0; i < 1000; i++ {
+		sl.PushBack(rand.Int() % 1997)
+	}
+	return sl
+}
 
 func Test_SList_Clean(t *testing.T) {
 	sl := SList[int]{}
@@ -31,6 +47,52 @@ func Test_SList_Front(t *testing.T) {
 		sl.PushFront(3)
 		assert.Equal(t, sl.Front(), 3)
 	})
+}
+
+func Test_PopTail(t *testing.T) {
+	sl := NewSList[int]()
+	m := []int{6, 100, 3, 2, 5, 4, 7, 1, 10001}
+	for _, v := range m {
+		sl.PushBack(v)
+	}
+	for i := range m {
+		k := sl.PopTail()
+		assert.Equal(t, k, m[len(m)-i-1])
+		assert.Equal(t, sl.Values(), m[:len(m)-i-1])
+	}
+}
+
+func Test_PushLessBound(t *testing.T) {
+	for i := 0; i < 100; i++ {
+		sl := SList[int]{}
+		m := make([]int, 0)
+		for j := 0; j < 1000; j++ {
+			v := rand.Int() % 97
+			m = append(m, v)
+		}
+		for j, v := range m {
+			sl.InsertLessBound(v, ttypes.LessEq[int])
+			m2 := SliceGetCopy(m[:j+1])
+			sort.Ints(m2)
+			assert.Equal(t, sl.Values(), m2)
+		}
+	}
+}
+
+func Test_RemoveValue(t *testing.T) {
+	sl := NewSList[int]()
+	m := []int{6, 100, 3, 2, 5, 4, 7, 1, 10001}
+	for _, v := range m {
+		sl.PushBack(v)
+	}
+	ok := sl.RemoveValue(123333, ttypes.OrderedCompare[int])
+	assert.False(t, ok)
+	assert.Equal(t, sl.Len(), len(m))
+	for i, v := range m {
+		ok = sl.RemoveValue(v, ttypes.OrderedCompare[int])
+		assert.Equal(t, sl.Values(), m[i+1:])
+		assert.True(t, ok)
+	}
 }
 
 func Test_SList_Back(t *testing.T) {
