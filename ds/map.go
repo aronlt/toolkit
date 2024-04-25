@@ -88,8 +88,8 @@ func MapOpMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	return m3
 }
 
-// MapOPMergeWithFn 合并两个map，如果key重复则从fn中获取新key
-func MapOPMergeWithFn[K comparable, V any](m1 map[K]V, m2 map[K]V, fn func(k K) V) map[K]V {
+// MapOPMergeIfDupFn 合并两个map，如果key重复则从fn中获取新key
+func MapOPMergeIfDupFn[K comparable, V any](m1 map[K]V, m2 map[K]V, fn func(k K) V) map[K]V {
 	len1 := len(m1)
 	len2 := len(m2)
 	m3 := make(map[K]V, SliceMaxUnpack(len1, len2))
@@ -105,6 +105,21 @@ func MapOPMergeWithFn[K comparable, V any](m1 map[K]V, m2 map[K]V, fn func(k K) 
 		if _, ok := m1[k]; !ok {
 			m3[k] = v
 		}
+	}
+	return m3
+}
+
+// MapOPMergeWithFn 合并两个map，根据fn获取对应的值
+func MapOPMergeWithFn[K comparable, V any](m1 map[K]V, m2 map[K]V, fn func(k K) V) map[K]V {
+	len1 := len(m1)
+	len2 := len(m2)
+	m3 := make(map[K]V, SliceMaxUnpack(len1, len2))
+
+	for k := range m1 {
+		m3[k] = fn(k)
+	}
+	for k := range m2 {
+		m3[k] = fn(k)
 	}
 	return m3
 }

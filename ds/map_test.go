@@ -140,6 +140,19 @@ func TestMergeMap(t *testing.T) {
 
 }
 
+func TestMapOPMergeIfDupFn(t *testing.T) {
+	m1 := map[int]int{1: 1, 2: 2, 3: 3}
+	m2 := map[int]int{1: 2, 4: 4, 5: 5}
+	m3 := MapOPMergeIfDupFn(m1, m2, func(k int) int {
+		v1, _ := m1[k]
+		v2, _ := m2[k]
+		return v1 + v2
+	})
+	assert.Equal(t, MapCmpFullComplexKey(m3, map[int]int{
+		1: 3, 2: 2, 3: 3, 4: 4, 5: 5,
+	}), Equal)
+}
+
 func TestMapOPMergeWithFn(t *testing.T) {
 	m1 := map[int]int{1: 1, 2: 2, 3: 3}
 	m2 := map[int]int{1: 2, 4: 4, 5: 5}
