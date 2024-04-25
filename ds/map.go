@@ -88,6 +88,27 @@ func MapOpMerge[K comparable, V any](m1 map[K]V, m2 map[K]V) map[K]V {
 	return m3
 }
 
+// MapOPMergeWithFn 合并两个map，如果key重复则从fn中获取新key
+func MapOPMergeWithFn[K comparable, V any](m1 map[K]V, m2 map[K]V, fn func(k K) V) map[K]V {
+	len1 := len(m1)
+	len2 := len(m2)
+	m3 := make(map[K]V, SliceMaxUnpack(len1, len2))
+
+	for k, v := range m1 {
+		if _, ok := m2[k]; ok {
+			m3[k] = fn(k)
+		} else {
+			m3[k] = v
+		}
+	}
+	for k, v := range m2 {
+		if _, ok := m1[k]; !ok {
+			m3[k] = v
+		}
+	}
+	return m3
+}
+
 // MapOpPop 弹出Map中的元素
 func MapOpPop[K comparable, V any](m map[K]V, k K) (V, bool) {
 	v, ok := m[k]
@@ -95,6 +116,24 @@ func MapOpPop[K comparable, V any](m map[K]V, k K) (V, bool) {
 		delete(m, k)
 	}
 	return v, ok
+}
+
+// MapGetDefault 获取Map的值，如果不存在则返回默认值
+func MapGetDefault[K comparable, V any](m map[K]V, k K, d V) V {
+	if v, ok := m[k]; ok {
+		return v
+	}
+	return d
+}
+
+// MapOpSetIfEmpty 设置Map的值，如果不存在则更新，返回值：key对应的值，是否更新
+func MapOpSetIfEmpty[K comparable, V any](m map[K]V, k K, v V) (V, bool) {
+	ov, ok := m[k]
+	if !ok {
+		m[k] = v
+		return v, true
+	}
+	return ov, false
 }
 
 /* Map比较

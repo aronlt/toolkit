@@ -140,6 +140,19 @@ func TestMergeMap(t *testing.T) {
 
 }
 
+func TestMapOPMergeWithFn(t *testing.T) {
+	m1 := map[int]int{1: 1, 2: 2, 3: 3}
+	m2 := map[int]int{1: 2, 4: 4, 5: 5}
+	m3 := MapOPMergeWithFn(m1, m2, func(k int) int {
+		v1, _ := m1[k]
+		v2, _ := m2[k]
+		return v1 + v2
+	})
+	assert.Equal(t, MapCmpFullComplexKey(m3, map[int]int{
+		1: 3, 2: 2, 3: 3, 4: 4, 5: 5,
+	}), Equal)
+}
+
 func TestMapConvert(t *testing.T) {
 	v := map[int]string{1: "1", 2: "2", 3: "3"}
 	s1 := MapConvertValueToSlice(v)
@@ -206,4 +219,22 @@ func TestMapOpPop(t *testing.T) {
 	assert.Equal(t, ok, false)
 	assert.Equal(t, 0, v)
 	assert.Equal(t, m, map[string]int{"1": 1, "2": 2})
+}
+
+func TestMapGetDefault(t *testing.T) {
+	m := map[string]int{"1": 1, "2": 2}
+	v1 := MapGetDefault(m, "1", 100)
+	assert.Equal(t, v1, 1)
+	v2 := MapGetDefault(m, "3", 100)
+	assert.Equal(t, v2, 100)
+}
+
+func TestMapOpSetIfEmpty(t *testing.T) {
+	m := map[string]int{"1": 1, "2": 2}
+	v1, ok := MapOpSetIfEmpty(m, "1", 100)
+	assert.Equal(t, v1, 1)
+	assert.False(t, ok)
+	v2, ok := MapOpSetIfEmpty(m, "3", 100)
+	assert.True(t, ok)
+	assert.Equal(t, v2, 100)
 }
