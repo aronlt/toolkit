@@ -1,6 +1,29 @@
 package ds
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
+
+// StrRuneOmit 字符串截断
+func StrRuneOmit(str string, omitLen int, flag ...string) string {
+	r := []rune(str)
+	if len(r) > omitLen {
+		if len(flag) > 0 {
+			return string(r[:omitLen]) + flag[0]
+		}
+		return string(r[:omitLen]) + "..."
+	}
+	return str
+}
+
+// StrIsNumber 判断是否为数字
+func StrIsNumber(str string) bool {
+	if _, err := strconv.ParseInt(str, 10, 64); err == nil {
+		return true
+	}
+	return false
+}
 
 // StrHasSuffixInsensitive 判断str是以subStr结尾, subStr不关注大小写
 func StrHasSuffixInsensitive(str string, subStr string) bool {

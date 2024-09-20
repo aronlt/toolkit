@@ -6,6 +6,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestStrIsNumber(t *testing.T) {
+	a := "abcdef"
+	assert.False(t, StrIsNumber(a))
+	a = "100111"
+	assert.True(t, StrIsNumber(a))
+	a = "OX000111"
+	assert.False(t, StrIsNumber(a))
+}
+
+func TestStrRuneOmit(t *testing.T) {
+	a := "abcdef"
+	assert.Equal(t, StrRuneOmit(a, 3), "abc...")
+	a = "你好，这是一个测试程序"
+	assert.Equal(t, StrRuneOmit(a, 3), "你好，...")
+	a = "你好a，这是一个测试程序"
+	assert.Equal(t, StrRuneOmit(a, 3), "你好a...")
+	assert.Equal(t, StrRuneOmit(a, 3, "---"), "你好a---")
+}
+
 func TestStrHasSuffixInsensitive(t *testing.T) {
 	a := "abceEfg"
 	assert.True(t, StrHasSuffixInsensitive(a, "efg"))

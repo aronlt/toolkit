@@ -2,114 +2,63 @@ package action
 
 import "fmt"
 
-// VendingMachine
-// 状态模式用于分离状态和行为。
-type VendingMachine struct {
-	hasItem       State
-	itemRequested State
-	hasMoney      State
-	noItem        State
-
-	currentState State
-
-	itemCount int
-	itemPrice int
+// Machine 状态机
+type Machine struct {
+	state IState
 }
 
-func newVendingMachine(itemCount, itemPrice int) *VendingMachine {
-	v := &VendingMachine{
-		itemCount: itemCount,
-		itemPrice: itemPrice,
-	}
-	hasItemState := &HasItemState{
-		vendingMachine: v,
-	}
-	noItemState := &NoItemState{
-		vendingMachine: v,
-	}
-
-	v.setState(hasItemState)
-	v.hasItem = hasItemState
-	v.noItem = noItemState
-	return v
+// SetState 更新状态
+func (m *Machine) SetState(state IState) {
+	m.state = state
 }
 
-func (v *VendingMachine) requestItem() error {
-	return v.currentState.requestItem()
+func (m *Machine) Approval() {
+	m.state.Approval(m)
 }
 
-func (v *VendingMachine) addItem(count int) error {
-	return v.currentState.addItem(count)
+func (m *Machine) Reject() {
+	m.state.Reject(m)
 }
 
-func (v *VendingMachine) insertMoney(money int) error {
-	return v.currentState.insertMoney(money)
+// IState 状态
+type IState interface {
+	// Approval 审批通过
+	Approval(m *Machine)
+	// Reject 驳回
+	Reject(m *Machine)
 }
 
-func (v *VendingMachine) dispenseItem() error {
-	return v.currentState.dispenseItem()
+// leaderApproveState 直属领导审批
+type leaderApproveState struct{}
+
+// Approval 获取状态名字
+func (leaderApproveState) Approval(m *Machine) {
+	fmt.Println("leader 审批成功")
+	m.SetState(GetFinanceApproveState())
 }
 
-func (v *VendingMachine) setState(s State) {
-	v.currentState = s
+// Reject 获取状态名字
+func (leaderApproveState) Reject(m *Machine) {}
+
+func GetLeaderApproveState() IState {
+	return &leaderApproveState{}
 }
 
-func (v *VendingMachine) incrementItemCount(count int) {
-	fmt.Printf("Adding %d items\n", count)
-	v.itemCount = v.itemCount + count
+// financeApproveState 财务审批
+type financeApproveState struct{}
+
+// Approval 审批通过
+func (f financeApproveState) Approval(m *Machine) {
+	fmt.Println("财务审批成功")
+	fmt.Println("出发打款操作")
 }
 
-type State interface {
-	addItem(int) error
-	requestItem() error
-	insertMoney(money int) error
-	dispenseItem() error
+// Reject 拒绝
+func (f financeApproveState) Reject(m *Machine) {
+	m.SetState(GetLeaderApproveState())
 }
 
-type NoItemState struct {
-	vendingMachine *VendingMachine
-}
-
-func (i *NoItemState) requestItem() error {
-	return fmt.Errorf("Item out of stock")
-}
-
-func (i *NoItemState) addItem(count int) error {
-	i.vendingMachine.incrementItemCount(count)
-	i.vendingMachine.setState(i.vendingMachine.hasItem)
-	return nil
-}
-
-func (i *NoItemState) insertMoney(money int) error {
-	return fmt.Errorf("Item out of stock")
-}
-func (i *NoItemState) dispenseItem() error {
-	return fmt.Errorf("Item out of stock")
-}
-
-type HasItemState struct {
-	vendingMachine *VendingMachine
-}
-
-func (i *HasItemState) requestItem() error {
-	if i.vendingMachine.itemCount == 0 {
-		i.vendingMachine.setState(i.vendingMachine.noItem)
-		return fmt.Errorf("No item present")
-	}
-	fmt.Printf("Item requestd\n")
-	i.vendingMachine.setState(i.vendingMachine.itemRequested)
-	return nil
-}
-
-func (i *HasItemState) addItem(count int) error {
-	fmt.Printf("%d items added\n", count)
-	i.vendingMachine.incrementItemCount(count)
-	return nil
-}
-
-func (i *HasItemState) insertMoney(money int) error {
-	return fmt.Errorf("Please select item first")
-}
-func (i *HasItemState) dispenseItem() error {
-	return fmt.Errorf("Please select item first")
+// GetFinanceApproveState GetFinanceApproveState
+func GetFinanceApproveState() IState {
+	return &financeApproveState{}
 }
