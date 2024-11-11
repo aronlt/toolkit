@@ -445,3 +445,7 @@ func GetDiff[T any](v1 *T, v2 *T) ds.BuiltinSet[string] {
 	diff(map2, map1)
 	return result
 }
+
+func CanJSONMarshal(contentType string, kind reflect.Kind) bool {
+	return IsJSONType(contentType) && (kind == reflect.Struct || kind == reflect.Map || kind == reflect.Slice)
+}
