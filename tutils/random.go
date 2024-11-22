@@ -3,6 +3,8 @@ package tutils
 import (
 	"math/rand"
 	"time"
+
+	"github.com/aronlt/toolkit/ds"
 )
 
 func init() {
@@ -25,4 +27,23 @@ func RandStringBytesMask(n int) string {
 		}
 	}
 	return string(b)
+}
+
+func RandPick[T comparable](data []T, blacklist ds.BuiltinSet[T]) (T, bool) {
+	if len(data) == 0 {
+		var e T
+		return e, false
+	}
+	n := rand.Intn(len(data))
+	if !blacklist.Has(data[n]) {
+		return data[n], true
+	}
+	i := (n + 1) % len(data)
+	for ; i != n; i = (i + 1) % len(data) {
+		if !blacklist.Has(data[i]) {
+			return data[i], true
+		}
+	}
+	var e T
+	return e, false
 }

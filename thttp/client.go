@@ -11,15 +11,71 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+
+	"github.com/aronlt/toolkit/treflect"
 )
 
-type Option struct {
+type Config struct {
 	Decompress bool
 	Header     map[string]string
 }
 
-func Decompress(option Option, resp []byte) ([]byte, error) {
-	if !option.Decompress {
+type Option func(*Config)
+
+func WithHeaderMap(header map[string]interface{}) Option {
+	return func(config *Config) {
+		if config == nil {
+			return
+		}
+		if config.Header == nil {
+			config.Header = make(map[string]string, len(header))
+		}
+		for key, value := range header {
+			s, ok := treflect.ToString(value)
+			if ok {
+				config.Header[key] = s
+			}
+		}
+	}
+}
+
+func WithHeaderKV(key string, value interface{}) Option {
+	return func(config *Config) {
+		if config == nil {
+			return
+		}
+		if config.Header == nil {
+			config.Header = make(map[string]string)
+		}
+		s, ok := treflect.ToString(value)
+		if ok {
+			config.Header[key] = s
+		}
+	}
+}
+
+func WithDecompress(v bool) Option {
+	return func(config *Config) {
+		if config == nil {
+			return
+		}
+		config.Decompress = v
+	}
+}
+
+func BuildConfig(options ...Option) Config {
+	config := Config{
+		Decompress: false,
+		Header:     make(map[string]string),
+	}
+	for _, option := range options {
+		option(&config)
+	}
+	return config
+}
+
+func Decompress(config Config, resp []byte) ([]byte, error) {
+	if !config.Decompress {
 		return resp, nil
 	}
 	r, err := gzip.NewReader(bytes.NewReader(resp))
@@ -32,14 +88,17 @@ func Decompress(option Option, resp []byte) ([]byte, error) {
 }
 
 // Get 根据path请求资源
-func Get(u string, options ...Option) ([]byte, error) {
-	req, _ := http.NewRequest("GET", u, nil)
-	var option Option
-	if len(options) != 0 {
-		option = options[0]
+func Get(u string, configs ...Config) ([]byte, error) {
+	req, err := http.NewRequest(http.MethodGet, u, nil)
+	if err != nil {
+		return nil, errors.WithMessagef(err, "call http.NewRequest fail, url:%s", u)
+	}
+	var config Config
+	if len(configs) != 0 {
+		config = configs[0]
 	}
 
-	for k, v := range option.Header {
+	for k, v := range config.Header {
 		req.Header.Set(k, v)
 	}
 
@@ -55,7 +114,7 @@ func Get(u string, options ...Option) ([]byte, error) {
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
-	bs, err = Decompress(option, bs)
+	bs, err = Decompress(config, bs)
 	if err != nil {
 		return nil, errors.WithMessage(err, "call Decompress fail")
 	}
@@ -63,9 +122,9 @@ func Get(u string, options ...Option) ([]byte, error) {
 }
 
 // GetToMap 请求资源，以map形式返回结果
-func GetToMap(u string, options ...Option) (map[string]interface{}, error) {
+func GetToMap(u string, configs ...Config) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := Get(u, options...)
+	bs, err := Get(u, configs...)
 	if err != nil {
 		return nil, err
 	}
@@ -77,9 +136,9 @@ func GetToMap(u string, options ...Option) (map[string]interface{}, error) {
 }
 
 // GetToStruct 请求资源，以struct形式返回结果
-func GetToStruct[T any](u string, options ...Option) (T, error) {
+func GetToStruct[T any](u string, configs ...Config) (T, error) {
 	var data T
-	bs, err := Get(u, options...)
+	bs, err := Get(u, configs...)
 	if err != nil {
 		return data, err
 	}
@@ -91,10 +150,10 @@ func GetToStruct[T any](u string, options ...Option) (T, error) {
 }
 
 // PostForm 以form格式请求
-func PostForm(u string, form url.Values, options ...Option) ([]byte, error) {
+func PostForm(u string, form url.Values, configs ...Config) ([]byte, error) {
 	var resp *http.Response
 	var err error
-	if len(options) == 0 {
+	if len(configs) == 0 {
 		resp, err = http.PostForm(u, form)
 	} else {
 		req, err := http.NewRequest("POST", u, nil)
@@ -102,7 +161,7 @@ func PostForm(u string, form url.Values, options ...Option) ([]byte, error) {
 			return nil, err
 		}
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		for k, v := range options[0].Header {
+		for k, v := range configs[0].Header {
 			req.Header.Set(k, v)
 		}
 		resp, err = (&http.Client{}).Post(u, "application/x-www-form-urlencoded", strings.NewReader(form.Encode()))
@@ -118,34 +177,34 @@ func PostForm(u string, form url.Values, options ...Option) ([]byte, error) {
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
-	bs, err = Decompress(options[0], bs)
+	bs, err = Decompress(configs[0], bs)
 	if err != nil {
 		return nil, errors.WithMessage(err, "call Decompress fail")
 	}
 	return bs, nil
 }
 
-func PostJSONFromStruct(u string, obj interface{}, options ...Option) ([]byte, error) {
+func PostJSONFromStruct(u string, obj interface{}, configs ...Config) ([]byte, error) {
 	content, err := json.Marshal(obj)
 	if err != nil {
 		return nil, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
 	}
-	return PostJSON(u, content, options...)
+	return PostJSON(u, content, configs...)
 }
 
 // PostJSON 以json格式请求
-func PostJSON(u string, jsonByte []byte, options ...Option) ([]byte, error) {
+func PostJSON(u string, jsonByte []byte, configs ...Config) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodPost, u, bytes.NewBuffer(jsonByte))
 	if err != nil {
 		return nil, errors.WithMessage(err, "call http.NewRequest fail")
 	}
 	req.Header.Set("Content-Type", "application/json")
-	var option Option
-	if len(options) > 0 {
-		option = options[0]
+	var config Config
+	if len(configs) > 0 {
+		config = configs[0]
 	}
 
-	for k, v := range option.Header {
+	for k, v := range config.Header {
 		req.Header.Add(k, v)
 	}
 	client := &http.Client{}
@@ -158,24 +217,24 @@ func PostJSON(u string, jsonByte []byte, options ...Option) ([]byte, error) {
 	if err != nil {
 		return nil, errors.WithMessage(err, "call io.ReadAll fail")
 	}
-	b, err = Decompress(option, b)
+	b, err = Decompress(config, b)
 	if err != nil {
 		return nil, errors.WithMessage(err, "call Decompress fail")
 	}
 	return b, nil
 }
 
-func PostToMapFromStruct(u string, obj interface{}, options ...Option) (map[string]interface{}, error) {
+func PostToMapFromStruct(u string, obj interface{}, configs ...Config) (map[string]interface{}, error) {
 	content, err := json.Marshal(obj)
 	if err != nil {
 		return nil, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
 	}
-	return PostToMap(u, content, options...)
+	return PostToMap(u, content, configs...)
 }
 
-func PostToMap(u string, jsonByte []byte, options ...Option) (map[string]interface{}, error) {
+func PostToMap(u string, jsonByte []byte, configs ...Config) (map[string]interface{}, error) {
 	data := make(map[string]interface{}, 0)
-	bs, err := PostJSON(u, jsonByte, options...)
+	bs, err := PostJSON(u, jsonByte, configs...)
 	if err != nil {
 		return nil, err
 	}
@@ -186,18 +245,18 @@ func PostToMap(u string, jsonByte []byte, options ...Option) (map[string]interfa
 	return data, nil
 }
 
-func PostToStructFromStruct[T any](u string, obj interface{}, options ...Option) (T, error) {
+func PostToStructFromStruct[T any](u string, obj interface{}, configs ...Config) (T, error) {
 	content, err := json.Marshal(obj)
 	if err != nil {
 		var data T
 		return data, errors.WithMessagef(err, "call json.Marshal fail, obj:%+v", obj)
 	}
-	return PostToStruct[T](u, content, options...)
+	return PostToStruct[T](u, content, configs...)
 }
 
-func PostToStruct[T any](u string, jsonByte []byte, options ...Option) (T, error) {
+func PostToStruct[T any](u string, jsonByte []byte, configs ...Config) (T, error) {
 	var data T
-	bs, err := PostJSON(u, jsonByte, options...)
+	bs, err := PostJSON(u, jsonByte, configs...)
 	if err != nil {
 		return data, err
 	}
