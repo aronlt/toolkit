@@ -131,52 +131,50 @@ func SliceOpReplace[T comparable](data []T, a T, b T) {
 }
 
 // SliceOpRemove 原地删除元素
-func SliceOpRemove[T comparable](data *[]T, b T) {
-	for i := len(*data) - 1; i >= 0; i-- {
-		if (*data)[i] == b {
-			if i == len(*data)-1 {
-				*data = (*data)[:i]
+func SliceOpRemove[T comparable](data []T, b T) []T {
+	for i := len(data) - 1; i >= 0; i-- {
+		if data[i] == b {
+			if i == len(data)-1 {
+				data = data[:i]
 			} else {
-				*data = append((*data)[:i], (*data)[i+1:]...)
+				data = append(data[:i], data[i+1:]...)
 			}
 		}
 	}
+	return data
 }
 
 // SliceOpRemoveIndex 删除某个索引位置的切片
-func SliceOpRemoveIndex[T any](data *[]T, i int) {
-	if i < 0 || i >= len(*data) {
-		return
+func SliceOpRemoveIndex[T any](data []T, i int) []T {
+	if i < 0 || i >= len(data) {
+		return data
 	}
-	*data = append((*data)[:i], (*data)[i+1:]...)
+	data = append(data[:i], data[i+1:]...)
+	return data
 }
 
 // SliceOpRemoveRange 删除某个范围内的切片
-func SliceOpRemoveRange[T any](data *[]T, i int, j int) {
-	if i < 0 || i >= len(*data) {
-		return
+func SliceOpRemoveRange[T any](data []T, i int, j int) []T {
+	if i < 0 || i >= len(data) || j < 0 || j >= len(data) || i >= j {
+		return data
 	}
-	if j < 0 || j >= len(*data) {
-		return
-	}
-	if i >= j {
-		return
-	}
-	*data = append((*data)[:i], (*data)[j:]...)
+	data = append(data[:i], data[j:]...)
+	return data
 }
 
 // SliceOpRemoveMany 从Slice集合中移除另外一个Slice中的元素
-func SliceOpRemoveMany[T comparable](data *[]T, values []T) {
+func SliceOpRemoveMany[T comparable](data []T, values []T) []T {
 	set := SetFromUnpack[T](values...)
-	for i := len(*data) - 1; i >= 0; i-- {
-		if set.Has((*data)[i]) {
-			if i == len(*data)-1 {
-				*data = (*data)[:i]
+	for i := len(data) - 1; i >= 0; i-- {
+		if set.Has((data)[i]) {
+			if i == len(data)-1 {
+				data = data[:i]
 			} else {
-				*data = append((*data)[:i], (*data)[i+1:]...)
+				data = append(data[:i], data[i+1:]...)
 			}
 		}
 	}
+	return data
 }
 
 // SliceOpUnique 去重切片

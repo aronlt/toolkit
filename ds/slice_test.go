@@ -99,14 +99,14 @@ func TestSliceReverseCopy(t *testing.T) {
 func TestSliceRemove(t *testing.T) {
 	m := []int{1, 2, 3, 3, 2, 1, 2, 3, 4, 2}
 	k := []int{1, 3, 3, 1, 3, 4}
-	SliceOpRemove(&m, 2)
+	m = SliceOpRemove(m, 2)
 	assert.Equal(t, k, m)
 }
 
 func TestSliceRemoveMany(t *testing.T) {
 	m := []int{1, 2, 3, 3, 5, 6, 2, 1, 2, 3, 4, 2}
 	k := []int{1, 3, 2, 3, 1, 3, 4}
-	SliceOpRemoveMany(&m, k)
+	m = SliceOpRemoveMany(m, k)
 	assert.Equal(t, m, []int{5, 6})
 }
 
@@ -303,15 +303,14 @@ func TestSliceTail(t *testing.T) {
 
 func TestSliceRemoveIndex(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	SliceOpRemoveIndex(&data, 3)
+	data = SliceOpRemoveIndex(data, 3)
 	assert.Equal(t, data, []int{1, 2, 3, 5, 6})
-
 }
 
 func TestSliceRemoveRange(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6}
-	SliceOpRemoveRange(&data, 3, 5)
-	assert.Equal(t, data, []int{1, 2, 3, 6})
+	data = SliceOpRemoveRange(data, 3, 5)
+	assert.Equal(t, []int{1, 2, 3, 6}, data)
 }
 
 func TestSliceIncludeWithFn(t *testing.T) {
