@@ -65,8 +65,7 @@ func WriteFile(path string, content []byte, append bool) (int64, error) {
 // defer file.Close()
 // buffer := bufio.NewReader(file)
 // ReadLine(buffer)
-func ReadLine(buffer *bufio.Reader) ([]byte, error) {
-	buf := bytes.Buffer{}
+func ReadLine(buffer *bufio.Reader, buf *bytes.Buffer) error {
 	for {
 		data, isPrefix, err := buffer.ReadLine()
 		if err != nil {
@@ -74,9 +73,9 @@ func ReadLine(buffer *bufio.Reader) ([]byte, error) {
 				if len(data) != 0 {
 					buf.Write(data)
 				}
-				return buf.Bytes(), io.EOF
+				return io.EOF
 			} else {
-				return nil, errors.Wrap(err, "call ReadLine fail, read line error")
+				return errors.Wrap(err, "call ReadLine fail, read line error")
 			}
 		}
 		buf.Write(data)
@@ -84,14 +83,31 @@ func ReadLine(buffer *bufio.Reader) ([]byte, error) {
 			break
 		}
 	}
+	return nil
+}
+
+func ReadLines(buffer *bufio.Reader, n int) ([]byte, error) {
+	buf := bytes.Buffer{}
+	for i := 0; n < 0 || i < n; i++ {
+		err := ReadLine(buffer, &buf)
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				return buf.Bytes(), nil
+			}
+			return nil, err
+		}
+		if n < 0 || i != n-1 {
+			buf.WriteByte('\n')
+		}
+	}
 	return buf.Bytes(), nil
 }
 
-// ReadLines 读取文件内容，按行返回
-func ReadLines(path string) ([][]byte, error) {
+// ReadAllByLines 读取文件内容，按行返回
+func ReadAllByLines(path string) ([][]byte, error) {
 	content, err := ReadFile(path)
 	if err != nil {
-		return nil, errors.Wrap(err, "call ReadLines fail")
+		return nil, errors.Wrap(err, "call ReadAllByLines fail")
 	}
 	return bytes.Split(content, LineBreak), nil
 }

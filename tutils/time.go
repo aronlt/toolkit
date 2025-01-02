@@ -18,18 +18,21 @@ func UnixToTime(tm int64) time.Time {
 }
 
 // StringToUnix 字符串转换为时间戳
-func StringToUnix(t string, format ...string) int64 {
-	tm := StringToTime(t, format...)
-	return tm.Unix()
+func StringToUnix(t string, format ...string) (int64, error) {
+	tm, err := StringToTime(t, format...)
+	if err != nil {
+		return 0, err
+	}
+	return tm.Unix(), nil
 }
 
 // StringToTime 字符串转时间
-func StringToTime(t string, format ...string) time.Time {
+func StringToTime(t string, format ...string) (time.Time, error) {
 	tm, err := time.ParseInLocation(getLayout(format...), t, time.Local)
 	if err != nil {
-		return time.Now()
+		return time.Time{}, err
 	}
-	return tm
+	return tm, nil
 }
 
 // TimeToString 时间转字符串

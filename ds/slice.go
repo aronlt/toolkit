@@ -143,6 +143,22 @@ func SliceOpRemove[T comparable](data *[]T, b T) {
 	}
 }
 
+// SliceOpRemoveWithFn 原地删除元素
+func SliceOpRemoveWithFn[T any](data *[]T, cmp func(i int) bool) bool {
+	result := false
+	for i := len(*data) - 1; i >= 0; i-- {
+		if cmp(i) {
+			if i == len(*data)-1 {
+				*data = (*data)[:i]
+			} else {
+				*data = append((*data)[:i], (*data)[i+1:]...)
+			}
+			result = true
+		}
+	}
+	return result
+}
+
 // SliceOpRemoveIndex 删除某个索引位置的切片
 func SliceOpRemoveIndex[T any](data *[]T, i int) {
 	if i < 0 || i >= len(*data) {
@@ -518,7 +534,7 @@ func SliceConvertToString(data interface{}) ([]string, error) {
 	SliceExclude 判断元素是否不在切片中
 */
 
-func SliceIncludeWithFn[T comparable](a []T, fn func(a []T, i int) bool) bool {
+func SliceIncludeWithFn[T any](a []T, fn func(a []T, i int) bool) bool {
 	for i := 0; i < len(a); i++ {
 		if fn(a, i) {
 			return true
@@ -527,7 +543,7 @@ func SliceIncludeWithFn[T comparable](a []T, fn func(a []T, i int) bool) bool {
 	return false
 }
 
-func SliceIncludeWithFnV2[T comparable](a []T, fn func(int) bool) bool {
+func SliceIncludeWithFnV2[T any](a []T, fn func(int) bool) bool {
 	for i := 0; i < len(a); i++ {
 		if fn(i) {
 			return true

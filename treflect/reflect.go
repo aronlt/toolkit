@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/pkg/errors"
 )
+
+var ErrorFieldNotFound = errors.New("field not found")
 
 func VerifyField(item interface{}, fieldNames []string) error {
 	v := reflect.ValueOf(item)
@@ -79,33 +83,79 @@ func VerifyField(item interface{}, fieldNames []string) error {
 	return nil
 }
 
-// SetField 修改结构体字段的值
-func SetField(item interface{}, fieldName string, value interface{}) error {
-	if reflect.TypeOf(item).Kind() != reflect.Pointer {
+func SetFieldRecursive(item interface{}, fieldName string, fieldValue interface{}) error {
+	value := reflect.ValueOf(item)
+	if value.Kind() != reflect.Pointer {
 		return fmt.Errorf("expected pointer type, but accept:%v", reflect.TypeOf(item).Kind())
 	}
-	data := reflect.ValueOf(item).Elem()
-	if data.Kind() != reflect.Struct {
+	if value.IsNil() {
+		return nil
+	}
+	value = reflect.ValueOf(item).Elem()
+
+	if value.Kind() != reflect.Struct {
 		return fmt.Errorf("invalid elem type")
 	}
-	field := data.FieldByName(fieldName)
-	if !field.IsValid() {
-		return fmt.Errorf("can't find field")
+
+	tp := reflect.TypeOf(item).Elem()
+
+	for i := 0; i < value.NumField(); i++ {
+		vField := value.Field(i)
+
+		if vField.Kind() == reflect.Pointer {
+			if vField.IsNil() {
+				continue
+			}
+			vField = vField.Elem()
+		}
+
+		tField := tp.Field(i)
+		if vField.Kind() == reflect.Struct {
+			_ = SetFieldRecursive(vField.Addr().Interface(), fieldName, fieldValue)
+			continue
+		}
+		if tField.Name == fieldName {
+			_ = setFieldValue(vField, fieldValue)
+			continue
+		}
 	}
+	return nil
+}
+
+// SetField 修改结构体字段的值
+func SetField(item interface{}, fieldName string, fieldValue interface{}) error {
+	value := reflect.ValueOf(item)
+	if value.Kind() != reflect.Pointer {
+		return fmt.Errorf("expected pointer type, but accept:%v", reflect.TypeOf(item).Kind())
+	}
+	if value.IsNil() {
+		return nil
+	}
+	value = value.Elem()
+	if value.Kind() != reflect.Struct {
+		return fmt.Errorf("invalid elem type")
+	}
+	field := value.FieldByName(fieldName)
+	if !field.IsValid() {
+		return ErrorFieldNotFound
+	}
+	return setFieldValue(field, fieldValue)
+}
+
+func setFieldValue(field reflect.Value, fieldValue interface{}) error {
 	if !field.CanSet() {
-		return fmt.Errorf("field name %v is not exported in struct %v", fieldName, data.Type().String())
+		return fmt.Errorf("field name is not exported in struct")
 	}
 	if field.Kind() == reflect.Pointer {
 		field = field.Elem()
 	}
 	fType := field.Type()
-	vValue := reflect.ValueOf(value)
+	vValue := reflect.ValueOf(fieldValue)
 	if vValue.Type().AssignableTo(fType) {
 		field.Set(vValue)
 	} else if vValue.CanConvert(fType) {
 		field.Set(vValue.Convert(fType))
 	}
-
 	return nil
 }
 

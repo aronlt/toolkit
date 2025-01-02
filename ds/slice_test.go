@@ -103,6 +103,15 @@ func TestSliceRemove(t *testing.T) {
 	assert.Equal(t, k, m)
 }
 
+func TestSliceRemoveWithFn(t *testing.T) {
+	m := []int{1, 2, 3, 3, 2, 1, 2, 3, 4, 2}
+	k := []int{3, 3, 3, 4}
+	SliceOpRemoveWithFn(&m, func(i int) bool {
+		return m[i] == 1 || m[i] == 2
+	})
+	assert.Equal(t, k, m)
+}
+
 func TestSliceRemoveMany(t *testing.T) {
 	m := []int{1, 2, 3, 3, 5, 6, 2, 1, 2, 3, 4, 2}
 	k := []int{1, 3, 2, 3, 1, 3, 4}

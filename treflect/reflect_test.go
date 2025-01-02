@@ -83,6 +83,54 @@ func TestSetField(t *testing.T) {
 	assert.Equal(t, *v.Address, "address_two")
 }
 
+func TestSetFieldRecursive(t *testing.T) {
+	type K struct {
+		M string
+		N string
+	}
+	type Q1 struct {
+		Z1 string
+	}
+	type Q2 struct {
+		Z2 string
+	}
+	type V struct {
+		Q1
+		*Q2
+		Name    string
+		Address *string
+		K       K
+		K2      *K
+	}
+
+	address := ""
+	v := &V{
+		Q2:      &Q2{},
+		Address: &address,
+		K2:      &K{},
+	}
+	err := SetFieldRecursive(v, "M", "m")
+	assert.Nil(t, err)
+	assert.Equal(t, v.K.M, "m")
+	assert.Equal(t, v.K2.M, "m")
+
+	err = SetFieldRecursive(v, "Name", "name")
+	assert.Nil(t, err)
+	assert.Equal(t, v.Name, "name")
+
+	err = SetFieldRecursive(v, "Address", "address")
+	assert.Nil(t, err)
+	assert.Equal(t, *v.Address, "address")
+
+	err = SetFieldRecursive(v, "Z1", "z1")
+	assert.Nil(t, err)
+	assert.Equal(t, v.Q1.Z1, "z1")
+
+	err = SetFieldRecursive(v, "Z2", "z2")
+	assert.Nil(t, err)
+	assert.Equal(t, v.Q2.Z2, "z2")
+}
+
 func TestToAnyMapWithJson(t *testing.T) {
 	type M struct {
 		Age int `json:"age"`
