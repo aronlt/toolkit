@@ -46,7 +46,7 @@ func MapOpRemoveValue[K comparable, V comparable](m map[K]V, dv V) map[K]V {
 // MapOpRemoveValueInSlice 删除符合条件的值
 func MapOpRemoveValueInSlice[K comparable, V comparable](m map[K][]V, dv V, del bool) map[K][]V {
 	for k, v := range m {
-		SliceOpRemove[V](&v, dv)
+		v = SliceOpRemove[V](v, dv)
 		if len(v) == 0 && del {
 			delete(m, k)
 		} else {
