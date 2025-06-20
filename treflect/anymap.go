@@ -69,6 +69,13 @@ func StructToAnyMap(item interface{}, skip ...string) map[string]interface{} {
 		if skipSet.Has(field.Name) {
 			continue
 		}
+		if field.Anonymous { // 如果字段是内嵌字段并没有 json 标签，递归提升内嵌字段
+			subResult := StructToAnyMap(value.Interface())
+			for k, v := range subResult {
+				result[k] = v
+			}
+			continue
+		}
 		if value.Kind() == reflect.Pointer {
 			if value.IsNil() {
 				result[field.Name] = nil
@@ -109,6 +116,13 @@ func StructToAnyMapWithJson(item interface{}, skip ...string) map[string]interfa
 		value := v.FieldByIndex([]int{i})
 
 		tag := field.Tag.Get("json")
+		if tag == "" && field.Anonymous { // 如果字段是内嵌字段并没有 json 标签，递归提升内嵌字段
+			subResult := StructToAnyMapWithJson(value.Interface())
+			for k, v := range subResult {
+				result[k] = v
+			}
+			continue
+		}
 		if tag == "" {
 			continue
 		}
@@ -161,6 +175,13 @@ func StructToAnyMapDeep(item interface{}, skip ...string) map[string]interface{}
 		if skipSet.Has(field.Name) {
 			continue
 		}
+		if field.Anonymous {
+			subResult := StructToAnyMapDeep(value.Interface())
+			for k, v := range subResult {
+				result[k] = v
+			}
+			continue
+		}
 		if value.Kind() == reflect.Struct {
 			subResult := StructToAnyMapDeep(value.Interface(), skip...)
 			result[field.Name] = subResult
@@ -185,32 +206,44 @@ func StructToAnyMapDeep(item interface{}, skip ...string) map[string]interface{}
 }
 
 // StructToAnyMapWithJsonDeep 把任意结构体数据递归转换为json字符串形式的任意map
-func StructToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]interface{} {
-	skipSet := ds.SetFromUnpack(skip...)
+func StructToAnyMapWithJsonDeep(item interface{}) map[string]interface{} {
 	result := make(map[string]interface{})
-	r := reflect.TypeOf(item)
+	r := reflect.TypeOf(item) // 获取类型
 	if r == nil {
 		return make(map[string]interface{})
 	}
 	if r.Kind() == reflect.Pointer {
-		r = r.Elem()
+		r = r.Elem() // 解引用指针获取真实类型
 	}
+
 	v := reflect.ValueOf(item)
-	if reflect.DeepEqual(v, reflect.Value{}) {
+	if reflect.DeepEqual(v, reflect.Value{}) { // 检查是否为空值
 		return make(map[string]interface{})
 	}
+
 	if v.Kind() == reflect.Pointer {
-		v = v.Elem()
+		v = v.Elem() // 解引用指针获取真实值
 	}
-	if v.Kind() != reflect.Struct {
+
+	if v.Kind() != reflect.Struct { // 如果不是结构体，直接返回空结果
 		return result
 	}
+
+	// 遍历结构体的字段
 	n := r.NumField()
 	for i := 0; i < n; i++ {
-		field := r.FieldByIndex([]int{i})
-		value := v.FieldByIndex([]int{i})
+		field := r.Field(i)
+		value := v.Field(i)
 
+		// 获取 JSON 标签
 		tag := field.Tag.Get("json")
+		if tag == "" && field.Anonymous { // 如果字段是内嵌字段并没有 json 标签，递归提升内嵌字段
+			subResult := StructToAnyMapWithJsonDeep(value.Interface())
+			for k, v := range subResult {
+				result[k] = v
+			}
+			continue
+		}
 		if tag == "" {
 			continue
 		}
@@ -218,28 +251,30 @@ func StructToAnyMapWithJsonDeep(item interface{}, skip ...string) map[string]int
 			tag = tag[:idx]
 		}
 		tag = strings.TrimSpace(tag)
-		if skipSet.Has(tag) {
-			continue
-		}
-		if value.Kind() == reflect.Struct {
-			subResult := StructToAnyMapWithJsonDeep(value.Interface(), skip...)
+
+		// 处理字段值
+		if value.Kind() == reflect.Struct { // 如果是嵌套的结构体，递归处理
+			subResult := StructToAnyMapWithJsonDeep(value.Interface())
 			result[tag] = subResult
 			continue
 		}
-		if value.Kind() == reflect.Pointer {
+		if value.Kind() == reflect.Pointer { // 处理指针值
 			if value.IsNil() {
 				result[tag] = nil
 			} else {
 				if value.Elem().Kind() == reflect.Struct {
-					subResult := StructToAnyMapWithJsonDeep(value.Interface(), skip...)
+					subResult := StructToAnyMapWithJsonDeep(value.Interface())
 					result[tag] = subResult
 				} else {
 					result[tag] = value.Elem().Interface()
 				}
 			}
-		} else {
-			result[tag] = value.Interface()
+			continue
 		}
+
+		// 普通字段直接赋值
+		result[tag] = value.Interface()
 	}
+
 	return result
 }
